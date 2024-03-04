@@ -1,6 +1,7 @@
 import localState from '@/state/LocalState.ts';
 import publicState from '@/state/PublicState.ts';
 import ExplorerNode from './ExplorerNode.tsx';
+import ndk from '@/shared/ndk.ts';
 
 type Props = {
   p?: string;
@@ -9,7 +10,7 @@ type Props = {
 
 const Explorer = ({ p }: Props) => {
   return (
-    <div className="md:m-4">
+    <>
       <div>{p}</div>
       <div className="mb-4">
         <ExplorerNode expanded={true} name="Local state" node={localState} />
@@ -17,7 +18,7 @@ const Explorer = ({ p }: Props) => {
       <div className="mb-4">
         <ExplorerNode expanded={true} name="Public state" node={publicState} />
       </div>
-    </div>
+    </>
   );
 };
 
