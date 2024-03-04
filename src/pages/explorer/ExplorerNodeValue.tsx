@@ -41,7 +41,7 @@ const ExplorerNodeValue: React.FC<ExplorerNodeValueProps> = ({ displayName, valu
 
   if (typeof value === 'string') {
     return (
-      <span className="text-xs text-primary">
+      <span className="text-xs">
         {value.length > VALUE_TRUNCATE_LENGTH && (
           <span
             className="text-xs text-blue-200 cursor-pointer"
@@ -63,7 +63,7 @@ const ExplorerNodeValue: React.FC<ExplorerNodeValueProps> = ({ displayName, valu
   }
 
   return (
-    <span className="text-xs text-secondary">
+    <span className="text-xs text-primary">
       <span
         ref={inputRef}
         contentEditable
