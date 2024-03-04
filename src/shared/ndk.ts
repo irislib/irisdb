@@ -14,6 +14,7 @@ export function requestPermission() {
     if (user.npub) {
         console.log("Permission granted to read their public key:", user.npub);
     }
+    return user;
   });
 }
 

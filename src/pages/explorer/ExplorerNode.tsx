@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
 
-import Show from '@/shared/components/Show.tsx';
+import Show from '@/shared/components/util/Show.tsx';
 import Node, { DIR_VALUE } from '@/state/Node';
 import SortedMap from '@/utils/SortedMap/SortedMap.tsx';
 import { ExplorerNodeEditRow } from './ExplorerNodeEditRow.tsx';

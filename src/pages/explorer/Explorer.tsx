@@ -1,7 +1,7 @@
 import localState from '@/state/LocalState.ts';
 import publicState from '@/state/PublicState.ts';
 import ExplorerNode from './ExplorerNode.tsx';
-import ndk from '@/shared/ndk.ts';
+import LoginButton from "@/shared/components/LoginButton.tsx";
 
 type Props = {
   p?: string;
@@ -11,6 +11,7 @@ type Props = {
 const Explorer = ({ p }: Props) => {
   return (
     <>
+      <LoginButton />
       <div>{p}</div>
       <div className="mb-4">
         <ExplorerNode expanded={true} name="Local state" node={localState} />
