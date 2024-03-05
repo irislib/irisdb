@@ -1,6 +1,6 @@
 type Comparator<K, V> = (a: [K, V], b: [K, V]) => number;
 
-export default class SortedMap<K, V> {
+export class SortedMap<K, V extends Record<string, any>> {
   private map: Map<K, V>;
   private sortedKeys: K[];
   private compare: Comparator<K, V>;
@@ -9,9 +9,13 @@ export default class SortedMap<K, V> {
     this.map = new Map(initialEntries || []);
 
     if (compare) {
-      if (typeof compare === 'string') {
+      if (typeof compare === "string") {
         this.compare = (a, b) =>
-          a[1][compare] > b[1][compare] ? 1 : a[1][compare] < b[1][compare] ? -1 : 0;
+          (a[1] as any)[compare] > (b[1] as any)[compare]
+            ? 1
+            : (a[1] as any)[compare] < (b[1] as any)[compare]
+              ? -1
+              : 0;
       } else {
         this.compare = compare;
       }
@@ -19,9 +23,7 @@ export default class SortedMap<K, V> {
       this.compare = (a, b) => (a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0);
     }
 
-    this.sortedKeys = initialEntries
-      ? [...this.map.entries()].sort(this.compare).map(([key]) => key)
-      : [];
+    this.sortedKeys = initialEntries ? [...this.map.entries()].sort(this.compare).map(([key]) => key) : [];
   }
 
   private binarySearch(key: K, value: V): number {
@@ -111,15 +113,15 @@ export default class SortedMap<K, V> {
     options: {
       gte?: K;
       lte?: K;
-      direction?: 'asc' | 'desc';
+      direction?: "asc" | "desc";
     } = {},
   ): IterableIterator<[K, V]> {
-    const { gte, lte, direction = 'asc' } = options;
+    const { gte, lte, direction = "asc" } = options;
 
     const startIndex = gte ? this.binarySearch(gte, this.map.get(gte) as V) : 0;
     const endIndex = lte ? this.binarySearch(lte, this.map.get(lte) as V) : this.sortedKeys.length;
 
-    if (direction === 'asc') {
+    if (direction === "asc") {
       for (let i = startIndex; i < endIndex; i++) {
         const key = this.sortedKeys[i];
         yield [key, this.map.get(key) as V];
@@ -145,6 +147,11 @@ export default class SortedMap<K, V> {
       return true;
     }
     return false;
+  }
+
+  clear(): void {
+    this.map.clear();
+    this.sortedKeys = [];
   }
 
   get size(): number {

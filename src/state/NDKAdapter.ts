@@ -1,5 +1,5 @@
 import { Adapter, Callback, NodeValue, Unsubscribe } from '@/state/types.ts';
-import NDK, {NDKEvent} from "@nostr-dev-kit/ndk";
+import NDK, {NDKEvent, NostrEvent} from "@nostr-dev-kit/ndk";
 
 export default class NDKAdapter extends Adapter {
   seenValues = new Map<string, NodeValue>();
@@ -59,8 +59,8 @@ export default class NDKAdapter extends Adapter {
       { authors: this.authors, kinds: [30000] },
     );
     unsubObj.fn = () => sub.stop();
-    sub.on('event',       (event) => {
-        const childPath = event.tags.find((tag) => {
+    sub.on('event',       (event: NostrEvent) => {
+        const childPath = event.tags.find((tag: string[]) => {
           if (tag[0] === 'd') {
             const remainingPath = tag[1].replace(`${path}/`, '');
             if (
@@ -75,12 +75,12 @@ export default class NDKAdapter extends Adapter {
 
         if (childPath) {
           callback(JSON.parse(event.content), childPath, event.created_at * 1000, () =>
-            unsubObj.fn(),
+            unsubObj.fn?.(),
           );
         }
       }
     );
     sub.start();
-    return () => unsubObj.fn();
+    return () => unsubObj.fn?.();
   }
 }
