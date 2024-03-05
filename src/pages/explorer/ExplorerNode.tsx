@@ -3,7 +3,7 @@ import { ChevronRightIcon } from '@heroicons/react/20/solid';
 
 import Show from '@/shared/components/Show.tsx';
 import Node, { DIR_VALUE } from '@/state/Node';
-import SortedMap from '@/utils/SortedMap/SortedMap.tsx';
+import { SortedMap } from '@/utils/SortedMap/SortedMap.tsx';
 import { ExplorerNodeEditRow } from './ExplorerNodeEditRow.tsx';
 
 import ExplorerNodeValue from './ExplorerNodeValue';
@@ -18,6 +18,7 @@ type Props = {
 };
 
 type Child = { node: Node; value: any };
+type ChildMap = SortedMap<string, Child>;
 
 export default function ExplorerNode({
   node,
@@ -27,7 +28,7 @@ export default function ExplorerNode({
   name,
   parentCounter = 0,
 }: Props) {
-  const [children, setChildren] = useState<SortedMap<string, Child>>(new SortedMap());
+  const [children, setChildren] = useState<ChildMap>(new SortedMap());
   const [isOpen, setIsOpen] = useState(expanded);
 
   const isDirectory = value === DIR_VALUE;
@@ -37,7 +38,7 @@ export default function ExplorerNode({
     return node.map((value, key) => {
       if (!children.has(key)) {
         const childName = key.split('/').pop()!;
-        setChildren((prev) => {
+        setChildren((prev: ChildMap) => {
           const newChildren = new SortedMap(prev);
           newChildren.set(childName, { node: node.get(childName), value });
           return newChildren;

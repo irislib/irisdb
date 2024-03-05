@@ -1,6 +1,6 @@
 import LocalStorageAdapter from '@/state/LocalStorageAdapter.ts';
 import MemoryAdapter from '@/state/MemoryAdapter.ts';
-import { Adapter, Callback, NodeValue, Unsubscribe } from '@/state/types.ts';
+import {Adapter, Callback, JsonObject, JsonValue, NodeValue, Unsubscribe} from '@/state/types.ts';
 
 /**
   Inspired by https://github.com/amark/gun
@@ -47,7 +47,7 @@ export default class Node {
    * @returns {Node}
    * @example node.get('users').get('alice').put({name: 'Alice'})
    */
-  get(key) {
+  get(key: string) {
     const existing = this.children.get(key);
     if (existing) {
       return existing;
@@ -57,7 +57,7 @@ export default class Node {
     return new_node;
   }
 
-  private async putValue(value: any, updatedAt: number) {
+  private async putValue(value: JsonValue, updatedAt: number) {
     if (value !== DIR_VALUE) {
       this.children = new Map();
     }
@@ -72,7 +72,7 @@ export default class Node {
     await Promise.all(promises);
   }
 
-  private async putChildValues(value: Record<string, any>, updatedAt: number) {
+  private async putChildValues(value: JsonObject, updatedAt: number) {
     const promises = this.adapters.map((adapter) =>
       adapter.set(this.id, { value: DIR_VALUE, updatedAt }),
     );
@@ -87,8 +87,8 @@ export default class Node {
    * @param value
    * @example node.get('users').get('alice').put({name: 'Alice'})
    */
-  async put(value: any, updatedAt = Date.now()) {
-    if (typeof value === 'object' && value !== null) {
+  async put(value: JsonValue, updatedAt = Date.now()) {
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
       await this.putChildValues(value, updatedAt);
     } else {
       await this.putValue(value, updatedAt);
@@ -119,10 +119,10 @@ export default class Node {
    * @param recursion
    */
   open(callback: Callback, recursion = 0): Unsubscribe {
-    const aggregated: Record<string, any> = {};
-    let latestTime;
+    const aggregated: JsonObject = {};
+    let latestTime: number | undefined;
     return this.map((childValue, path, updatedAt) => {
-      if (updatedAt && (!latestTime || latestTime < updatedAt)) {
+      if (updatedAt !== undefined && (!latestTime || latestTime < updatedAt)) {
         latestTime = updatedAt;
       }
       const childName = path.split('/').pop()!;
@@ -140,8 +140,8 @@ export default class Node {
     let openUnsubscribe: Unsubscribe | undefined;
     const uniqueId = this.counter++;
 
-    const localCallback = (value, path, updatedAt, unsubscribe) => {
-      const olderThanLatest = latestValue && latestValue.updatedAt >= updatedAt;
+    const localCallback: Callback = (value, path, updatedAt, unsubscribe) => {
+      const olderThanLatest = latestValue !== null && updatedAt !== undefined && latestValue.updatedAt >= updatedAt;
       const noReturnUndefined = !returnIfUndefined && value === undefined;
       if (olderThanLatest || noReturnUndefined) {
         return;
@@ -153,7 +153,7 @@ export default class Node {
         return;
       }
 
-      if (value !== undefined) {
+      if (value !== undefined && updatedAt !== undefined) {
         latestValue = { value, updatedAt };
       }
 
@@ -195,7 +195,7 @@ export default class Node {
       adapterSubs.forEach((unsub) => unsub());
     };
 
-    const cb = (value: any, path: string, updatedAt: number | undefined) => {
+    const cb: Callback = (value, path, updatedAt) => {
       const latest = latestMap.get(path);
       if (updatedAt !== undefined && latest && latest.updatedAt >= updatedAt) {
         return;
@@ -237,10 +237,10 @@ export default class Node {
    * Same as on(), but will unsubscribe after the first callback
    * @param callback
    */
-  once(callback?: Callback, returnIfUndefined = false, recursion = 1): Promise<any> {
+  once(callback?: Callback, returnIfUndefined = false, recursion = 1): Promise<JsonValue> {
     return new Promise((resolve) => {
       let resolved = false;
-      const cb = (value, updatedAt, path, unsub) => {
+      const cb: Callback = (value, updatedAt, path, unsub) => {
         if (resolved) return;
         resolved = true;
         resolve(value);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {ChangeEvent, FormEvent, useState} from 'react';
 
 import Node, { DIR_VALUE } from '@/state/Node.ts';
 
@@ -24,14 +24,14 @@ export const ExplorerNodeEditRow = ({ level, parent }: EditRowProps) => {
     setShowDirForm(false);
   };
 
-  const handleDirSubmit = (e) => {
+  const handleDirSubmit = (e: FormEvent) => {
     e.preventDefault();
     parent.get(dirName).put(DIR_VALUE);
     setDirName('');
     setShowDirForm(false);
   };
 
-  const handleValueSubmit = (e) => {
+  const handleValueSubmit = (e: FormEvent) => {
     e.preventDefault();
     parent.get(key).put(val);
     setKey('');
@@ -57,7 +57,7 @@ export const ExplorerNodeEditRow = ({ level, parent }: EditRowProps) => {
             type="text"
             placeholder="Directory Name"
             value={dirName}
-            onChange={(e: any) => setDirName(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setDirName(e.target.value)}
           />
           <button type="submit" className="btn btn-sm btn-primary">
             Create
@@ -75,14 +75,14 @@ export const ExplorerNodeEditRow = ({ level, parent }: EditRowProps) => {
             type="text"
             placeholder="Key"
             value={key}
-            onChange={(e: any) => setKey(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setKey(e.target.value)}
           />
           <input
             className="input input-sm input-primary"
             type="text"
             placeholder="Value"
             value={val}
-            onChange={(e: any) => setVal(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setVal(e.target.value)}
           />
           <button className="btn btn-sm btn-primary" type="submit">
             Create
