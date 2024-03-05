@@ -1,12 +1,12 @@
-import {requestPermission} from "@/shared/ndk.ts";
+import {getUser} from "@/shared/ndk.ts";
 import useLocalState from "@/state/useLocalState.ts";
 
 export default function LoginButton() {
   const [publicKey, setPublicKey] = useLocalState('publicKey','');
 
   function login() {
-    requestPermission().then((user) => {
-      setPublicKey(user.npub);
+    getUser().then((user) => {
+      setPublicKey(user.pubkey);
     });
   }
 

@@ -1,22 +1,29 @@
-import Events from '@/nostr/Events';
-import Key from '@/nostr/Key';
-import PubSub from '@/nostr/PubSub';
 import { Adapter, Callback, NodeValue, Unsubscribe } from '@/state/types.ts';
+import NDK, {NDKEvent} from "@nostr-dev-kit/ndk";
 
-export default class IrisNostrAdapter extends Adapter {
+export default class NDKAdapter extends Adapter {
   seenValues = new Map<string, NodeValue>();
+  ndk: NDK;
+  authors: string[];
+
+  constructor(ndk: NDK, authors: string[]) {
+    super();
+    this.ndk = ndk;
+    this.authors = authors;
+  }
 
   get(path: string, callback: Callback): Unsubscribe {
-    const unsubObj = { fn: null as any };
+    const unsubObj = { fn: null as Unsubscribe | null };
 
-    unsubObj.fn = PubSub.subscribe(
-      // @ts-ignore
-      { authors: [Key.getPubKey()], kinds: [30000], '#d': [path] },
-      (event) => {
-        callback(JSON.parse(event.content), path, event.created_at * 1000, () => unsubObj.fn());
-      },
+    const sub = this.ndk.subscribe(
+      { authors: this.authors, kinds: [30000], '#d': [path] },
     );
-    return () => unsubObj.fn();
+    unsubObj.fn = () => sub.stop();
+    sub.on('event', (event) => {
+      callback(JSON.parse(event.content), path, event.created_at * 1000, () => unsubObj.fn?.());
+    });
+    sub.start();
+    return () => unsubObj.fn?.();
   }
 
   async set(path: string, value: NodeValue) {
@@ -33,26 +40,26 @@ export default class IrisNostrAdapter extends Adapter {
     console.log('set state', path, value);
 
     const directory = path.split('/').slice(0, -1).join('/');
-    const e = await Events.publish({
-      // @ts-ignore
-      kind: 30000,
-      content: JSON.stringify(value.value),
-      created_at: Math.ceil(value.updatedAt / 1000),
-      tags: [
-        ['d', path],
-        ['f', directory],
-      ],
-    });
+    const e = new NDKEvent(this.ndk);
+    e.kind = 30000;
+    e.content = JSON.stringify(value.value);
+    e.created_at = Math.ceil(value.updatedAt / 1000);
+    e.tags = [
+      ['d', path],
+      ['f', directory],
+    ];
+    await e.publish();
     console.log('published state event', e);
   }
 
   list(path: string, callback: Callback): Unsubscribe {
-    const unsubObj = { fn: null as any };
+    const unsubObj = { fn: null as Unsubscribe | null };
 
-    unsubObj.fn = PubSub.subscribe(
-      // @ts-ignore
-      { authors: [Key.getPubKey()], kinds: [30000] },
-      (event) => {
+    const sub = this.ndk.subscribe(
+      { authors: this.authors, kinds: [30000] },
+    );
+    unsubObj.fn = () => sub.stop();
+    sub.on('event',       (event) => {
         const childPath = event.tags.find((tag) => {
           if (tag[0] === 'd') {
             const remainingPath = tag[1].replace(`${path}/`, '');
@@ -71,8 +78,9 @@ export default class IrisNostrAdapter extends Adapter {
             unsubObj.fn(),
           );
         }
-      },
+      }
     );
+    sub.start();
     return () => unsubObj.fn();
   }
 }

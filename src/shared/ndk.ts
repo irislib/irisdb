@@ -9,13 +9,8 @@ const ndk = new NDK({
 
 ndk.connect();
 
-export function requestPermission() {
-  return nip07signer.user().then(async (user) => {
-    if (user.npub) {
-        console.log("Permission granted to read their public key:", user.npub);
-    }
-    return user;
-  });
+export function getUser() {
+  return nip07signer.user();
 }
 
 export default ndk;
