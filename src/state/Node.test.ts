@@ -6,7 +6,7 @@ import { Callback, Unsubscribe } from '@/state/types.ts';
 import Node, { DIR_VALUE } from './Node';
 
 describe('Node', () => {
-  let node;
+  let node: Node;
 
   beforeEach(() => {
     vi.resetAllMocks();
