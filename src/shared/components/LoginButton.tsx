@@ -1,5 +1,6 @@
 import {getUser} from "@/shared/ndk.ts";
 import useLocalState from "@/state/useLocalState.ts";
+import AvatarAndName from "@/shared/components/AvatarAndName.tsx";
 
 export default function LoginButton() {
   const [publicKey, setPublicKey] = useLocalState('publicKey','');
@@ -21,7 +22,7 @@ export default function LoginButton() {
       )}
       {publicKey && (
         <>
-          <div className="text-sm">Your public key: {publicKey}</div>
+          <AvatarAndName pubKey={publicKey} />
           <button className="btn btn-sm btn-accent" onClick={() => logout()}>Log out</button>
         </>
       )}
