@@ -3,6 +3,10 @@ import useLocalState from "@/state/useLocalState.ts";
 import AvatarAndName from "@/shared/components/AvatarAndName.tsx";
 import Show from "@/shared/components/Show.tsx";
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
+import {nip19} from "nostr-tools";
+import {hexToBytes} from "@noble/hashes/utils";
+
+const NSEC_NPUB_REGEX = /(nsec1|npub1)[a-zA-Z0-9]{20,65}/gi;
 
 export default function LoginDialog() {
   const [, setNip07Login] = useLocalState('user/nip07Login', false);
@@ -34,7 +38,12 @@ export default function LoginDialog() {
   }
 
   function onNameChange(e: ChangeEvent<HTMLInputElement>) {
-    setNewUserName(e.target.value);
+    const val = e.target.value;
+    if (val.match(NSEC_NPUB_REGEX)) {
+      e.preventDefault();
+    } else {
+      setNewUserName(e.target.value);
+    }
   }
 
   function onPrivateKeyChange(e: ChangeEvent<HTMLInputElement>) {
@@ -49,7 +58,8 @@ export default function LoginDialog() {
   }
 
   function copyPrivateKey() {
-    navigator.clipboard.writeText(privateKey);
+    const nsec = nip19.nsecEncode(hexToBytes(privateKey));
+    navigator.clipboard.writeText(nsec);
   }
 
   return (
@@ -58,7 +68,7 @@ export default function LoginDialog() {
         <Show when={!publicKey}>
           <div className="flex flex-col gap-2">
             <form className="flex flex-row items-center gap-2" onSubmit={e => onNewUserLogin(e)}>
-              <input className="input input-sm input-bordered" type="text" placeholder="What's your name?" onChange={e => onNameChange(e)} />
+              <input className="input input-sm input-bordered" type="text" placeholder="What's your name?" value={newUserName} onChange={e => onNameChange(e)} />
               <button className="btn btn-sm btn-primary" type="submit">Go</button>
             </form>
             <p>Already have a Nostr account?</p>

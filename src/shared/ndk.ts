@@ -2,7 +2,7 @@ import NDK, {NDKNip07Signer, NDKPrivateKeySigner} from "@nostr-dev-kit/ndk";
 import NDKCacheAdapterDexie from "@nostr-dev-kit/ndk-cache-dexie";
 import localState from "@/state/LocalState.ts";
 import {NDKEvent} from "@nostr-dev-kit/ndk";
-import {generateSecretKey, getPublicKey} from "nostr-tools";
+import {generateSecretKey, getPublicKey, nip19} from "nostr-tools";
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils'
 
 const dexieAdapter = new NDKCacheAdapterDexie({ dbName: 'nostree-db' });
@@ -59,11 +59,12 @@ export function newUserLogin(name: string) {
 
 export function privateKeyLogin(privateKey: string) {
   if (privateKey && typeof privateKey === "string") {
-    const bytes = hexToBytes(privateKey);
-    privateKeySigner = new NDKPrivateKeySigner(privateKey);
+    const bytes = privateKey.indexOf('nsec1') === 0 ? (nip19.decode(privateKey).data as Uint8Array) : hexToBytes(privateKey);
+    const hex = bytesToHex(bytes);
+    privateKeySigner = new NDKPrivateKeySigner(hex);
     ndk.signer = privateKeySigner;
     const publicKey = getPublicKey(bytes);
-    localState.get("user/privateKey").put(privateKey);
+    localState.get("user/privateKey").put(hex);
     localState.get("user/publicKey").put(publicKey);
   }
 }

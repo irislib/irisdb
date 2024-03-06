@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import localState from '@/state/LocalState.ts';
+import {JsonValue} from "@/state/types.ts";
 
 export default function useLocalState(key: string, initialValue: any = undefined, once = false) {
   if (!initialValue) {
@@ -19,7 +20,7 @@ export default function useLocalState(key: string, initialValue: any = undefined
     return unsub;
   }, [key, once]);
   const setter = useCallback(
-    (new_value: any) => {
+    (new_value: JsonValue) => {
       localState.get(key).put(new_value);
     },
     [key],

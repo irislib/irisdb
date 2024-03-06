@@ -7,17 +7,18 @@ import { SortedMap } from '@/utils/SortedMap/SortedMap.tsx';
 import { ExplorerNodeEditRow } from './ExplorerNodeEditRow.tsx';
 
 import ExplorerNodeValue from './ExplorerNodeValue';
+import {JsonValue} from "@/state/types.ts";
 
 type Props = {
   node: Node;
-  value?: any;
+  value?: JsonValue;
   level?: number;
   expanded?: boolean;
   name?: string;
   parentCounter?: number;
 };
 
-type Child = { node: Node; value: any };
+type Child = { node: Node; value: JsonValue };
 type ChildMap = SortedMap<string, Child>;
 
 export default function ExplorerNode({
