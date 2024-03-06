@@ -1,4 +1,4 @@
-import {useEffect, useState, FormEvent, DragEvent, DragEventHandler, useMemo} from "react";
+import {useEffect, useState, FormEvent, DragEvent, DragEventHandler} from "react";
 import LoginDialog from "@/shared/components/LoginDialog";
 import Show from "@/shared/components/Show";
 import publicState from "@/state/PublicState";
@@ -28,7 +28,7 @@ type ItemComponentProps = {
 };
 
 function ItemComponent({ item, onDragStart }: ItemComponentProps) {
-  return <div draggable={true} className="absolute" style={{ left: item.x, top: item.y }} onDragStart={onDragStart}>
+  return <div draggable={true} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: item.x, top: item.y }} onDragStart={onDragStart}>
     {item.data}
   </div>;
 }
@@ -44,6 +44,10 @@ export default function Canvas() {
   const [pubKey] = useLocalState('user/publicKey', '');
   const [newItemValue, setNewItemValue] = useState('');
   const [items, setItems] = useState(new Map<string, Item>());
+  const [canvasPosition] = useState({
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
+  });
 
   useEffect(() => {
     setItems(new Map());
@@ -104,7 +108,7 @@ export default function Canvas() {
   };
 
   return (
-    <div className="w-full h-full" onDrop={onDrop} onDragOver={onDragOver}>
+    <>
       <div className="fixed top-2 right-2 bg-base-100">
         <LoginDialog />
       </div>
@@ -118,9 +122,11 @@ export default function Canvas() {
           </button>
         </Show>
       </div>
-      {Array.from(items).map(([key, item]) => (
-        <ItemComponent key={key} item={item} onDragStart={(e) => onDragStart(e, key)} />
-      ))}
-    </div>
+      <div className="w-full h-full" onDrop={onDrop} onDragOver={onDragOver} style={{ transform: `translate(${canvasPosition.x}px, ${canvasPosition.y}px)` }}>
+        {Array.from(items).map(([key, item]) => (
+          <ItemComponent key={key} item={item} onDragStart={(e) => onDragStart(e, key)} />
+        ))}
+      </div>
+    </>
   );
 }
