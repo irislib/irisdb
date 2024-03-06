@@ -48,6 +48,7 @@ export default class Node {
    * @example node.get('users').get('alice').put({name: 'Alice'})
    */
   get(key: string) {
+    // TODO handle slashes in key
     const existing = this.children.get(key);
     if (existing) {
       return existing;

@@ -1,7 +1,7 @@
 import localState from '@/state/LocalState.ts';
 import publicState from '@/state/PublicState.ts';
 import ExplorerNode from './ExplorerNode.tsx';
-import LoginButton from "@/shared/components/LoginButton.tsx";
+import LoginDialog from "@/shared/components/LoginDialog.tsx";
 import useLocalState from "@/state/useLocalState.ts";
 
 type Props = {
@@ -10,11 +10,16 @@ type Props = {
 };
 
 const Explorer = ({ p }: Props) => {
-  const [pubKey] = useLocalState('publicKey', '');
+  const [pubKey] = useLocalState('user/publicKey', '');
+  const [name] = useLocalState('user/name', '');
+
+  const publicStateText =  name ? `User public state (${name})` : 'User public state';
 
   return (
-    <>
-      <LoginButton />
+    <div className="flex flex-col gap-2">
+      <div className="px-2 md:px-0">
+        <LoginDialog />
+      </div>
       <div>{p}</div>
       <div className="mb-4">
         <ExplorerNode expanded={true} name="Local state" node={localState} />
@@ -22,11 +27,11 @@ const Explorer = ({ p }: Props) => {
       {
         pubKey && (
           <div className="mb-4">
-            <ExplorerNode expanded={true} name="User state (public on Nostr)" node={publicState([pubKey])} />
+            <ExplorerNode expanded={true} name={publicStateText} node={publicState([pubKey])} />
           </div>
         )
       }
-    </>
+    </div>
   );
 };
 

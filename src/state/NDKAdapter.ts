@@ -1,6 +1,8 @@
 import { Adapter, Callback, NodeValue, Unsubscribe } from '@/state/types.ts';
 import NDK, {NDKEvent, NostrEvent} from "@nostr-dev-kit/ndk";
 
+const EVENT_KIND = 30078;
+
 export default class NDKAdapter extends Adapter {
   seenValues = new Map<string, NodeValue>();
   ndk: NDK;
@@ -16,7 +18,7 @@ export default class NDKAdapter extends Adapter {
     const unsubObj = { fn: null as Unsubscribe | null };
 
     const sub = this.ndk.subscribe(
-      { authors: this.authors, kinds: [30000], '#d': [path] },
+      { authors: this.authors, kinds: [EVENT_KIND], '#d': [path] },
     );
     unsubObj.fn = () => sub.stop();
     sub.on('event', (event) => {
@@ -56,7 +58,7 @@ export default class NDKAdapter extends Adapter {
     const unsubObj = { fn: null as Unsubscribe | null };
 
     const sub = this.ndk.subscribe(
-      { authors: this.authors, kinds: [30000] },
+      { authors: this.authors, kinds: [EVENT_KIND] },
     );
     unsubObj.fn = () => sub.stop();
     sub.on('event',       (event: NostrEvent) => {
