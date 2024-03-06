@@ -7,7 +7,7 @@ import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 export default function LoginDialog() {
   const [, setNip07Login] = useLocalState('user/nip07Login', false);
   const [publicKey, setPublicKey] = useLocalState('user/publicKey','');
-  const [privateKey, setPrivateKey] = useLocalState('user/publicKey','');
+  const [privateKey, setPrivateKey] = useLocalState('user/privateKey','');
   const [newUserName, setNewUserName] = useState('');
   const [inputPrivateKey, setInputPrivateKey] = useState('');
 
@@ -26,9 +26,11 @@ export default function LoginDialog() {
   }, [inputPrivateKey]);
 
   function logout() {
-    setPublicKey('');
-    setPrivateKey('');
-    setNip07Login(false);
+    if (!privateKey || confirm('Log out? Make sure you have a backup of your secret key.')) {
+      setPublicKey('');
+      setPrivateKey('');
+      setNip07Login(false);
+    }
   }
 
   function onNameChange(e: ChangeEvent<HTMLInputElement>) {
