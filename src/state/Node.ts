@@ -45,17 +45,19 @@ export default class Node {
    *
    * @param key
    * @returns {Node}
-   * @example node.get('users').get('alice').put({name: 'Alice'})
+   * @example node.get('users/alice').put({name: 'Alice'})
    */
-  get(key: string) {
-    // TODO handle slashes in key
-    const existing = this.children.get(key);
-    if (existing) {
-      return existing;
+  get(key: string): Node {
+    const splitKey = key.split('/');
+    let node = this.children.get(splitKey[0]);
+    if (!node) {
+      node = new Node({ id: `${this.id}/${splitKey[0]}`, parent: this });
+      this.children.set(splitKey[0], node);
     }
-    const new_node = new Node({ id: `${this.id}/${key}`, parent: this });
-    this.children.set(key, new_node);
-    return new_node;
+    if (splitKey.length > 1) {
+      return node.get(splitKey.slice(1).join('/'));
+    }
+    return node;
   }
 
   private async putValue(value: JsonValue, updatedAt: number) {

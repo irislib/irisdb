@@ -44,7 +44,7 @@ const ExplorerNodeValue: React.FC<ExplorerNodeValueProps> = ({ displayName, valu
       <span className="text-xs">
         {value.length > VALUE_TRUNCATE_LENGTH && (
           <span
-            className="text-xs text-blue-200 cursor-pointer"
+            className="text-xs text-accent cursor-pointer"
             onClick={() => setShowMore(!showMore)}
           >
             Show {showMore ? 'less' : 'more'}{' '}
