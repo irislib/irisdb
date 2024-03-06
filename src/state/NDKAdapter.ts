@@ -43,15 +43,19 @@ export default class NDKAdapter extends Adapter {
 
     const directory = path.split('/').slice(0, -1).join('/');
     const e = new NDKEvent(this.ndk);
-    e.kind = 30000;
+    e.kind = EVENT_KIND;
     e.content = JSON.stringify(value.value);
     e.created_at = Math.ceil(value.updatedAt / 1000);
     e.tags = [
       ['d', path],
       ['f', directory],
     ];
-    await e.publish();
-    console.log('published state event', e);
+    try {
+      await e.publish();
+      console.log('published state event', e);
+    } catch (e) {
+      console.error('error publishing state event', e);
+    }
   }
 
   list(path: string, callback: Callback): Unsubscribe {
