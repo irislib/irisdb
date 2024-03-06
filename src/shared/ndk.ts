@@ -1,11 +1,15 @@
 import NDK, {NDKNip07Signer, NDKPrivateKeySigner} from "@nostr-dev-kit/ndk";
+import NDKCacheAdapterDexie from "@nostr-dev-kit/ndk-cache-dexie";
 import localState from "@/state/LocalState.ts";
 import {NDKEvent} from "@nostr-dev-kit/ndk";
 import {generateSecretKey, getPublicKey} from "nostr-tools";
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils'
 
+const dexieAdapter = new NDKCacheAdapterDexie({ dbName: 'nostree-db' });
+
 const ndk = new NDK({
-  explicitRelayUrls: ["wss://relay.snort.social"],
+  explicitRelayUrls: ["wss://relay.snort.social", "wss://relay.damus.io", "wss://relay.nostr.band"],
+  cacheAdapter: dexieAdapter,
 });
 
 ndk.connect();

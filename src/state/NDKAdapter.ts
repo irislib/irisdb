@@ -53,8 +53,8 @@ export default class NDKAdapter extends Adapter {
     try {
       await e.publish();
       console.log('published state event', e);
-    } catch (e) {
-      console.error('error publishing state event', e);
+    } catch (error) {
+      console.error('error publishing state event', error, e);
     }
   }
 

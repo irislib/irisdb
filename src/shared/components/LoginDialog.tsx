@@ -37,7 +37,9 @@ export default function LoginDialog() {
 
   function onNewUserLogin(e: FormEvent) {
     e.preventDefault();
-    newUserLogin(newUserName);
+    if (newUserName) {
+      newUserLogin(newUserName);
+    }
   }
 
   function copyPrivateKey() {
@@ -55,7 +57,9 @@ export default function LoginDialog() {
             </form>
             <p>Already have a Nostr account?</p>
             <div className="flex flex-row items-center gap-2">
-              <input type="password" className="input input-sm input-bordered" placeholder="Paste private key" onChange={e => onPrivateKeyChange(e)} />
+              <form onSubmit={e => e.preventDefault()}>
+                <input type="password" className="input input-sm input-bordered" placeholder="Paste private key" onChange={e => onPrivateKeyChange(e)} />
+              </form>
               or
               <button className="btn btn-sm btn-accent" onClick={() => extensionLogin()}>Nostr Extension Login</button>
             </div>
