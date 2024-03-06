@@ -12,7 +12,11 @@ export default function LoginDialog() {
   const [inputPrivateKey, setInputPrivateKey] = useState('');
 
   function extensionLogin() {
-    setNip07Login(true);
+    if (window.nostr) {
+      setNip07Login(true);
+    } else {
+      window.open('https://nostrcheck.me/register/browser-extension.php', '_blank');
+    }
   }
 
   useEffect(() => {
@@ -58,10 +62,12 @@ export default function LoginDialog() {
             <p>Already have a Nostr account?</p>
             <div className="flex flex-row items-center gap-2">
               <form onSubmit={e => e.preventDefault()}>
-                <input type="password" className="input input-sm input-bordered" placeholder="Paste private key" onChange={e => onPrivateKeyChange(e)} />
+                <input type="password" className="input input-sm input-bordered" placeholder="Paste secret key" onChange={e => onPrivateKeyChange(e)} />
               </form>
               or
-              <button className="btn btn-sm btn-accent" onClick={() => extensionLogin()}>Nostr Extension Login</button>
+              <button className="btn btn-sm btn-accent" onClick={() => extensionLogin()}>
+                {window.nostr ? 'Nostr Extension Login' : 'Install Nostr Extension'}
+              </button>
             </div>
           </div>
         </Show>
@@ -70,7 +76,7 @@ export default function LoginDialog() {
             <AvatarAndName pubKey={publicKey} />
             <div className="flex flex-row gap-2">
               <Show when={privateKey}>
-                <button className="btn btn-sm btn-accent" onClick={() => copyPrivateKey()}>Copy private key</button>
+                <button className="btn btn-sm btn-accent" onClick={() => copyPrivateKey()}>Copy secret key</button>
               </Show>
               <button className="btn btn-sm btn-secondary" onClick={() => logout()}>Log out</button>
             </div>
