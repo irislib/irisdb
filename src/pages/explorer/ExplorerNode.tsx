@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
+import { useEffect, useState } from 'react';
 
 import Show from '@/shared/components/Show.tsx';
 import Node, { DIR_VALUE } from '@/state/Node';
+import { JsonValue } from '@/state/types.ts';
 import { SortedMap } from '@/utils/SortedMap/SortedMap.tsx';
-import { ExplorerNodeEditRow } from './ExplorerNodeEditRow.tsx';
 
+import { ExplorerNodeEditRow } from './ExplorerNodeEditRow.tsx';
 import ExplorerNodeValue from './ExplorerNodeValue';
-import {JsonValue} from "@/state/types.ts";
 
 type Props = {
   node: Node;

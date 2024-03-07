@@ -1,22 +1,23 @@
-import NDK, {NDKNip07Signer, NDKPrivateKeySigner} from "@nostr-dev-kit/ndk";
-import NDKCacheAdapterDexie from "@nostr-dev-kit/ndk-cache-dexie";
-import localState from "@/state/LocalState.ts";
-import {NDKEvent} from "@nostr-dev-kit/ndk";
-import {generateSecretKey, getPublicKey, nip19} from "nostr-tools";
-import { bytesToHex, hexToBytes } from '@noble/hashes/utils'
+import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
+import NDK, { NDKNip07Signer, NDKPrivateKeySigner } from '@nostr-dev-kit/ndk';
+import { NDKEvent } from '@nostr-dev-kit/ndk';
+import NDKCacheAdapterDexie from '@nostr-dev-kit/ndk-cache-dexie';
+import { generateSecretKey, getPublicKey, nip19 } from 'nostr-tools';
+
+import localState from '@/state/LocalState.ts';
 
 const dexieAdapter = new NDKCacheAdapterDexie({ dbName: 'nostree-db' });
 
 const ndk = new NDK({
-  explicitRelayUrls: ["wss://relay.snort.social", "wss://relay.damus.io", "wss://relay.nostr.band"],
+  explicitRelayUrls: ['wss://relay.snort.social', 'wss://relay.damus.io', 'wss://relay.nostr.band'],
   cacheAdapter: dexieAdapter,
 });
 
 ndk.connect();
 
 let privateKeySigner: NDKPrivateKeySigner | undefined;
-localState.get("user/privateKey").on((privateKey) => {
-  if (!privateKeySigner && privateKey && typeof privateKey === "string") {
+localState.get('user/privateKey').on((privateKey) => {
+  if (!privateKeySigner && privateKey && typeof privateKey === 'string') {
     try {
       privateKeySigner = new NDKPrivateKeySigner(privateKey);
       ndk.signer = privateKeySigner;
@@ -30,7 +31,7 @@ localState.get("user/privateKey").on((privateKey) => {
 });
 
 let nip07Signer: NDKNip07Signer | undefined;
-localState.get("user/nip07Login").on((nip07) => {
+localState.get('user/nip07Login').on((nip07) => {
   if (nip07) {
     nip07Signer = new NDKNip07Signer();
     ndk.signer = nip07Signer;
@@ -44,11 +45,11 @@ localState.get("user/nip07Login").on((nip07) => {
 });
 
 export function newUserLogin(name: string) {
-  const sk = generateSecretKey() // `sk` is a Uint8Array
-  const pk = getPublicKey(sk) // `pk` is a hex string
+  const sk = generateSecretKey(); // `sk` is a Uint8Array
+  const pk = getPublicKey(sk); // `pk` is a hex string
   const privateKeyHex = bytesToHex(sk);
-  localState.get("user/privateKey").put(privateKeyHex);
-  localState.get("user/publicKey").put(pk);
+  localState.get('user/privateKey').put(privateKeyHex);
+  localState.get('user/publicKey').put(pk);
   privateKeySigner = new NDKPrivateKeySigner(privateKeyHex);
   ndk.signer = privateKeySigner;
   const profileEvent = new NDKEvent(ndk);
@@ -58,14 +59,17 @@ export function newUserLogin(name: string) {
 }
 
 export function privateKeyLogin(privateKey: string) {
-  if (privateKey && typeof privateKey === "string") {
-    const bytes = privateKey.indexOf('nsec1') === 0 ? (nip19.decode(privateKey).data as Uint8Array) : hexToBytes(privateKey);
+  if (privateKey && typeof privateKey === 'string') {
+    const bytes =
+      privateKey.indexOf('nsec1') === 0
+        ? (nip19.decode(privateKey).data as Uint8Array)
+        : hexToBytes(privateKey);
     const hex = bytesToHex(bytes);
     privateKeySigner = new NDKPrivateKeySigner(hex);
     ndk.signer = privateKeySigner;
     const publicKey = getPublicKey(bytes);
-    localState.get("user/privateKey").put(hex);
-    localState.get("user/publicKey").put(publicKey);
+    localState.get('user/privateKey').put(hex);
+    localState.get('user/publicKey').put(publicKey);
   }
 }
 

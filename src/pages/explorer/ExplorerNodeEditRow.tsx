@@ -1,4 +1,4 @@
-import {ChangeEvent, FormEvent, useState} from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 import Node, { DIR_VALUE } from '@/state/Node.ts';
 
@@ -42,10 +42,16 @@ export const ExplorerNodeEditRow = ({ level, parent }: EditRowProps) => {
   return (
     <div className="pb-1" style={{ paddingLeft: `${level * 15 + 9}px` }}>
       <div className="flex flex-row items-center gap-4">
-        <a className={`cursor-pointer text-accent hover:underline text-sm ${showDirForm ? 'underline' : ''}`} onClick={toggleDirForm}>
+        <a
+          className={`cursor-pointer text-accent hover:underline text-sm ${showDirForm ? 'underline' : ''}`}
+          onClick={toggleDirForm}
+        >
           New Directory
         </a>
-        <a className={`cursor-pointer text-accent hover:underline text-sm ${showValueForm ? 'underline' : ''}`} onClick={toggleValueForm}>
+        <a
+          className={`cursor-pointer text-accent hover:underline text-sm ${showValueForm ? 'underline' : ''}`}
+          onClick={toggleValueForm}
+        >
           New Value
         </a>
       </div>

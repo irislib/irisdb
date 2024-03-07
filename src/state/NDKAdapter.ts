@@ -1,6 +1,7 @@
-import { Adapter, Callback, NodeValue, Unsubscribe } from '@/state/types.ts';
-import NDK, {NDKEvent, NostrEvent} from "@nostr-dev-kit/ndk";
+import NDK, { NDKEvent, NostrEvent } from '@nostr-dev-kit/ndk';
 import debug from 'debug';
+
+import { Adapter, Callback, NodeValue, Unsubscribe } from '@/state/types.ts';
 
 const EVENT_KIND = 30078;
 
@@ -20,9 +21,7 @@ export default class NDKAdapter extends Adapter {
   get(path: string, callback: Callback): Unsubscribe {
     const unsubObj = { fn: null as Unsubscribe | null };
 
-    const sub = this.ndk.subscribe(
-      { authors: this.authors, kinds: [EVENT_KIND], '#d': [path] },
-    );
+    const sub = this.ndk.subscribe({ authors: this.authors, kinds: [EVENT_KIND], '#d': [path] });
     unsubObj.fn = () => sub.stop();
     sub.on('event', (event) => {
       callback(JSON.parse(event.content), path, event.created_at * 1000, () => unsubObj.fn?.());
@@ -64,31 +63,28 @@ export default class NDKAdapter extends Adapter {
   list(path: string, callback: Callback): Unsubscribe {
     const unsubObj = { fn: null as Unsubscribe | null };
 
-    const sub = this.ndk.subscribe(
-      { authors: this.authors, kinds: [EVENT_KIND] },
-    );
+    const sub = this.ndk.subscribe({ authors: this.authors, kinds: [EVENT_KIND] });
     unsubObj.fn = () => sub.stop();
-    sub.on('event',       (event: NostrEvent) => {
-        const childPath = event.tags.find((tag: string[]) => {
-          if (tag[0] === 'd') {
-            const remainingPath = tag[1].replace(`${path}/`, '');
-            if (
-              remainingPath.length &&
-              tag[1].startsWith(`${path}/`) &&
-              !remainingPath.includes('/')
-            ) {
-              return true;
-            }
+    sub.on('event', (event: NostrEvent) => {
+      const childPath = event.tags.find((tag: string[]) => {
+        if (tag[0] === 'd') {
+          const remainingPath = tag[1].replace(`${path}/`, '');
+          if (
+            remainingPath.length &&
+            tag[1].startsWith(`${path}/`) &&
+            !remainingPath.includes('/')
+          ) {
+            return true;
           }
-        })?.[1];
-
-        if (childPath) {
-          callback(JSON.parse(event.content), childPath, event.created_at * 1000, () =>
-            unsubObj.fn?.(),
-          );
         }
+      })?.[1];
+
+      if (childPath) {
+        callback(JSON.parse(event.content), childPath, event.created_at * 1000, () =>
+          unsubObj.fn?.(),
+        );
       }
-    );
+    });
     sub.start();
     return () => unsubObj.fn?.();
   }

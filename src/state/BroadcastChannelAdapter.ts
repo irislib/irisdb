@@ -12,7 +12,9 @@ export default class BroadcastChannelAdapter extends Adapter {
     const listener = (event: MessageEvent) => {
       const { path: eventPath, value, updatedAt } = JSON.parse(event.data);
       if (eventPath === path) {
-        callback(value, path, updatedAt, () => this.channel.removeEventListener('message', listener));
+        callback(value, path, updatedAt, () =>
+          this.channel.removeEventListener('message', listener),
+        );
       }
     };
 
@@ -41,8 +43,11 @@ export default class BroadcastChannelAdapter extends Adapter {
       // Assuming path is a prefix to identify children in this simple example
       if (eventPath.startsWith(`${path}/`)) {
         const childPath = eventPath.substring(path.length + 1);
-        if (!childPath.includes('/')) { // Direct child check
-          callback(value, childPath, updatedAt, () => this.channel.removeEventListener('message', listener));
+        if (!childPath.includes('/')) {
+          // Direct child check
+          callback(value, childPath, updatedAt, () =>
+            this.channel.removeEventListener('message', listener),
+          );
         }
       }
     };

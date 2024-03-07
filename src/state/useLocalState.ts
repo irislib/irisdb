@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import localState from '@/state/LocalState.ts';
-import {JsonValue} from "@/state/types.ts";
+import { JsonValue } from '@/state/types.ts';
 
 export default function useLocalState(key: string, initialValue: any = undefined, once = false) {
   if (!initialValue) {

@@ -1,17 +1,18 @@
-import {newUserLogin, privateKeyLogin} from "@/shared/ndk.ts";
-import useLocalState from "@/state/useLocalState.ts";
-import AvatarAndName from "@/shared/components/AvatarAndName.tsx";
-import Show from "@/shared/components/Show.tsx";
-import {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import {nip19} from "nostr-tools";
-import {hexToBytes} from "@noble/hashes/utils";
+import { hexToBytes } from '@noble/hashes/utils';
+import { nip19 } from 'nostr-tools';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+
+import AvatarAndName from '@/shared/components/AvatarAndName.tsx';
+import Show from '@/shared/components/Show.tsx';
+import { newUserLogin, privateKeyLogin } from '@/shared/ndk.ts';
+import useLocalState from '@/state/useLocalState.ts';
 
 const NSEC_NPUB_REGEX = /(nsec1|npub1)[a-zA-Z0-9]{20,65}/gi;
 
 export default function LoginDialog() {
   const [, setNip07Login] = useLocalState('user/nip07Login', false);
-  const [publicKey, setPublicKey] = useLocalState('user/publicKey','');
-  const [privateKey, setPrivateKey] = useLocalState('user/privateKey','');
+  const [publicKey, setPublicKey] = useLocalState('user/publicKey', '');
+  const [privateKey, setPrivateKey] = useLocalState('user/privateKey', '');
   const [newUserName, setNewUserName] = useState('');
   const [inputPrivateKey, setInputPrivateKey] = useState('');
 
@@ -67,14 +68,27 @@ export default function LoginDialog() {
       <div className="card-body">
         <Show when={!publicKey}>
           <div className="flex flex-col gap-2">
-            <form className="flex flex-row items-center gap-2" onSubmit={e => onNewUserLogin(e)}>
-              <input className="input input-sm input-bordered" type="text" placeholder="What's your name?" value={newUserName} onChange={e => onNameChange(e)} />
-              <button className="btn btn-sm btn-primary" type="submit">Go</button>
+            <form className="flex flex-row items-center gap-2" onSubmit={(e) => onNewUserLogin(e)}>
+              <input
+                className="input input-sm input-bordered"
+                type="text"
+                placeholder="What's your name?"
+                value={newUserName}
+                onChange={(e) => onNameChange(e)}
+              />
+              <button className="btn btn-sm btn-primary" type="submit">
+                Go
+              </button>
             </form>
             <p>Already have a Nostr account?</p>
             <div className="flex flex-row items-center gap-2">
-              <form onSubmit={e => e.preventDefault()}>
-                <input type="password" className="input input-sm input-bordered" placeholder="Paste secret key" onChange={e => onPrivateKeyChange(e)} />
+              <form onSubmit={(e) => e.preventDefault()}>
+                <input
+                  type="password"
+                  className="input input-sm input-bordered"
+                  placeholder="Paste secret key"
+                  onChange={(e) => onPrivateKeyChange(e)}
+                />
               </form>
               or
               <button className="btn btn-sm btn-accent" onClick={() => extensionLogin()}>
@@ -88,13 +102,17 @@ export default function LoginDialog() {
             <AvatarAndName pubKey={publicKey} />
             <div className="flex flex-row gap-2">
               <Show when={privateKey}>
-                <button className="btn btn-sm btn-accent" onClick={() => copyPrivateKey()}>Copy secret key</button>
+                <button className="btn btn-sm btn-accent" onClick={() => copyPrivateKey()}>
+                  Copy secret key
+                </button>
               </Show>
-              <button className="btn btn-sm btn-secondary" onClick={() => logout()}>Log out</button>
+              <button className="btn btn-sm btn-secondary" onClick={() => logout()}>
+                Log out
+              </button>
             </div>
           </div>
         </Show>
       </div>
     </div>
-  )
+  );
 }

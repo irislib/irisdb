@@ -1,6 +1,6 @@
 import LocalStorageAdapter from '@/state/LocalStorageAdapter.ts';
 import MemoryAdapter from '@/state/MemoryAdapter.ts';
-import {Adapter, Callback, JsonObject, JsonValue, NodeValue, Unsubscribe} from '@/state/types.ts';
+import { Adapter, Callback, JsonObject, JsonValue, NodeValue, Unsubscribe } from '@/state/types.ts';
 
 /**
   Inspired by https://github.com/amark/gun
@@ -144,7 +144,8 @@ export default class Node {
     const uniqueId = this.counter++;
 
     const localCallback: Callback = (value, path, updatedAt, unsubscribe) => {
-      const olderThanLatest = latestValue !== null && updatedAt !== undefined && latestValue.updatedAt >= updatedAt;
+      const olderThanLatest =
+        latestValue !== null && updatedAt !== undefined && latestValue.updatedAt >= updatedAt;
       const noReturnUndefined = !returnIfUndefined && value === undefined;
       if (olderThanLatest || noReturnUndefined) {
         return;

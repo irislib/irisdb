@@ -1,7 +1,9 @@
 export type Unsubscribe = () => void;
 export type JsonPrimitive = string | number | boolean | null;
 export type JsonArray = JsonValue[];
-export interface JsonObject { [key: string]: JsonValue; }
+export interface JsonObject {
+  [key: string]: JsonValue;
+}
 export type JsonValue = JsonPrimitive | JsonObject | JsonArray | undefined;
 export type NodeValue = {
   updatedAt: number;
