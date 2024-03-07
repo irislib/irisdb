@@ -1,7 +1,10 @@
 import { Adapter, Callback, NodeValue, Unsubscribe } from '@/state/types.ts';
 import NDK, {NDKEvent, NostrEvent} from "@nostr-dev-kit/ndk";
+import debug from 'debug';
 
 const EVENT_KIND = 30078;
+
+const log = debug('ndk-adapter');
 
 export default class NDKAdapter extends Adapter {
   seenValues = new Map<string, NodeValue>();
@@ -39,7 +42,7 @@ export default class NDKAdapter extends Adapter {
     }
     this.seenValues.set(path, value);
 
-    console.log('set state', path, value);
+    log('set state', path, value);
 
     const directory = path.split('/').slice(0, -1).join('/');
     const e = new NDKEvent(this.ndk);
@@ -52,7 +55,7 @@ export default class NDKAdapter extends Adapter {
     ];
     try {
       await e.publish();
-      console.log('published state event', e);
+      log('published state event', e);
     } catch (error) {
       console.error('error publishing state event', error, e);
     }
