@@ -1,5 +1,7 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
-import { DragEvent, DragEventHandler, FormEvent, useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+import { nanoid } from 'nanoid';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
 
 import LoginDialog from '@/shared/components/LoginDialog';
 import Show from '@/shared/components/Show';
@@ -30,16 +32,41 @@ function AddItemDialog({ onSubmit, newItemValue, setNewItemValue }: AddItemDialo
 
 type ItemComponentProps = {
   item: Item;
-  onDragStart: DragEventHandler<HTMLDivElement>;
+  onMove: (mouseX: number, mouseY: number) => void;
 };
 
-function ItemComponent({ item, onDragStart }: ItemComponentProps) {
+function ItemComponent({ item, onMove }: ItemComponentProps) {
+  const [isDragging, setIsDragging] = useState(false);
+
+  const onMouseDown = () => {
+    setIsDragging(true);
+  };
+
+  useEffect(() => {
+    const onMoveEvent = (event: MouseEvent) => {
+      if (isDragging) {
+        onMove(event.clientX, event.clientY);
+      }
+    };
+
+    const onMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    document.addEventListener('mousemove', onMoveEvent);
+    document.addEventListener('mouseup', onMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', onMoveEvent);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [isDragging, onMove]);
+
   return (
     <div
-      draggable={true}
-      className="absolute -translate-x-1/2 -translate-y-1/2"
+      className="absolute -translate-x-1/2 -translate-y-1/2 select-none cursor-move"
       style={{ left: item.x, top: item.y }}
-      onDragStart={onDragStart}
+      onMouseDown={onMouseDown}
     >
       {item.data}
     </div>
@@ -69,6 +96,7 @@ export default function Canvas() {
       .get('items')
       .map((value, key) => {
         if (typeof key !== 'string') return;
+        const id = key.split('/').pop()!;
         try {
           const obj = JSON.parse(value as string);
           // check it has the correct fields
@@ -77,7 +105,7 @@ export default function Canvas() {
             typeof obj.y === 'number' &&
             typeof obj.data === 'string'
           ) {
-            setItems((prev) => new Map(prev).set(key, obj));
+            setItems((prev) => new Map(prev).set(id, obj));
           }
         } catch (e) {
           console.error(e);
@@ -88,7 +116,7 @@ export default function Canvas() {
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
-    const id = Math.random().toString(36).substring(7);
+    const id = nanoid();
     const value = JSON.stringify({
       x: 0,
       y: 0,
@@ -98,33 +126,27 @@ export default function Canvas() {
     setShowNewItemDialog(false);
   }
 
-  const onDragStart = (e: DragEvent<HTMLDivElement>, key: string) => {
-    console.log(`Dragging item with key: ${key}`);
-    e.dataTransfer.setData('text/plain', key);
-  };
+  const debouncedSave = useCallback(
+    debounce((key, updatedItem) => {
+      publicState([pubKey]).get(DOC_NAME).get('items').get(key).put(JSON.stringify(updatedItem));
+    }, 250), // Adjust debounce time as needed
+    [pubKey], // Add other dependencies if necessary
+  );
 
-  const onDrop: DragEventHandler<HTMLDivElement> = (e) => {
-    e.preventDefault();
-    const key = e.dataTransfer?.getData('text/plain');
-    console.log(`Dropping item with key: ${key} at position: ${e.clientX}, ${e.clientY}`);
-    const canvasRect = e.currentTarget.getBoundingClientRect(); // Get canvas position and dimensions
-    const offsetX = e.clientX - canvasRect.left; // Adjust for canvas position
-    const offsetY = e.clientY - canvasRect.top; // Adjust for canvas position
-
-    const newPosition = {
-      x: offsetX,
-      y: offsetY,
-      data: items.get(key)?.data || '',
-    };
-
-    if (key) {
-      publicState([pubKey]).get(DOC_NAME).get('items').get(key).put(JSON.stringify(newPosition));
-      setItems((prev) => new Map(prev).set(key, newPosition));
-    }
-  };
-
-  const onDragOver: DragEventHandler<HTMLDivElement> = (e) => {
-    e.preventDefault(); // Necessary to allow dropping
+  const moveItem = (key: string, newX: number, newY: number) => {
+    setItems((prevItems) => {
+      const item = prevItems.get(key);
+      if (item) {
+        const updatedItem = {
+          ...item,
+          x: newX - canvasPosition.x,
+          y: newY - canvasPosition.y,
+        };
+        debouncedSave(key, updatedItem);
+        return new Map(prevItems).set(key, updatedItem);
+      }
+      return prevItems;
+    });
   };
 
   return (
@@ -151,12 +173,14 @@ export default function Canvas() {
       </div>
       <div
         className="w-full h-full"
-        onDrop={onDrop}
-        onDragOver={onDragOver}
         style={{ transform: `translate(${canvasPosition.x}px, ${canvasPosition.y}px)` }}
       >
         {Array.from(items).map(([key, item]) => (
-          <ItemComponent key={key} item={item} onDragStart={(e) => onDragStart(e, key)} />
+          <ItemComponent
+            key={key}
+            item={item}
+            onMove={(mouseX, mouseY) => moveItem(key, mouseX, mouseY)}
+          />
         ))}
       </div>
     </>
