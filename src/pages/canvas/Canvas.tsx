@@ -6,9 +6,11 @@ import {
   FormEvent,
   useCallback,
   useEffect,
+  useMemo,
   useState,
   WheelEventHandler,
 } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { AddItemDialog } from '@/pages/canvas/AddItemDialog.tsx';
 import { ItemComponent } from '@/pages/canvas/ItemComponent.tsx';
@@ -18,8 +20,6 @@ import Show from '@/shared/components/Show';
 import { uploadFile } from '@/shared/upload.ts';
 import publicState from '@/state/PublicState';
 import useLocalState from '@/state/useLocalState';
-
-const DOC_NAME = 'apps/canvas/documents/public';
 
 const getUrl = (url: string) => {
   try {
@@ -39,7 +39,14 @@ export default function Canvas() {
     x: window.innerWidth / 2,
     y: window.innerHeight / 2,
   });
+  const { user, file } = useParams();
   const [scale, setScale] = useState(1);
+  const docName = useMemo(() => `apps/canvas/documents/${file || 'public'}`, [file]);
+  const navigate = useNavigate();
+
+  if (pubKey && !user) {
+    navigate(`./${pubKey}`);
+  }
 
   const moveCanvas = (direction: string) => {
     const moveAmount = 10; // Adjust the movement speed as necessary
@@ -96,8 +103,8 @@ export default function Canvas() {
 
   useEffect(() => {
     setItems(new Map());
-    const unsubscribe = publicState([pubKey])
-      .get(DOC_NAME)
+    const unsubscribe = publicState([user || pubKey])
+      .get(docName)
       .get('items')
       .map((value, key) => {
         if (typeof key !== 'string') return;
@@ -132,7 +139,7 @@ export default function Canvas() {
   function addItemToCanvas(item: Item) {
     const id = nanoid();
     const value = JSON.stringify(item);
-    publicState([pubKey]).get(DOC_NAME).get('items').get(id).put(value);
+    publicState([pubKey]).get(docName).get('items').get(id).put(value);
   }
 
   const handleDragOver: DragEventHandler<HTMLDivElement> = (e) => {
@@ -178,7 +185,7 @@ export default function Canvas() {
 
   const throttledSave = useCallback(
     throttle((key, updatedItem) => {
-      publicState([pubKey]).get(DOC_NAME).get('items').get(key).put(JSON.stringify(updatedItem));
+      publicState([pubKey]).get(docName).get('items').get(key).put(JSON.stringify(updatedItem));
     }, 200),
     [pubKey],
   );

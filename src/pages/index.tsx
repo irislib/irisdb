@@ -2,10 +2,12 @@ import { createBrowserRouter, createRoutesFromElements, Route } from 'react-rout
 
 import Canvas from '@/pages/canvas/Canvas.tsx';
 import Explorer from '@/pages/explorer/Explorer.tsx';
+import Home from '@/pages/home/Home.tsx';
 
 export const router = createBrowserRouter(
   createRoutesFromElements([
-    <Route path="/" element={<Explorer />} />,
-    <Route path="/canvas" element={<Canvas />} />,
+    <Route path="/" element={<Home />} />,
+    <Route path="/explorer/:user?/:file?" element={<Explorer />} />,
+    <Route path="/canvas/:user?/:file?" element={<Canvas />} />,
   ]),
 );
