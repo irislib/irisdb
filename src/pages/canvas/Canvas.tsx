@@ -201,9 +201,15 @@ export default function Canvas() {
 
   const handleWheel: WheelEventHandler<HTMLDivElement> = (e) => {
     const zoomSpeed = 0.1; // Determines how fast to zoom in or out
-    const newScale = e.deltaY > 0 ? scale * (1 - zoomSpeed) : scale * (1 + zoomSpeed);
-
-    setScale(newScale);
+    if (e.ctrlKey || e.metaKey) {
+      const newScale = e.deltaY > 0 ? scale * (1 - zoomSpeed) : scale * (1 + zoomSpeed);
+      setScale(newScale);
+    } else {
+      setCanvasPosition((currentPosition) => ({
+        x: currentPosition.x - e.deltaX,
+        y: currentPosition.y - e.deltaY,
+      }));
+    }
   };
 
   return (
