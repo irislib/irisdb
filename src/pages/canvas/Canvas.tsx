@@ -1,17 +1,33 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
-import { debounce } from 'lodash';
+import { throttle } from 'lodash';
 import { nanoid } from 'nanoid';
-import { FormEvent, useCallback, useEffect, useState, WheelEventHandler } from 'react';
+import {
+  DragEventHandler,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useState,
+  WheelEventHandler,
+} from 'react';
 
 import { AddItemDialog } from '@/pages/canvas/AddItemDialog.tsx';
-import { ItemComponent } from '@/pages/canvas/ItemComponentProps.tsx';
+import { ItemComponent } from '@/pages/canvas/ItemComponent.tsx';
 import { Item } from '@/pages/canvas/types.ts';
 import LoginDialog from '@/shared/components/LoginDialog';
 import Show from '@/shared/components/Show';
+import { uploadFile } from '@/shared/upload.ts';
 import publicState from '@/state/PublicState';
 import useLocalState from '@/state/useLocalState';
 
 const DOC_NAME = 'apps/canvas/documents/public';
+
+const getUrl = (url: string) => {
+  try {
+    return new URL(url);
+  } catch (e) {
+    return null;
+  }
+};
 
 export default function Canvas() {
   const [showNewItemDialog, setShowNewItemDialog] = useState(false);
@@ -105,20 +121,65 @@ export default function Canvas() {
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
-    const id = nanoid();
-    const value = JSON.stringify({
+    addItemToCanvas({
       x: 0,
       y: 0,
       data: newItemValue,
     });
-    publicState([pubKey]).get(DOC_NAME).get('items').get(id).put(value);
     setShowNewItemDialog(false);
   }
 
-  const debouncedSave = useCallback(
-    debounce((key, updatedItem) => {
+  function addItemToCanvas(item: Item) {
+    const id = nanoid();
+    const value = JSON.stringify(item);
+    publicState([pubKey]).get(DOC_NAME).get('items').get(id).put(value);
+  }
+
+  const handleDragOver: DragEventHandler<HTMLDivElement> = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop: DragEventHandler<HTMLDivElement> = async (e) => {
+    e.preventDefault();
+
+    // Calculate drop position relative to the canvas
+    const canvasRect = e.currentTarget.getBoundingClientRect();
+    const dropX = (e.clientX - canvasRect.left - canvasPosition.x) / scale;
+    const dropY = (e.clientY - canvasRect.top - canvasPosition.y) / scale;
+
+    if (e.dataTransfer.items) {
+      for (let i = 0; i < e.dataTransfer.items.length; i++) {
+        const item = e.dataTransfer.items[i];
+        if (item.kind === 'file') {
+          const file = item.getAsFile();
+          const url = await uploadFile(file!);
+          addItemToCanvas({
+            x: dropX,
+            y: dropY,
+            data: url,
+          });
+        } else if (item.kind === 'string' && item.type === 'text/plain') {
+          item.getAsString((url) => {
+            if (getUrl(url)) {
+              addItemToCanvas({
+                x: dropX,
+                y: dropY,
+                data: url,
+              });
+            }
+          });
+        }
+      }
+    }
+
+    // Clear the drag data cache (for all formats/types)
+    e.dataTransfer.clearData();
+  };
+
+  const throttledSave = useCallback(
+    throttle((key, updatedItem) => {
       publicState([pubKey]).get(DOC_NAME).get('items').get(key).put(JSON.stringify(updatedItem));
-    }, 500),
+    }, 200),
     [pubKey],
   );
 
@@ -131,7 +192,7 @@ export default function Canvas() {
           x: newX - canvasPosition.x,
           y: newY - canvasPosition.y,
         };
-        debouncedSave(key, updatedItem);
+        throttledSave(key, updatedItem);
         return new Map(prevItems).set(key, updatedItem);
       }
       return prevItems;
@@ -146,11 +207,16 @@ export default function Canvas() {
   };
 
   return (
-    <div onWheel={handleWheel} className="absolute top-0 left-0 right-0 bottom-0 overflow-hidden">
-      <div className="fixed top-2 right-2 bg-base-100">
+    <div
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      onWheel={handleWheel}
+      className="absolute top-0 left-0 right-0 bottom-0 overflow-hidden"
+    >
+      <div className="fixed top-2 right-2 bg-base-100 z-20">
         <LoginDialog />
       </div>
-      <div className="fixed bottom-8 right-8">
+      <div className="fixed bottom-8 right-8 z-20">
         <Show when={showNewItemDialog}>
           <AddItemDialog
             onSubmit={onSubmit}
