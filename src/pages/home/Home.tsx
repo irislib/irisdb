@@ -20,6 +20,11 @@ export default function Home() {
           <h2 className="card-title">Canvas</h2>
         </div>
       </div>
+      <div>
+        <a className="link link-accent" href="https://github.com/mmalmi/nostree">
+          GitHub
+        </a>
+      </div>
     </div>
   );
 }
