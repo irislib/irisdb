@@ -1,8 +1,11 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { debounce } from 'lodash';
 import { nanoid } from 'nanoid';
-import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useState, WheelEventHandler } from 'react';
 
+import { AddItemDialog } from '@/pages/canvas/AddItemDialog.tsx';
+import { ItemComponent } from '@/pages/canvas/ItemComponentProps.tsx';
+import { Item } from '@/pages/canvas/types.ts';
 import LoginDialog from '@/shared/components/LoginDialog';
 import Show from '@/shared/components/Show';
 import publicState from '@/state/PublicState';
@@ -10,84 +13,70 @@ import useLocalState from '@/state/useLocalState';
 
 const DOC_NAME = 'apps/canvas/documents/public';
 
-type AddItemDialogProps = {
-  onSubmit: (e: FormEvent) => void;
-  newItemValue: string;
-  setNewItemValue: (value: string) => void;
-};
-
-function AddItemDialog({ onSubmit, newItemValue, setNewItemValue }: AddItemDialogProps) {
-  return (
-    <form className="flex flex-row gap-2" onSubmit={onSubmit}>
-      <input
-        type="text"
-        className="input input-primary"
-        value={newItemValue}
-        onChange={(e) => setNewItemValue(e.target.value)}
-      />
-      <button className="btn btn-primary bg-primary">Add</button>
-    </form>
-  );
-}
-
-type ItemComponentProps = {
-  item: Item;
-  onMove: (mouseX: number, mouseY: number) => void;
-};
-
-function ItemComponent({ item, onMove }: ItemComponentProps) {
-  const [isDragging, setIsDragging] = useState(false);
-
-  const onMouseDown = () => {
-    setIsDragging(true);
-  };
-
-  useEffect(() => {
-    const onMoveEvent = (event: MouseEvent) => {
-      if (isDragging) {
-        onMove(event.clientX, event.clientY);
-      }
-    };
-
-    const onMouseUp = () => {
-      setIsDragging(false);
-    };
-
-    document.addEventListener('mousemove', onMoveEvent);
-    document.addEventListener('mouseup', onMouseUp);
-
-    return () => {
-      document.removeEventListener('mousemove', onMoveEvent);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-  }, [isDragging, onMove]);
-
-  return (
-    <div
-      className="absolute -translate-x-1/2 -translate-y-1/2 select-none cursor-move"
-      style={{ left: item.x, top: item.y }}
-      onMouseDown={onMouseDown}
-    >
-      {item.data}
-    </div>
-  );
-}
-
-type Item = {
-  x: number;
-  y: number;
-  data: string;
-};
-
 export default function Canvas() {
   const [showNewItemDialog, setShowNewItemDialog] = useState(false);
   const [pubKey] = useLocalState('user/publicKey', '');
   const [newItemValue, setNewItemValue] = useState('');
   const [items, setItems] = useState(new Map<string, Item>());
-  const [canvasPosition] = useState({
+  const [movingInterval, setMovingInterval] = useState<number | null>(null);
+  const [canvasPosition, setCanvasPosition] = useState({
     x: window.innerWidth / 2,
     y: window.innerHeight / 2,
   });
+  const [scale, setScale] = useState(1);
+
+  const moveCanvas = (direction: string) => {
+    const moveAmount = 10; // Adjust the movement speed as necessary
+    setCanvasPosition((currentPosition) => {
+      switch (direction) {
+        case 'ArrowUp':
+          return { ...currentPosition, y: currentPosition.y + moveAmount };
+        case 'ArrowDown':
+          return { ...currentPosition, y: currentPosition.y - moveAmount };
+        case 'ArrowLeft':
+          return { ...currentPosition, x: currentPosition.x + moveAmount };
+        case 'ArrowRight':
+          return { ...currentPosition, x: currentPosition.x - moveAmount };
+        default:
+          return currentPosition;
+      }
+    });
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // if input is focused, don't move canvas
+      if (document.activeElement?.tagName === 'INPUT') return;
+      if (
+        ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key) &&
+        movingInterval === null
+      ) {
+        moveCanvas(e.key);
+        const interval = setInterval(() => moveCanvas(e.key), 100); // Adjust interval timing as necessary
+        setMovingInterval(interval as unknown as number);
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        if (movingInterval !== null) {
+          clearInterval(movingInterval);
+        }
+        setMovingInterval(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      if (movingInterval !== null) {
+        clearInterval(movingInterval);
+      }
+    };
+  }, [movingInterval]);
 
   useEffect(() => {
     setItems(new Map());
@@ -129,8 +118,8 @@ export default function Canvas() {
   const debouncedSave = useCallback(
     debounce((key, updatedItem) => {
       publicState([pubKey]).get(DOC_NAME).get('items').get(key).put(JSON.stringify(updatedItem));
-    }, 250), // Adjust debounce time as needed
-    [pubKey], // Add other dependencies if necessary
+    }, 500),
+    [pubKey],
   );
 
   const moveItem = (key: string, newX: number, newY: number) => {
@@ -149,8 +138,15 @@ export default function Canvas() {
     });
   };
 
+  const handleWheel: WheelEventHandler<HTMLDivElement> = (e) => {
+    const zoomSpeed = 0.1; // Determines how fast to zoom in or out
+    const newScale = e.deltaY > 0 ? scale * (1 - zoomSpeed) : scale * (1 + zoomSpeed);
+
+    setScale(newScale);
+  };
+
   return (
-    <>
+    <div onWheel={handleWheel} className="absolute top-0 left-0 right-0 bottom-0 overflow-hidden">
       <div className="fixed top-2 right-2 bg-base-100">
         <LoginDialog />
       </div>
@@ -172,8 +168,9 @@ export default function Canvas() {
         </Show>
       </div>
       <div
-        className="w-full h-full"
-        style={{ transform: `translate(${canvasPosition.x}px, ${canvasPosition.y}px)` }}
+        style={{
+          transform: `translate(${canvasPosition.x}px, ${canvasPosition.y}px) scale(${scale})`,
+        }}
       >
         {Array.from(items).map(([key, item]) => (
           <ItemComponent
@@ -183,6 +180,6 @@ export default function Canvas() {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 }

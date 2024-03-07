@@ -5,7 +5,7 @@ import { Adapter, Callback, NodeValue, Unsubscribe } from '@/state/types.ts';
 
 const EVENT_KIND = 30078;
 
-const log = debug('ndk-adapter');
+const log = debug('nostree:ndk-adapter');
 
 export default class NDKAdapter extends Adapter {
   seenValues = new Map<string, NodeValue>();

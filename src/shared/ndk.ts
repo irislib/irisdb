@@ -9,7 +9,7 @@ import localState from '@/state/LocalState.ts';
 const dexieAdapter = new NDKCacheAdapterDexie({ dbName: 'nostree-db' });
 
 const ndk = new NDK({
-  explicitRelayUrls: ['wss://relay.snort.social', 'wss://relay.damus.io', 'wss://relay.nostr.band'],
+  explicitRelayUrls: ['wss://strfry.iris.to', 'wss://relay.damus.io', 'wss://relay.nostr.band'],
   cacheAdapter: dexieAdapter,
 });
 
