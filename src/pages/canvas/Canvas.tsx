@@ -189,8 +189,8 @@ export default function Canvas() {
       if (item) {
         const updatedItem = {
           ...item,
-          x: newX - canvasPosition.x,
-          y: newY - canvasPosition.y,
+          x: Math.round((newX - canvasPosition.x) / scale),
+          y: Math.round((newY - canvasPosition.y) / scale),
         };
         throttledSave(key, updatedItem);
         return new Map(prevItems).set(key, updatedItem);
@@ -242,6 +242,7 @@ export default function Canvas() {
       <div
         style={{
           transform: `translate(${canvasPosition.x}px, ${canvasPosition.y}px) scale(${scale})`,
+          transformOrigin: 'center',
         }}
       >
         {Array.from(items).map(([key, item]) => (
