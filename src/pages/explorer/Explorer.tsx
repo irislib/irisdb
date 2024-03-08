@@ -1,3 +1,5 @@
+import { nip19 } from 'nostr-tools';
+import { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import LoginDialog from '@/shared/components/LoginDialog.tsx';
@@ -16,12 +18,15 @@ const Explorer = ({ p }: Props) => {
   const [pubKey] = useLocalState('user/publicKey', '');
   const [name] = useLocalState('user/name', '');
   const { user } = useParams();
+  const userHex = useMemo(() => user && nip19.decode(user).data, [user]);
 
   const navigate = useNavigate();
 
-  if (pubKey && !user) {
-    navigate(`./${pubKey}`);
-  }
+  useEffect(() => {
+    if (pubKey && !user) {
+      navigate(`./${nip19.npubEncode(pubKey)}`, { replace: true });
+    }
+  }, [pubKey, user]);
 
   const publicStateText = name ? `User public state (${name})` : 'User public state';
 
@@ -34,9 +39,13 @@ const Explorer = ({ p }: Props) => {
       <div className="mb-4">
         <ExplorerNode expanded={true} name="Local state" node={localState} />
       </div>
-      {user && (
+      {userHex && (
         <div className="mb-4">
-          <ExplorerNode expanded={true} name="User public state" node={publicState([user])} />
+          <ExplorerNode
+            expanded={true}
+            name="User public state"
+            node={publicState([userHex as string])}
+          />
         </div>
       )}
       {!user && pubKey && (

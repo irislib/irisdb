@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
+import MinidenticonImg from '@/shared/components/MinidenticonImg.tsx';
 import ndk from '@/shared/ndk.ts';
 import useLocalState from '@/state/useLocalState.ts';
-import MinidenticonImg from "@/shared/components/MinidenticonImg.tsx";
 
 export default function AvatarAndName({ pubKey }: { pubKey: string }) {
   const [name, setName] = useLocalState('user/name', '');
