@@ -17,6 +17,7 @@
     "debug": "^4.3.4",
     "eslint-plugin-simple-import-sort": "^12.0.0",
     "lodash": "^4.17.21",
+    "minidenticons": "^4.2.1",
     "nanoid": "^5.0.6",
     "nostr-hooks": "^2.3.9",
     "nostr-tools": "^2.3.1",

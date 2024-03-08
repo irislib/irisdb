@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import ndk from '@/shared/ndk.ts';
 import useLocalState from '@/state/useLocalState.ts';
+import MinidenticonImg from "@/shared/components/MinidenticonImg.tsx";
 
 export default function AvatarAndName({ pubKey }: { pubKey: string }) {
   const [name, setName] = useLocalState('user/name', '');
@@ -23,6 +24,7 @@ export default function AvatarAndName({ pubKey }: { pubKey: string }) {
         className={`w-12 h-12 rounded-full bg-neutral flex items-center justify-center overflow-hidden border-neutral-content border-2`}
       >
         {image && <img src={image} alt={name || pubKey} />}
+        {!image && <MinidenticonImg username={pubKey} alt={name || pubKey} />}
       </div>
       <div className="text-base font-bold">
         {!name && `${pubKey.slice(0, 6)}...${pubKey.slice(-6)}`}
