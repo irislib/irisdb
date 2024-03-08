@@ -138,6 +138,7 @@ export default function Canvas() {
       data: newItemValue,
     });
     setShowNewItemDialog(false);
+    setNewItemValue('');
   }
 
   function addItemToCanvas(item: Item) {
@@ -213,6 +214,8 @@ export default function Canvas() {
   const handleWheel: WheelEventHandler<HTMLDivElement> = (e) => {
     const zoomSpeed = 0.1; // Determines how fast to zoom in or out
     if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      e.stopPropagation();
       const newScale = e.deltaY > 0 ? scale * (1 - zoomSpeed) : scale * (1 + zoomSpeed);
       setScale(newScale);
     } else {
@@ -239,6 +242,10 @@ export default function Canvas() {
             onSubmit={onSubmit}
             newItemValue={newItemValue}
             setNewItemValue={setNewItemValue}
+            onClose={() => {
+              setNewItemValue('');
+              setShowNewItemDialog(false);
+            }}
           />
         </Show>
         <Show when={!showNewItemDialog}>
