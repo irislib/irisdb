@@ -21,6 +21,7 @@ import Show from '@/shared/components/Show';
 import { uploadFile } from '@/shared/upload.ts';
 import publicState from '@/state/PublicState';
 import useLocalState from '@/state/useLocalState';
+import MenuButton from "@/pages/canvas/MenuButton.tsx";
 
 const getUrl = (url: string) => {
   try {
@@ -233,6 +234,9 @@ export default function Canvas() {
       onWheel={handleWheel}
       className="absolute top-0 left-0 right-0 bottom-0 overflow-hidden"
     >
+      <div className="fixed top-2 left-2 z-20">
+        <MenuButton />
+      </div>
       <div className="fixed top-2 right-2 z-20">
         <LoginDialog />
       </div>
