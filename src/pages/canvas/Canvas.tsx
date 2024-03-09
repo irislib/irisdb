@@ -14,15 +14,13 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { AddItemDialog } from '@/pages/canvas/AddItemDialog.tsx';
+import Header from '@/pages/canvas/Header.tsx';
 import { ItemComponent } from '@/pages/canvas/ItemComponent.tsx';
-import MenuButton from '@/pages/canvas/MenuButton.tsx';
 import { Item } from '@/pages/canvas/types.ts';
-import LoginDialog from '@/shared/components/LoginDialog';
 import Show from '@/shared/components/Show';
 import { uploadFile } from '@/shared/upload.ts';
 import publicState from '@/state/PublicState';
 import useLocalState from '@/state/useLocalState';
-import Header from "@/pages/canvas/Header.tsx";
 
 const getUrl = (url: string) => {
   try {
@@ -133,8 +131,8 @@ export default function Canvas() {
     return () => unsubscribe();
   }, [pubKey, userHex, docName]);
 
-  function onSubmit(e: FormEvent) {
-    e.preventDefault();
+  function onSubmit(e?: FormEvent) {
+    e?.preventDefault();
     if (!editable) return;
     addItemToCanvas({
       x: 0,
@@ -236,51 +234,51 @@ export default function Canvas() {
   return (
     <div className="flex flex-col">
       <Header />
-    <div
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
-      onWheel={handleWheel}
-      className="absolute top-0 left-0 right-0 bottom-0 overflow-hidden"
-    >
-      <Show when={pubKey}>
-        <div className="fixed bottom-8 right-8 z-20">
-          <Show when={showNewItemDialog}>
-            <AddItemDialog
-              onSubmit={onSubmit}
-              newItemValue={newItemValue}
-              setNewItemValue={setNewItemValue}
-              onClose={() => {
-                setNewItemValue('');
-                setShowNewItemDialog(false);
-              }}
-            />
-          </Show>
-          <Show when={!showNewItemDialog}>
-            <button
-              className="btn btn-primary btn-circle bg-primary"
-              onClick={() => setShowNewItemDialog(true)}
-            >
-              <PlusIcon className="w-6 h-6" />
-            </button>
-          </Show>
-        </div>
-      </Show>
       <div
-        style={{
-          transform: `translate(${canvasPosition.x}px, ${canvasPosition.y}px) scale(${scale})`,
-          transformOrigin: 'center',
-        }}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onWheel={handleWheel}
+        className="absolute top-0 left-0 right-0 bottom-0 overflow-hidden"
       >
-        {Array.from(items).map(([key, item]) => (
-          <ItemComponent
-            editable={editable}
-            key={key}
-            item={item}
-            onMove={(mouseX, mouseY) => moveItem(key, mouseX, mouseY)}
-          />
-        ))}
+        <Show when={pubKey}>
+          <div className="fixed bottom-8 right-8 z-20">
+            <Show when={showNewItemDialog}>
+              <AddItemDialog
+                onSubmit={onSubmit}
+                newItemValue={newItemValue}
+                setNewItemValue={setNewItemValue}
+                onClose={() => {
+                  setNewItemValue('');
+                  setShowNewItemDialog(false);
+                }}
+              />
+            </Show>
+            <Show when={!showNewItemDialog}>
+              <button
+                className="btn btn-primary btn-circle bg-primary"
+                onClick={() => setShowNewItemDialog(true)}
+              >
+                <PlusIcon className="w-6 h-6" />
+              </button>
+            </Show>
+          </div>
+        </Show>
+        <div
+          style={{
+            transform: `translate(${canvasPosition.x}px, ${canvasPosition.y}px) scale(${scale})`,
+            transformOrigin: 'center',
+          }}
+        >
+          {Array.from(items).map(([key, item]) => (
+            <ItemComponent
+              editable={editable}
+              key={key}
+              item={item}
+              onMove={(mouseX, mouseY) => moveItem(key, mouseX, mouseY)}
+            />
+          ))}
+        </div>
       </div>
-    </div>
     </div>
   );
 }

@@ -1,8 +1,9 @@
-import Show from "@/shared/components/Show.tsx";
-import useLocalState from "@/state/useLocalState.ts";
-import AvatarAndName from "@/shared/components/AvatarAndName.tsx";
-import MenuButton from "@/pages/canvas/MenuButton.tsx";
-import {useParams} from "react-router-dom";
+import { useParams } from 'react-router-dom';
+
+import MenuButton from '@/pages/canvas/MenuButton.tsx';
+import { Avatar } from '@/shared/components/Avatar.tsx';
+import Show from '@/shared/components/Show.tsx';
+import useLocalState from '@/state/useLocalState.ts';
 
 export default function Header() {
   const [pubKey] = useLocalState('user/publicKey', '');
@@ -13,7 +14,7 @@ export default function Header() {
       <h1>{file || 'public'}</h1>
       <Show when={pubKey}>
         <div className="ml-2">
-          <AvatarAndName pubKey={pubKey} />
+          <Avatar pubKey={pubKey} />
         </div>
       </Show>
     </header>

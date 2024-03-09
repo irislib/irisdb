@@ -2,7 +2,8 @@ import { hexToBytes } from '@noble/hashes/utils';
 import { nip19 } from 'nostr-tools';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
-import AvatarAndName from '@/shared/components/AvatarAndName.tsx';
+import { Avatar } from '@/shared/components/Avatar.tsx';
+import { Name } from '@/shared/components/Name.tsx';
 import Show from '@/shared/components/Show.tsx';
 import { newUserLogin, privateKeyLogin } from '@/shared/ndk.ts';
 import useLocalState from '@/state/useLocalState.ts';
@@ -99,7 +100,8 @@ export default function LoginDialog() {
         </Show>
         <Show when={publicKey}>
           <div className="flex flex-row gap-2 items-center justify-between">
-            <AvatarAndName pubKey={publicKey} />
+            <Avatar pubKey={publicKey} />
+            <Name pubKey={publicKey} />
             <div className="flex flex-row gap-2">
               <Show when={privateKey}>
                 <button className="btn btn-sm btn-accent" onClick={() => copyPrivateKey()}>
