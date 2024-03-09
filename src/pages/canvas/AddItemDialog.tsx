@@ -22,9 +22,6 @@ export function AddItemDialog({
       const file = fileInputRef.current.files[0];
       const url = await uploadFile(file);
       setNewItemValue(url);
-      setTimeout(() => {
-        onSubmit();
-      });
     }
   };
 
@@ -35,13 +32,12 @@ export function AddItemDialog({
         className="hidden"
         ref={fileInputRef}
         onChange={onFileChange}
-        accept={'.png,.jpg,.jpeg,.gif,.webp,.svg'}
+        accept={'.png,.jpg,.jpeg,.gif,.webp,.svg,.avif'}
       />
       <button
         className={`btn btn-primary bg-primary`}
         type="button"
         onClick={() => {
-          console.log('Upload');
           fileInputRef.current?.click();
         }}
       >

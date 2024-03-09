@@ -1,7 +1,7 @@
-import useLocalState from "@/state/useLocalState.ts";
-import {Avatar} from "@/shared/components/Avatar.tsx";
-import Show from "@/shared/components/Show.tsx";
-import LoginDialog from "@/shared/components/LoginDialog.tsx";
+import { Avatar } from '@/shared/components/Avatar.tsx';
+import LoginDialog from '@/shared/components/LoginDialog.tsx';
+import Show from '@/shared/components/Show.tsx';
+import useLocalState from '@/state/useLocalState.ts';
 
 export default function UserButton() {
   const [pubKey] = useLocalState('user/publicKey', '');
@@ -9,7 +9,10 @@ export default function UserButton() {
   return (
     <>
       <Show when={pubKey}>
-        <div className="ml-2" onClick={() => document.getElementById('usermodal').showModal()}>
+        <div
+          className="ml-2 rounded-full cursor-pointer"
+          onClick={() => document.getElementById('usermodal').showModal()}
+        >
           <Avatar pubKey={pubKey} />
         </div>
       </Show>
