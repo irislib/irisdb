@@ -15,13 +15,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { AddItemDialog } from '@/pages/canvas/AddItemDialog.tsx';
 import { ItemComponent } from '@/pages/canvas/ItemComponent.tsx';
+import MenuButton from '@/pages/canvas/MenuButton.tsx';
 import { Item } from '@/pages/canvas/types.ts';
 import LoginDialog from '@/shared/components/LoginDialog';
 import Show from '@/shared/components/Show';
 import { uploadFile } from '@/shared/upload.ts';
 import publicState from '@/state/PublicState';
 import useLocalState from '@/state/useLocalState';
-import MenuButton from "@/pages/canvas/MenuButton.tsx";
+import Header from "@/pages/canvas/Header.tsx";
 
 const getUrl = (url: string) => {
   try {
@@ -46,6 +47,7 @@ export default function Canvas() {
   const [scale, setScale] = useState(1);
   const docName = useMemo(() => `apps/canvas/documents/${file || 'public'}`, [file]);
   const navigate = useNavigate();
+  const editable = pubKey && userHex === pubKey;
 
   useEffect(() => {
     if (pubKey && !user) {
@@ -129,10 +131,11 @@ export default function Canvas() {
         }
       });
     return () => unsubscribe();
-  }, [pubKey]);
+  }, [pubKey, userHex, docName]);
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
+    if (!editable) return;
     addItemToCanvas({
       x: 0,
       y: 0,
@@ -143,6 +146,7 @@ export default function Canvas() {
   }
 
   function addItemToCanvas(item: Item) {
+    if (!editable) return;
     const id = nanoid();
     const value = JSON.stringify(item);
     publicState([pubKey]).get(docName).get('items').get(id).put(value);
@@ -154,6 +158,7 @@ export default function Canvas() {
 
   const handleDrop: DragEventHandler<HTMLDivElement> = async (e) => {
     e.preventDefault();
+    if (!editable) return;
 
     // Calculate drop position relative to the canvas
     const canvasRect = e.currentTarget.getBoundingClientRect();
@@ -197,6 +202,7 @@ export default function Canvas() {
   );
 
   const moveItem = (key: string, newX: number, newY: number) => {
+    if (!editable) return;
     setItems((prevItems) => {
       const item = prevItems.get(key);
       if (item) {
@@ -228,39 +234,37 @@ export default function Canvas() {
   };
 
   return (
+    <div className="flex flex-col">
+      <Header />
     <div
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onWheel={handleWheel}
       className="absolute top-0 left-0 right-0 bottom-0 overflow-hidden"
     >
-      <div className="fixed top-2 left-2 z-20">
-        <MenuButton />
-      </div>
-      <div className="fixed top-2 right-2 z-20">
-        <LoginDialog />
-      </div>
-      <div className="fixed bottom-8 right-8 z-20">
-        <Show when={showNewItemDialog}>
-          <AddItemDialog
-            onSubmit={onSubmit}
-            newItemValue={newItemValue}
-            setNewItemValue={setNewItemValue}
-            onClose={() => {
-              setNewItemValue('');
-              setShowNewItemDialog(false);
-            }}
-          />
-        </Show>
-        <Show when={!showNewItemDialog}>
-          <button
-            className="btn btn-primary btn-circle bg-primary"
-            onClick={() => setShowNewItemDialog(true)}
-          >
-            <PlusIcon className="w-6 h-6" />
-          </button>
-        </Show>
-      </div>
+      <Show when={pubKey}>
+        <div className="fixed bottom-8 right-8 z-20">
+          <Show when={showNewItemDialog}>
+            <AddItemDialog
+              onSubmit={onSubmit}
+              newItemValue={newItemValue}
+              setNewItemValue={setNewItemValue}
+              onClose={() => {
+                setNewItemValue('');
+                setShowNewItemDialog(false);
+              }}
+            />
+          </Show>
+          <Show when={!showNewItemDialog}>
+            <button
+              className="btn btn-primary btn-circle bg-primary"
+              onClick={() => setShowNewItemDialog(true)}
+            >
+              <PlusIcon className="w-6 h-6" />
+            </button>
+          </Show>
+        </div>
+      </Show>
       <div
         style={{
           transform: `translate(${canvasPosition.x}px, ${canvasPosition.y}px) scale(${scale})`,
@@ -269,12 +273,14 @@ export default function Canvas() {
       >
         {Array.from(items).map(([key, item]) => (
           <ItemComponent
+            editable={editable}
             key={key}
             item={item}
             onMove={(mouseX, mouseY) => moveItem(key, mouseX, mouseY)}
           />
         ))}
       </div>
+    </div>
     </div>
   );
 }

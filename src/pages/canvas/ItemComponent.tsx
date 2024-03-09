@@ -5,12 +5,13 @@ import { Item } from '@/pages/canvas/types.ts';
 type ItemComponent = {
   item: Item;
   onMove: (mouseX: number, mouseY: number) => void;
+  editable: boolean;
 };
 
 const IMG_REGEX = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
 const VIDEO_REGEX = /\.(mp4|webm|ogg|mov)$/i;
 
-export function ItemComponent({ item, onMove }: ItemComponent) {
+export function ItemComponent({ item, onMove, editable }: ItemComponent) {
   const [isDragging, setIsDragging] = useState(false);
   const url = useMemo(() => {
     try {
@@ -73,7 +74,7 @@ export function ItemComponent({ item, onMove }: ItemComponent) {
 
   return (
     <div
-      className="absolute -translate-x-1/2 -translate-y-1/2 select-none cursor-move"
+      className={`absolute -translate-x-1/2 -translate-y-1/2 select-none ${editable && 'cursor-move'}`}
       style={{ left: item.x, top: item.y }}
       onMouseDown={onMouseDown}
     >

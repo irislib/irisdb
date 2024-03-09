@@ -20,6 +20,7 @@ export function AddItemDialog({
         className="input input-primary"
         value={newItemValue}
         onChange={(e) => setNewItemValue(e.target.value)}
+        placeholder="Text or url"
       />
       <button className="btn btn-primary bg-primary" type="submit">
         Add
