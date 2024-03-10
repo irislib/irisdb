@@ -17,12 +17,21 @@ export const Avatar = ({ pubKey }: { pubKey: string }) => {
     };
 
     fetchImage();
-  }, [pubKey, setImage]);
+  }, [pubKey]);
+
+  const handleImageError = () => {
+    setImage(''); // Reset image state to fallback to MinidenticonImg
+  };
 
   return (
     <div className="w-12 h-12 rounded-full bg-neutral flex items-center justify-center overflow-hidden border-neutral-content border-2">
       {image ? (
-        <img src={image} alt="User Avatar" className="w-full h-full object-cover" />
+        <img
+          src={image}
+          alt="User Avatar"
+          className="w-full h-full object-cover"
+          onError={handleImageError}
+        />
       ) : (
         <MinidenticonImg username={pubKey} alt="User Avatar" />
       )}
