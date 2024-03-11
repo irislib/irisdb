@@ -1,7 +1,6 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { throttle } from 'lodash';
 import { nanoid } from 'nanoid';
-import { nip19 } from 'nostr-tools';
 import {
   DragEventHandler,
   FormEvent,
@@ -11,16 +10,16 @@ import {
   useState,
   WheelEventHandler,
 } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { AddItemDialog } from '@/pages/canvas/AddItemDialog.tsx';
-import Header from '@/pages/canvas/Header.tsx';
 import { ItemComponent } from '@/pages/canvas/ItemComponent.tsx';
 import { Item } from '@/pages/canvas/types.ts';
 import Show from '@/shared/components/Show';
 import { uploadFile } from '@/shared/upload.ts';
 import publicState from '@/state/PublicState';
-import useLocalState from '@/state/useLocalState';
+import { useLocalState } from '@/state/useNodeState.ts';
+import {PublicKey} from "@/utils/Hex/Hex.ts";
 
 const getUrl = (url: string) => {
   try {
@@ -41,17 +40,10 @@ export default function Canvas() {
     y: window.innerHeight / 2,
   });
   const { user, file } = useParams();
-  const userHex = useMemo(() => user && nip19.decode(user).data, [user]);
+  const userHex = useMemo(() => user && new PublicKey(user).toString(), [user]);
   const [scale, setScale] = useState(1);
   const docName = useMemo(() => `apps/canvas/documents/${file || 'public'}`, [file]);
-  const navigate = useNavigate();
   const editable = pubKey && userHex === pubKey;
-
-  useEffect(() => {
-    if (pubKey && !user) {
-      navigate(`./${nip19.npubEncode(pubKey)}`, { replace: true });
-    }
-  }, [pubKey, user]);
 
   const moveCanvas = (direction: string) => {
     const moveAmount = 10; // Adjust the movement speed as necessary
@@ -233,7 +225,6 @@ export default function Canvas() {
 
   return (
     <div className="flex flex-col">
-      <Header />
       <div
         onDrop={handleDrop}
         onDragOver={handleDragOver}

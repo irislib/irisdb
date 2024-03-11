@@ -1,7 +1,7 @@
 import { Avatar } from '@/shared/components/Avatar.tsx';
 import LoginDialog from '@/shared/components/LoginDialog.tsx';
 import Show from '@/shared/components/Show.tsx';
-import useLocalState from '@/state/useLocalState.ts';
+import { useLocalState } from '@/state/useNodeState.ts';
 
 export default function UserButton() {
   const [pubKey] = useLocalState('user/publicKey', '');

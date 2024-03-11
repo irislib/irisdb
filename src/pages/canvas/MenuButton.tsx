@@ -1,9 +1,8 @@
 import { nip19 } from 'nostr-tools';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import publicState from '@/state/PublicState.ts';
-import useLocalState from '@/state/useLocalState.ts';
+import { useLocalState } from '@/state/useNodeState.ts';
 
 export default function MenuButton() {
   return (
@@ -34,7 +33,6 @@ export default function MenuButton() {
 
 function MenuModal() {
   const [pubKey] = useLocalState('user/publicKey', '');
-  const [files, setFiles] = useState(new Set<string>());
   const [newFileName, setNewFileName] = useState('');
   const navigate = useNavigate();
 
@@ -44,14 +42,6 @@ function MenuModal() {
     setNewFileName('');
     document.getElementById('my_modal_1').close();
   };
-
-  useEffect(() => {
-    publicState([pubKey])
-      .get('apps/canvas/documents')
-      .map((_, path) => {
-        setFiles((files) => files.add(path));
-      });
-  }, [pubKey]);
 
   return (
     <dialog id="my_modal_1" className="modal">
@@ -76,23 +66,6 @@ function MenuModal() {
           />
           <button className="btn btn-neutral">Create new</button>
         </form>
-        {files.size > 0 && (
-          <ul className="list-disc">
-            {Array.from(files).map((path) => (
-              <li key={path}>
-                <a
-                  className="link link-accent"
-                  href={`/canvas/${nip19.npubEncode(pubKey)}/${path.split('/').pop()}`}
-                  onClick={(e) => {
-                    document.getElementById('my_modal_1').close();
-                  }}
-                >
-                  {path.split('/').pop()}
-                </a>
-              </li>
-            ))}
-          </ul>
-        )}
       </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>

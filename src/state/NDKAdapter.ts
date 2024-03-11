@@ -2,6 +2,7 @@ import NDK, { NDKEvent, NostrEvent } from '@nostr-dev-kit/ndk';
 import debug from 'debug';
 
 import { Adapter, Callback, NodeValue, Unsubscribe } from '@/state/types.ts';
+import { PublicKey } from '@/utils/Hex/Hex.ts';
 
 const EVENT_KIND = 30078;
 
@@ -12,16 +13,20 @@ export default class NDKAdapter extends Adapter {
   ndk: NDK;
   authors: string[];
 
-  constructor(ndk: NDK, authors: string[]) {
+  constructor(ndk: NDK, authors: PublicKey[]) {
     super();
     this.ndk = ndk;
-    this.authors = authors;
+    this.authors = authors.map((p) => p.toString());
   }
 
   get(path: string, callback: Callback): Unsubscribe {
     const unsubObj = { fn: null as Unsubscribe | null };
 
-    const sub = this.ndk.subscribe({ authors: this.authors, kinds: [EVENT_KIND], '#d': [path] });
+    const sub = this.ndk.subscribe({
+      authors: this.authors,
+      kinds: [EVENT_KIND],
+      '#d': [path],
+    });
     unsubObj.fn = () => sub.stop();
     sub.on('event', (event) => {
       callback(JSON.parse(event.content), path, event.created_at * 1000, () => unsubObj.fn?.());

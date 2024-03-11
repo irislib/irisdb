@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import LoginDialog from '@/shared/components/LoginDialog.tsx';
 import localState from '@/state/LocalState.ts';
 import publicState from '@/state/PublicState.ts';
-import useLocalState from '@/state/useLocalState.ts';
+import { useLocalState } from '@/state/useNodeState.ts';
 
 import ExplorerNode from './ExplorerNode.tsx';
 
