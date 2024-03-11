@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+import ShareButton from '@/pages/canvas/ShareButton.tsx';
 import NodeValue from '@/shared/components/NodeValue.tsx';
 import Show from '@/shared/components/Show.tsx';
 import UserButton from '@/shared/components/UserButton.tsx';
@@ -27,7 +28,12 @@ export default function Header() {
           </span>
         </Show>
       </div>
-      <UserButton />
+      <div className="flex items-center gap-4">
+        <Show when={!!file}>
+          <ShareButton />
+        </Show>
+        <UserButton />
+      </div>
     </header>
   );
 }

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { Avatar } from '@/shared/components/Avatar.tsx';
 import LoginDialog from '@/shared/components/LoginDialog.tsx';
@@ -9,19 +9,24 @@ export default function UserButton() {
   const [pubKey] = useLocalState('user/publicKey', '');
   const userModal = useRef<HTMLDialogElement>(null);
 
+  const showModal = useCallback(() => {
+    userModal.current?.showModal();
+  }, []);
+
+  useEffect(() => {
+    userModal.current?.close();
+  }, [pubKey]);
+
   return (
     <>
       <Show when={pubKey}>
-        <div
-          className="ml-2 rounded-full cursor-pointer"
-          onClick={() => userModal.current?.showModal()}
-        >
+        <div className="ml-2 rounded-full cursor-pointer" onClick={showModal}>
           <Avatar pubKey={pubKey} />
         </div>
       </Show>
       <Show when={!pubKey}>
         <div className="ml-2">
-          <button className="btn btn-primary" onClick={() => userModal.current?.showModal()}>
+          <button className="btn btn-primary" onClick={showModal}>
             Sign in
           </button>
         </div>
