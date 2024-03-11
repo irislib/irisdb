@@ -21,7 +21,7 @@ export default function Home() {
         </div>
       </div>
       <div>
-        <a className="link link-accent" href="https://github.com/mmalmi/nostree">
+        <a className="link link-accent" href="https://github.com/mmalmi/iris-docs">
           GitHub
         </a>
       </div>
