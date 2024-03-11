@@ -19,7 +19,7 @@ import Show from '@/shared/components/Show';
 import { uploadFile } from '@/shared/upload.ts';
 import publicState from '@/state/PublicState';
 import { useLocalState } from '@/state/useNodeState.ts';
-import {PublicKey} from "@/utils/Hex/Hex.ts";
+import { PublicKey } from '@/utils/Hex/Hex.ts';
 
 const getUrl = (url: string) => {
   try {

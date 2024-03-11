@@ -1,5 +1,4 @@
-// Avatar.js
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import MinidenticonImg from '@/shared/components/MinidenticonImg.tsx';
 import ndk from '@/shared/ndk.ts';
@@ -20,7 +19,7 @@ export const Avatar = ({ pubKey }: { pubKey: string }) => {
   }, [pubKey]);
 
   const handleImageError = () => {
-    setImage(''); // Reset image state to fallback to MinidenticonImg
+    setImage('');
   };
 
   return (
