@@ -81,7 +81,7 @@ export default function LoginDialog() {
                 Go
               </button>
             </form>
-            <p>Already have a Nostr account?</p>
+            <p>Already have an account?</p>
             <div className="flex flex-row items-center gap-2">
               <form onSubmit={(e) => e.preventDefault()}>
                 <input

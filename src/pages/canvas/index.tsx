@@ -24,7 +24,9 @@ export default function CanvasPage() {
     <div className="flex flex-col h-full">
       <Header />
       <Show when={!pubKey && !user}>
-        <LoginDialog />
+        <div className="flex flex-col items-center justify-center h-full my-4">
+          <LoginDialog />
+        </div>
       </Show>
       <Show when={!!user && !file}>
         <FileList />
