@@ -1,7 +1,7 @@
 import { FolderIcon } from '@heroicons/react/24/outline';
-import { FolderOpenIcon, PlusIcon } from '@heroicons/react/24/solid';
+import { FolderOpenIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { nanoid } from 'nanoid';
-import { useEffect, useMemo, useState } from 'react';
+import { FormEvent, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { Avatar } from '@/shared/components/Avatar.tsx';
@@ -27,17 +27,38 @@ export function FileList() {
           if (typeof value === 'object' && value !== null && 'name' in value) {
             setFiles((files) => new Map(files.set(path, (value.name as string) || '')));
           }
+          if (value === null) {
+            setFiles((files) => {
+              const newFiles = new Map(files);
+              newFiles.delete(path);
+              return newFiles;
+            });
+          }
         }, 1);
     }
   }, [pubKeyHex]);
 
-  const createNew = (e: React.FormEvent) => {
+  const createNew = (e: FormEvent) => {
     e.preventDefault();
     const uid = nanoid();
     navigate(`/canvas/${user}/${uid}`);
   };
 
   const isMine = myPubKey === pubKeyHex;
+
+  const deleteFile = (path: string, name: string, event: MouseEvent) => {
+    event.preventDefault();
+    if (confirm(`Delete file "${name}"?`)) {
+      if (path[0] === '/') {
+        path = path.slice(1);
+      }
+      console.log('deleting', path, event);
+      myPubKey &&
+        publicState([new PublicKey(myPubKey)])
+          .get(path)
+          .put(null);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-2 p-4">
@@ -82,9 +103,17 @@ export function FileList() {
             <Link
               to={`/canvas/${user}/${file[0].split('/').pop()}`}
               key={file[0]}
-              className="text-accent p-2 border-b border-neutral-content/10 hover:bg-neutral-content/10 hover:rounded-md hover:border-b-transparent"
+              className="font-bold p-2 border-b border-neutral-content/10 hover:bg-neutral-content/10 hover:rounded-md hover:border-b-transparent justify-between flex items-center gap-2"
             >
               {file[1] || 'Untitled canvas'}
+              <Show when={isMine}>
+                <button
+                  className="btn btn-circle btn-ghost btn-sm"
+                  onClick={(event) => deleteFile(file[0], file[1] || 'Untitled canvas', event)}
+                >
+                  <TrashIcon className="w-4 h-4" />
+                </button>
+              </Show>
             </Link>
           ))}
         </div>
