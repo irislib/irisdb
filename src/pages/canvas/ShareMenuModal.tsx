@@ -1,3 +1,4 @@
+import { TrashIcon } from '@heroicons/react/24/solid';
 import classNames from 'classnames';
 import { FormEvent, RefObject, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -87,14 +88,31 @@ export function ShareMenuModal({ modalRef }: { modalRef: RefObject<HTMLDialogEle
               className={classNames('btn btn-primary', { hidden: !userToAddValid })}
               type="submit"
             >
-              Add collaborator
+              Add write access
             </button>
           </form>
         </Show>
         <h3 className="text-xl">People with write access</h3>
         <UserRow pubKey={user!} description="Owner" />
         {Array.from(writers).map((pubKey) => (
-          <UserRow key={pubKey} pubKey={pubKey} description="Write access" />
+          <div className="flex flex-row gap-2 items-center">
+            <div className="flex-1">
+              <UserRow key={pubKey} pubKey={pubKey} description="Write access" />
+            </div>
+            <Show when={isMine}>
+              <button
+                className="btn btn-circle btn-sm btn-neutral"
+                type="button"
+                onClick={() => {
+                  publicState([myPubKey])
+                    .get(`apps/canvas/documents/${file}/writers/${pubKey}`)
+                    .put(false);
+                }}
+              >
+                <TrashIcon className="w-4 h-4" />
+              </button>
+            </Show>
+          </div>
         ))}
         <h3 className="text-xl">Read access: public</h3>
         <div className="flex flex-row gap-4 justify-between">
