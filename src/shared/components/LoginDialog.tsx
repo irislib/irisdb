@@ -2,9 +2,8 @@ import { hexToBytes } from '@noble/hashes/utils';
 import { nip19 } from 'nostr-tools';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
-import { Avatar } from '@/shared/components/Avatar.tsx';
-import { Name } from '@/shared/components/Name.tsx';
 import Show from '@/shared/components/Show.tsx';
+import { UserRow } from '@/shared/components/UserRow.tsx';
 import { newUserLogin, privateKeyLogin } from '@/shared/ndk.ts';
 import { useLocalState } from '@/state/useNodeState.ts';
 
@@ -64,6 +63,10 @@ export default function LoginDialog() {
     navigator.clipboard.writeText(nsec);
   }
 
+  function copyPublicKey() {
+    navigator.clipboard.writeText(nip19.npubEncode(publicKey));
+  }
+
   return (
     <div className="flex flex-row items-center gap-2 justify-between card card-compact bg-neutral">
       <div className="card-body">
@@ -99,19 +102,22 @@ export default function LoginDialog() {
           </div>
         </Show>
         <Show when={publicKey}>
-          <div className="flex flex-row gap-2 items-center justify-between">
-            <Avatar pubKey={publicKey} />
-            <Name pubKey={publicKey} />
-            <div className="flex flex-row gap-2">
-              <Show when={privateKey}>
-                <button className="btn btn-sm btn-accent" onClick={() => copyPrivateKey()}>
-                  Copy secret key
-                </button>
-              </Show>
-              <button className="btn btn-sm btn-secondary" onClick={() => logout()}>
-                Log out
+          <div className="flex flex-col gap-2">
+            <UserRow pubKey={publicKey} />
+            <button className="btn btn-sm btn-primary" onClick={() => copyPublicKey()}>
+              Copy public key
+            </button>
+            <Show when={privateKey}>
+              <button className="btn btn-sm btn-secondary" onClick={() => copyPrivateKey()}>
+                Copy secret key
               </button>
-            </div>
+              <span className={'text-xs text-neutral-content'}>
+                Secret key grants full access to your account. Keep it safe.
+              </span>
+            </Show>
+            <button className="btn btn-sm btn-outline" onClick={() => logout()}>
+              Log out
+            </button>
           </div>
         </Show>
       </div>
