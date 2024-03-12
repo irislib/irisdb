@@ -15,10 +15,10 @@ export default function Header() {
   if (!user && file) return null;
 
   return (
-    <header className="flex items-center justify-between bg-neutral text-white p-2 z-30">
+    <header className="flex items-center justify-between bg-neutral text-white p-2 z-30 select-none">
       <div className="flex items-center gap-4">
         <Link to={user ? `/canvas/${user}` : '/canvas'} className="flex items-center gap-2">
-          <h1 className="text-2xl">Iris Canvas</h1>
+          <h1 className="text-2xl text-neutral-content">Iris Canvas</h1>
         </Link>
         <Show when={!!file}>
           <span className="text-xl">

@@ -52,7 +52,6 @@ export function FileList() {
       if (path[0] === '/') {
         path = path.slice(1);
       }
-      console.log('deleting', path, event);
       myPubKey &&
         publicState([new PublicKey(myPubKey)])
           .get(path)

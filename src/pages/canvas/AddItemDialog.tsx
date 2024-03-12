@@ -32,7 +32,7 @@ export function AddItemDialog({
         className="hidden"
         ref={fileInputRef}
         onChange={onFileChange}
-        accept={'.png,.jpg,.jpeg,.gif,.webp,.svg,.avif'}
+        accept={'.png,.jpg,.jpeg,.gif,.webp,.svg,.avif,.mp4'}
       />
       <button
         className={`btn btn-primary bg-primary`}
