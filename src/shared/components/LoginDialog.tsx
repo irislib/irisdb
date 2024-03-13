@@ -1,4 +1,5 @@
 import { hexToBytes } from '@noble/hashes/utils';
+import classNames from 'classnames';
 import { nip19 } from 'nostr-tools';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
@@ -25,6 +26,7 @@ export default function LoginDialog() {
   }
 
   useEffect(() => {
+    // TODO proper validation
     if (inputPrivateKey && inputPrivateKey.length > 60) {
       privateKeyLogin(inputPrivateKey);
     }
@@ -89,7 +91,9 @@ export default function LoginDialog() {
               <form onSubmit={(e) => e.preventDefault()}>
                 <input
                   type="password"
-                  className="input input-sm input-bordered"
+                  className={classNames('input input-sm input-bordered', {
+                    'input-error': inputPrivateKey && inputPrivateKey.length < 60,
+                  })}
                   placeholder="Paste secret key"
                   onChange={(e) => onPrivateKeyChange(e)}
                 />
