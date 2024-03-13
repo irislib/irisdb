@@ -4,8 +4,6 @@ import { nanoid } from 'nanoid';
 import { FormEvent, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { Avatar } from '@/shared/components/Avatar.tsx';
-import { Name } from '@/shared/components/Name.tsx';
 import Show from '@/shared/components/Show.tsx';
 import { UserRow } from '@/shared/components/UserRow.tsx';
 import publicState from '@/state/PublicState.ts';
@@ -73,8 +71,24 @@ export function FileList() {
           <div className="card-body">
             <div className="flex flex-row items-center gap-2 justify-between">
               <div className="flex items-center gap-2 flex-row">
-                <Avatar pubKey={myPubKey || ''} />
-                <Name pubKey={myPubKey || ''} />
+                <UserRow pubKey={myPubKey} />
+              </div>
+              <span className="text-neutral-content">
+                <FolderIcon className="w-6 h-6" />
+              </span>
+            </div>
+          </div>
+        </Link>
+      </Show>
+      <Show when={myPubKey && user !== 'follows'}>
+        <Link
+          className="card card-compact bg-neutral shadow-xl cursor-pointer hover:opacity-90"
+          to={`/canvas/follows`}
+        >
+          <div className="card-body">
+            <div className="flex flex-row items-center gap-2 justify-between">
+              <div className="flex items-center gap-2 flex-row">
+                <h2 className="text-xl text-neutral-content">Files by followed users</h2>
               </div>
               <span className="text-neutral-content">
                 <FolderIcon className="w-6 h-6" />
