@@ -7,7 +7,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Avatar } from '@/shared/components/Avatar.tsx';
 import { Name } from '@/shared/components/Name.tsx';
 import Show from '@/shared/components/Show.tsx';
+import { UserRow } from '@/shared/components/UserRow.tsx';
 import publicState from '@/state/PublicState.ts';
+import useAuthors from '@/state/useAuthors.ts';
 import { useLocalState } from '@/state/useNodeState.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
@@ -20,26 +22,25 @@ export function FileList() {
     () => user && user !== 'follows' && new PublicKey(user).toString(),
     [user],
   );
+  const authors = useAuthors(user);
 
   useEffect(() => {
-    if (pubKeyHex) {
-      return publicState([new PublicKey(pubKeyHex)])
-        .get('apps/canvas/documents')
-        .map((value, path) => {
-          // Type guard to ensure 'value' is an object with a 'name' property
-          if (typeof value === 'object' && value !== null && 'name' in value) {
-            setFiles((files) => new Map(files.set(path, (value.name as string) || '')));
-          }
-          if (value === null) {
-            setFiles((files) => {
-              const newFiles = new Map(files);
-              newFiles.delete(path);
-              return newFiles;
-            });
-          }
-        }, 1);
-    }
-  }, [pubKeyHex]);
+    return publicState(authors.map((author) => new PublicKey(author)))
+      .get('apps/canvas/documents')
+      .map((value, path) => {
+        // Type guard to ensure 'value' is an object with a 'name' property
+        if (typeof value === 'object' && value !== null && 'name' in value) {
+          setFiles((files) => new Map(files.set(path, (value.name as string) || '')));
+        }
+        if (value === null) {
+          setFiles((files) => {
+            const newFiles = new Map(files);
+            newFiles.delete(path);
+            return newFiles;
+          });
+        }
+      }, 1);
+  }, [authors]);
 
   const createNew = (e: FormEvent) => {
     e.preventDefault();
@@ -86,8 +87,11 @@ export function FileList() {
         <div className="card-body">
           <div className="flex flex-row items-center gap-2 justify-between">
             <div className="flex items-center gap-2 flex-row">
-              <Avatar pubKey={pubKeyHex || ''} />
-              <Name pubKey={pubKeyHex || ''} />
+              {user === 'follows' ? (
+                <h2 className="text-xl text-neutral-content">Files by followed users</h2>
+              ) : (
+                <UserRow pubKey={user!} />
+              )}
             </div>
             <span className="text-neutral-content">
               <FolderOpenIcon className="w-6 h-6" />
