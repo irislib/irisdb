@@ -5,9 +5,10 @@ import publicState from '@/state/PublicState.ts';
 import { useLocalState } from '@/state/useNodeState.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
-export default function useAuthors(ownerOrGroup: string, groupPath?: string): string[] {
+export default function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] {
   const [myPubKey] = useLocalState('user/publicKey', '');
   const initialAuthors = useMemo(() => {
+    if (!ownerOrGroup) return [];
     if (ownerOrGroup === 'follows') {
       return myPubKey ? [myPubKey] : [];
     } else {
@@ -46,5 +47,7 @@ export default function useAuthors(ownerOrGroup: string, groupPath?: string): st
     }
   }, [ownerOrGroup, groupPath]);
 
-  return Array.from(authors);
+  const arr = useMemo(() => Array.from(authors), [authors]);
+
+  return arr;
 }

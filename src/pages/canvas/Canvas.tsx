@@ -18,6 +18,7 @@ import { Item } from '@/pages/canvas/types.ts';
 import Show from '@/shared/components/Show';
 import { uploadFile } from '@/shared/upload.ts';
 import publicState from '@/state/PublicState';
+import useAuthors from '@/state/useAuthors.ts';
 import { useLocalState } from '@/state/useNodeState.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
@@ -40,11 +41,13 @@ export default function Canvas() {
     y: window.innerHeight / 2,
   });
   const { user, file } = useParams();
-  const userHex = useMemo(() => user && new PublicKey(user).toString(), [user]);
-  const [writers, setWriters] = useState<Set<string>>(new Set(userHex ? [userHex] : []));
   const [scale, setScale] = useState(1);
   const docName = useMemo(() => `apps/canvas/documents/${file || 'public'}`, [file]);
-  const editable = writers.has(pubKey);
+  const authors = useAuthors(
+    user || 'public',
+    user !== 'follows' ? `${docName}/writers` : undefined,
+  );
+  const editable = authors.includes(pubKey);
 
   const moveCanvas = (direction: string) => {
     const moveAmount = 10; // Adjust the movement speed as necessary
@@ -100,29 +103,8 @@ export default function Canvas() {
   }, [movingInterval]);
 
   useEffect(() => {
-    if (userHex && file) {
-      return publicState([new PublicKey(userHex)])
-        .get(docName)
-        .get('writers')
-        .map((value, path) => {
-          setWriters((prev) => {
-            const key = path.split('/').pop()!;
-            if (!!value === prev.has(key)) return prev; // no state update if value is the same
-            const newWriters = new Set(prev);
-            if (value) {
-              newWriters.add(key);
-            } else {
-              newWriters.delete(key);
-            }
-            return newWriters;
-          });
-        });
-    }
-  }, [userHex, file, docName]);
-
-  useEffect(() => {
     setItems(new Map());
-    const unsubscribe = publicState(Array.from(writers).map((w) => new PublicKey(w)))
+    const unsubscribe = publicState(authors.map((w) => new PublicKey(w)))
       .get(docName)
       .get('items')
       .map((value, key) => {
@@ -143,7 +125,7 @@ export default function Canvas() {
         }
       });
     return () => unsubscribe();
-  }, [writers, docName]);
+  }, [authors, docName]);
 
   function onSubmit(e?: FormEvent) {
     e?.preventDefault();

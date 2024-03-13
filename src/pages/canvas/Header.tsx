@@ -1,16 +1,19 @@
-import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import ShareButton from '@/pages/canvas/ShareButton.tsx';
 import NodeValue from '@/shared/components/NodeValue.tsx';
 import Show from '@/shared/components/Show.tsx';
 import UserButton from '@/shared/components/UserButton.tsx';
+import useAuthors from '@/state/useAuthors.ts';
 import { useLocalState } from '@/state/useNodeState.ts';
 
 export default function Header() {
   const { user, file } = useParams();
   const [pubKey] = useLocalState('user/publicKey', '');
-  const authors = useMemo(() => (user ? [user] : []), [user]);
+  const authors = useAuthors(
+    user || '',
+    file ? `apps/canvas/documents/${file}/writers` : undefined,
+  );
 
   if (!user && file) return null;
 
