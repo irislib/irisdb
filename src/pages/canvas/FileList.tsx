@@ -1,5 +1,5 @@
 import { FolderIcon } from '@heroicons/react/24/outline';
-import { FolderOpenIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { FolderOpenIcon, PlusIcon, TrashIcon, UserPlusIcon } from '@heroicons/react/24/solid';
 import { nanoid } from 'nanoid';
 import { FormEvent, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -88,6 +88,7 @@ export function FileList() {
           <div className="card-body">
             <div className="flex flex-row items-center gap-2 justify-between">
               <div className="flex items-center gap-2 flex-row">
+                <UserPlusIcon className="w-6 h-6" />
                 <h2 className="text-xl text-neutral-content">Files by followed users</h2>
               </div>
               <span className="text-neutral-content">
@@ -102,7 +103,10 @@ export function FileList() {
           <div className="flex flex-row items-center gap-2 justify-between">
             <div className="flex items-center gap-2 flex-row">
               {user === 'follows' ? (
-                <h2 className="text-xl text-neutral-content">Files by followed users</h2>
+                <>
+                  <UserPlusIcon className="w-6 h-6" />
+                  <h2 className="text-xl text-neutral-content">Files by followed users</h2>
+                </>
               ) : (
                 <UserRow pubKey={user!} />
               )}
