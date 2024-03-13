@@ -16,7 +16,10 @@ export function FileList() {
   const [files, setFiles] = useState(new Map<string, string>());
   const navigate = useNavigate();
   const [myPubKey] = useLocalState('user/publicKey', '');
-  const pubKeyHex = useMemo(() => user && new PublicKey(user).toString(), [user]);
+  const pubKeyHex = useMemo(
+    () => user && user !== 'follows' && new PublicKey(user).toString(),
+    [user],
+  );
 
   useEffect(() => {
     if (pubKeyHex) {

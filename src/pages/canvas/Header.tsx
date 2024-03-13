@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 
-import ShareButton from '@/pages/canvas/ShareButton.tsx';
 import NodeValue from '@/shared/components/NodeValue.tsx';
+import ShareButton from '@/shared/components/share/ShareButton.tsx';
 import Show from '@/shared/components/Show.tsx';
 import UserButton from '@/shared/components/UserButton.tsx';
 import useAuthors from '@/state/useAuthors.ts';
@@ -16,6 +16,8 @@ export default function Header() {
   );
 
   if (!user && file) return null;
+
+  console.log('authors', authors);
 
   return (
     <header className="flex items-center justify-between bg-neutral text-white p-2 z-30 select-none">

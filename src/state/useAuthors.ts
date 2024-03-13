@@ -22,13 +22,16 @@ export default function useAuthors(ownerOrGroup?: string, groupPath?: string): s
     if (ownerOrGroup === 'follows') {
       const user = ndk.getUser({ pubkey: myPubKey });
       user.follows().then((follows) => {
-        setAuthors(new Set([myPubKey, ...follows]));
+        const newAuthors = new Set([myPubKey]);
+        follows.forEach((f) => newAuthors.add(f.pubkey));
+        setAuthors(newAuthors);
       });
     }
   }, [ownerOrGroup, myPubKey]);
 
   useEffect(() => {
-    if (ownerOrGroup && groupPath) {
+    if (!ownerOrGroup || ownerOrGroup === 'follows') return;
+    if (groupPath) {
       return publicState([new PublicKey(ownerOrGroup)])
         .get(groupPath)
         .map((value, path) => {
