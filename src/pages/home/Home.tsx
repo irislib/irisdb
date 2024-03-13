@@ -6,10 +6,10 @@ export default function Home() {
     <div className="flex flex-col gap-2 p-2">
       <div
         className="card bg-neutral shadow-xl cursor-pointer hover:opacity-90"
-        onClick={() => navigate('/explorer')}
+        onClick={() => navigate('/document')}
       >
         <div className="card-body">
-          <h2 className="card-title">Explorer</h2>
+          <h2 className="card-title">Docs</h2>
         </div>
       </div>
       <div
@@ -18,6 +18,14 @@ export default function Home() {
       >
         <div className="card-body">
           <h2 className="card-title">Canvas</h2>
+        </div>
+      </div>
+      <div
+        className="card bg-neutral shadow-xl cursor-pointer hover:opacity-90"
+        onClick={() => navigate('/explorer')}
+      >
+        <div className="card-body">
+          <h2 className="card-title">Explorer</h2>
         </div>
       </div>
       <div>
