@@ -94,7 +94,7 @@ export function FileList() {
             <div>
               <button className="btn btn-outline" onClick={createNew}>
                 <PlusIcon className="w-6 h-6" />
-                Create new
+                Create new canvas
               </button>
             </div>
           </Show>

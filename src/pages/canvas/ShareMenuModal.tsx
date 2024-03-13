@@ -35,17 +35,19 @@ export function ShareMenuModal({ modalRef }: { modalRef: RefObject<HTMLDialogEle
       return publicState([userPublicKey])
         .get(`apps/canvas/documents/${file}/writers`)
         .map((value, path) => {
-          console.log(value, path);
           const key = path.split('/').pop();
           if (!key) return;
+          if (writers.has(key) === value) return;
           try {
             new PublicKey(key);
-            // remove or add depending on value true or false
             if (value) {
               setWriters((writers) => new Set(writers.add(key)));
             } else {
-              writers.delete(key);
-              setWriters((writers) => new Set(writers));
+              setWriters((currentWriters) => {
+                const updatedWriters = new Set(currentWriters);
+                updatedWriters.delete(key);
+                return updatedWriters;
+              });
             }
           } catch {
             /* empty */
