@@ -3,7 +3,8 @@ import { useEffect, useMemo, useState } from 'react';
 import ndk from '@/shared/ndk.ts';
 import publicState from '@/state/PublicState.ts';
 import { useLocalState } from '@/state/useNodeState.ts';
-import { PublicKey } from '@/utils/Hex/Hex.ts';
+import {Hex, PublicKey} from '@/utils/Hex/Hex.ts';
+import {NDKTag} from "@nostr-dev-kit/ndk";
 
 export default function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] {
   const [myPubKey] = useLocalState('user/publicKey', '');
@@ -20,12 +21,24 @@ export default function useAuthors(ownerOrGroup?: string, groupPath?: string): s
 
   useEffect(() => {
     if (ownerOrGroup === 'follows') {
-      const user = ndk.getUser({ pubkey: myPubKey });
-      user.follows().then((follows) => {
-        const newAuthors = new Set([myPubKey]);
-        follows.forEach((f) => newAuthors.add(f.pubkey));
-        setAuthors(newAuthors);
+      const sub = ndk.subscribe({ kinds: [3], authors: [myPubKey] });
+      sub.on('event', (event) => {
+        if (event.kind === 3) {
+          const newAuthors = new Set(authors);
+          event.tags.forEach((tag: NDKTag) => {
+            if (tag[0] === 'p') {
+              try {
+                new Hex(tag[1], 64);
+                newAuthors.add(tag[1]);
+              } catch (e) {
+                console.error('Invalid public key', tag[1]);
+              }
+            }
+          });
+          setAuthors(newAuthors);
+        }
       });
+      return () => sub.stop();
     }
   }, [ownerOrGroup, myPubKey]);
 
