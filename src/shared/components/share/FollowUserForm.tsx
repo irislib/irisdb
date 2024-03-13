@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { FormEvent, useMemo, useState } from 'react';
 
-import { UserRow } from '@/shared/components/UserRow.tsx';
+import { UserRow } from '@/shared/components/user/UserRow.tsx';
 import ndk from '@/shared/ndk.ts';
 import { useLocalState } from '@/state/useNodeState.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';

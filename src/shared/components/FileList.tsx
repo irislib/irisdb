@@ -5,7 +5,7 @@ import { FormEvent, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import Show from '@/shared/components/Show.tsx';
-import { UserRow } from '@/shared/components/UserRow.tsx';
+import { UserRow } from '@/shared/components/user/UserRow.tsx';
 import publicState from '@/state/PublicState.ts';
 import useAuthors from '@/state/useAuthors.ts';
 import { useLocalState } from '@/state/useNodeState.ts';

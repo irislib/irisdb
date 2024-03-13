@@ -4,7 +4,7 @@ import { nip19 } from 'nostr-tools';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import Show from '@/shared/components/Show.tsx';
-import { UserRow } from '@/shared/components/UserRow.tsx';
+import { UserRow } from '@/shared/components/user/UserRow.tsx';
 import { newUserLogin, privateKeyLogin } from '@/shared/ndk.ts';
 import { useLocalState } from '@/state/useNodeState.ts';
 

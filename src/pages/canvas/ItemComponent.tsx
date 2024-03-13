@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { Item } from '@/pages/canvas/types.ts';
 
-type ItemComponent = {
+type ItemComponentProps = {
   item: Item;
   onMove: (mouseX: number, mouseY: number) => void;
   editable: boolean;
@@ -11,7 +11,7 @@ type ItemComponent = {
 const IMG_REGEX = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
 const VIDEO_REGEX = /\.(mp4|webm|ogg|mov)$/i;
 
-export function ItemComponent({ item, onMove, editable }: ItemComponent) {
+export function ItemComponent({ item, onMove, editable }: ItemComponentProps) {
   const [isDragging, setIsDragging] = useState(false);
   const url = useMemo(() => {
     try {

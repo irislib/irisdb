@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Canvas from '@/pages/canvas/Canvas.tsx';
-import { FileList } from '@/pages/canvas/FileList.tsx';
-import Header from '@/pages/canvas/Header.tsx';
+import { FileList } from '@/shared/components/FileList.tsx';
+import Header from '@/shared/components/Header.tsx';
 import LoginDialog from '@/shared/components/LoginDialog.tsx';
 import Show from '@/shared/components/Show.tsx';
 import { useLocalState } from '@/state/useNodeState.ts';

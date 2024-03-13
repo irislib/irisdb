@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import MinidenticonImg from '@/shared/components/MinidenticonImg.tsx';
+import MinidenticonImg from '@/shared/components/user/MinidenticonImg.tsx';
 import ndk from '@/shared/ndk.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
