@@ -2,10 +2,10 @@ import { nip19 } from 'nostr-tools';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import localState from '@/irisdb/LocalState.ts';
+import publicState from '@/irisdb/PublicState.ts';
+import { useLocalState } from '@/irisdb/useNodeState.ts';
 import Header from '@/shared/components/Header.tsx';
-import localState from '@/state/LocalState.ts';
-import publicState from '@/state/PublicState.ts';
-import { useLocalState } from '@/state/useNodeState.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
 import ExplorerNode from './ExplorerNode.tsx';

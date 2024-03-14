@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import LocalStorageMemoryAdapter from '@/state/LocalStorageMemoryAdapter.ts';
-import { Callback, Unsubscribe } from '@/state/types.ts';
+import LocalStorageMemoryAdapter from '@/irisdb/adapters/LocalStorageMemoryAdapter.ts';
+import { Callback, Unsubscribe } from '@/irisdb/types.ts';
 
 describe('LocalStorageMemoryAdapter', () => {
   let adapter: LocalStorageMemoryAdapter;

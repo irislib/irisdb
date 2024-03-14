@@ -1,8 +1,8 @@
 import { debounce } from 'lodash';
 import { useMemo, useState } from 'react';
 
+import { usePublicState } from '@/irisdb/useNodeState.ts';
 import Show from '@/shared/components/Show.tsx';
-import { usePublicState } from '@/state/useNodeState.ts';
 
 export default function NodeValue({
   authors,

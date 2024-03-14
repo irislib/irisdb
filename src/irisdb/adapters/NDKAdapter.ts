@@ -1,7 +1,7 @@
 import NDK, { NDKEvent, NostrEvent } from '@nostr-dev-kit/ndk';
 import debug from 'debug';
 
-import { Adapter, Callback, NodeValue, Unsubscribe } from '@/state/types.ts';
+import { Adapter, Callback, NodeValue, Unsubscribe } from '@/irisdb/types.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
 const EVENT_KIND = 30078;

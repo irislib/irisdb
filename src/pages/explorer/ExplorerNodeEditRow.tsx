@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 
-import Node, { DIR_VALUE } from '@/state/Node.ts';
+import Node, { DIR_VALUE } from '@/irisdb/Node.ts';
 
 type EditRowProps = {
   level: number;

@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import { FormEvent, useMemo, useState } from 'react';
 
+import publicState from '@/irisdb/PublicState.ts';
+import { useLocalState } from '@/irisdb/useNodeState.ts';
 import { UserRow } from '@/shared/components/user/UserRow.tsx';
-import publicState from '@/state/PublicState.ts';
-import { useLocalState } from '@/state/useNodeState.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
 export const AddUserForm = ({ file }: { file: string }) => {

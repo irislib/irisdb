@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef } from 'react';
 
+import { useLocalState } from '@/irisdb/useNodeState.ts';
 import LoginDialog from '@/shared/components/LoginDialog.tsx';
 import Show from '@/shared/components/Show.tsx';
 import { Avatar } from '@/shared/components/user/Avatar.tsx';
-import { useLocalState } from '@/state/useNodeState.ts';
 
 export default function UserButton() {
   const [pubKey] = useLocalState('user/publicKey', '');

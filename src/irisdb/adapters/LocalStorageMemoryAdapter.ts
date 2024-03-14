@@ -1,4 +1,4 @@
-import { Adapter, Callback, NodeValue, Unsubscribe } from '@/state/types.ts';
+import { Adapter, Callback, NodeValue, Unsubscribe } from '@/irisdb/types.ts';
 
 export default class LocalStorageMemoryAdapter extends Adapter {
   private storage = new Map<string, NodeValue>();

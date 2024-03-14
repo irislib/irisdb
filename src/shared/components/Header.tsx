@@ -1,10 +1,10 @@
 import { Link, useParams } from 'react-router-dom';
 
+import useAuthors from '@/irisdb/useAuthors.ts';
 import NodeValue from '@/shared/components/NodeValue.tsx';
 import ShareButton from '@/shared/components/share/ShareButton.tsx';
 import Show from '@/shared/components/Show.tsx';
 import UserButton from '@/shared/components/UserButton.tsx';
-import useAuthors from '@/state/useAuthors.ts';
 
 export default function Header({ file }: { file?: string }) {
   const { user } = useParams();

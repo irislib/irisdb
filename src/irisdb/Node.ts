@@ -1,6 +1,13 @@
-import LocalStorageAdapter from '@/state/LocalStorageAdapter.ts';
-import MemoryAdapter from '@/state/MemoryAdapter.ts';
-import { Adapter, Callback, JsonObject, JsonValue, NodeValue, Unsubscribe } from '@/state/types.ts';
+import LocalStorageAdapter from '@/irisdb/adapters/LocalStorageAdapter.ts';
+import MemoryAdapter from '@/irisdb/adapters/MemoryAdapter.ts';
+import {
+  Adapter,
+  Callback,
+  JsonObject,
+  JsonValue,
+  NodeValue,
+  Unsubscribe,
+} from '@/irisdb/types.ts';
 
 /**
   Inspired by https://github.com/amark/gun

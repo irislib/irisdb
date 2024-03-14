@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import localState from '@/state/LocalState.ts';
-import Node from '@/state/Node.ts';
-import publicState from '@/state/PublicState.ts';
-import { JsonValue } from '@/state/types.ts';
+import localState from '@/irisdb/LocalState.ts';
+import Node from '@/irisdb/Node.ts';
+import publicState from '@/irisdb/PublicState.ts';
+import { JsonValue } from '@/irisdb/types.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
 function useNodeState(node: Node, key: string, initialValue: any = undefined, once = false) {

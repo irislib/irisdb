@@ -1,5 +1,5 @@
-import BroadcastChannelAdapter from '@/state/BroadcastChannelAdapter.ts';
-import LocalStorageMemoryAdapter from '@/state/LocalStorageMemoryAdapter.ts';
+import BroadcastChannelAdapter from '@/irisdb/adapters/BroadcastChannelAdapter.ts';
+import LocalStorageMemoryAdapter from '@/irisdb/adapters/LocalStorageMemoryAdapter.ts';
 
 import Node from './Node';
 

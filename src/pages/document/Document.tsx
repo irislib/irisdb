@@ -1,8 +1,8 @@
 import { ChangeEventHandler, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import useAuthors from '@/state/useAuthors.ts';
-import { useLocalState, usePublicState } from '@/state/useNodeState.ts';
+import useAuthors from '@/irisdb/useAuthors.ts';
+import { useLocalState, usePublicState } from '@/irisdb/useNodeState.ts';
 
 export default function Document() {
   const [myPubKey] = useLocalState('user/publicKey', '');

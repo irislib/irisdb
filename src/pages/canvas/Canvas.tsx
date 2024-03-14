@@ -12,14 +12,14 @@ import {
 } from 'react';
 import { useParams } from 'react-router-dom';
 
+import publicState from '@/irisdb/PublicState';
+import useAuthors from '@/irisdb/useAuthors.ts';
+import { useLocalState } from '@/irisdb/useNodeState.ts';
 import { AddItemDialog } from '@/pages/canvas/AddItemDialog.tsx';
 import { ItemComponent } from '@/pages/canvas/ItemComponent.tsx';
 import { Item } from '@/pages/canvas/types.ts';
 import Show from '@/shared/components/Show';
 import { uploadFile } from '@/shared/upload.ts';
-import publicState from '@/state/PublicState';
-import useAuthors from '@/state/useAuthors.ts';
-import { useLocalState } from '@/state/useNodeState.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
 const getUrl = (url: string) => {

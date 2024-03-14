@@ -1,6 +1,6 @@
+import MemoryAdapter from '@/irisdb/adapters/MemoryAdapter.ts';
+import NDKAdapter from '@/irisdb/adapters/NDKAdapter.ts';
 import ndk from '@/shared/ndk.ts';
-import MemoryAdapter from '@/state/MemoryAdapter.ts';
-import NDKAdapter from '@/state/NDKAdapter.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
 import Node from './Node';

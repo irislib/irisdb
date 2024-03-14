@@ -1,11 +1,11 @@
 import { RefObject, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { useLocalState } from '@/irisdb/useNodeState.ts';
 import CopyButton from '@/shared/components/CopyButton.tsx';
 import { AddUserForm } from '@/shared/components/share/AddUserForm.tsx';
 import { WriteAccessUsers } from '@/shared/components/share/WriteAccessUsers.tsx';
 import Show from '@/shared/components/Show.tsx';
-import { useLocalState } from '@/state/useNodeState.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
 export function ShareMenuModal({

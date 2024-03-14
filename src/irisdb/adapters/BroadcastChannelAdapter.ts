@@ -1,4 +1,4 @@
-import { Adapter, Callback, NodeValue, Unsubscribe } from '@/state/types.ts';
+import { Adapter, Callback, NodeValue, Unsubscribe } from '@/irisdb/types.ts';
 
 export default class BroadcastChannelAdapter extends Adapter {
   channel: BroadcastChannel;

@@ -1,9 +1,9 @@
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import { useEffect, useState } from 'react';
 
+import Node, { DIR_VALUE } from '@/irisdb/Node';
+import { JsonValue } from '@/irisdb/types.ts';
 import Show from '@/shared/components/Show.tsx';
-import Node, { DIR_VALUE } from '@/state/Node';
-import { JsonValue } from '@/state/types.ts';
 import { SortedMap } from '@/utils/SortedMap/SortedMap.tsx';
 
 import { ExplorerNodeEditRow } from './ExplorerNodeEditRow.tsx';

@@ -2,12 +2,12 @@ import { nip19 } from 'nostr-tools';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { useLocalState } from '@/irisdb/useNodeState.ts';
 import Canvas from '@/pages/canvas/Canvas.tsx';
 import { FileList } from '@/shared/components/FileList.tsx';
 import Header from '@/shared/components/Header.tsx';
 import LoginDialog from '@/shared/components/LoginDialog.tsx';
 import Show from '@/shared/components/Show.tsx';
-import { useLocalState } from '@/state/useNodeState.ts';
 
 export default function CanvasPage() {
   const [pubKey] = useLocalState('user/publicKey', '');

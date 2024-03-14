@@ -1,9 +1,9 @@
 import { NDKTag } from '@nostr-dev-kit/ndk';
 import { useEffect, useMemo, useState } from 'react';
 
+import publicState from '@/irisdb/PublicState.ts';
+import { useLocalState } from '@/irisdb/useNodeState.ts';
 import ndk from '@/shared/ndk.ts';
-import publicState from '@/state/PublicState.ts';
-import { useLocalState } from '@/state/useNodeState.ts';
 import { Hex, PublicKey } from '@/utils/Hex/Hex.ts';
 
 export default function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] {
