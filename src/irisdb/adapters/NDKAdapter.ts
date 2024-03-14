@@ -64,6 +64,10 @@ export default class NDKAdapter extends Adapter {
       ['d', path],
       ['f', directory],
     ];
+    if (value.expiresAt) {
+      // NIP-40
+      e.tags.push(['expiration', Math.ceil(value.expiresAt / 1000).toString()]);
+    }
     try {
       await e.publish();
       log('published state event', e);
