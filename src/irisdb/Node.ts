@@ -67,13 +67,14 @@ export default class Node {
     return node;
   }
 
-  private async putValue(value: JsonValue, updatedAt: number) {
+  private async putValue(value: JsonValue, updatedAt: number, expiresAt?: number) {
     if (value !== DIR_VALUE) {
       this.children = new Map();
     }
     const nodeValue: NodeValue = {
       updatedAt,
       value,
+      expiresAt,
     };
     const promises = this.adapters.map((adapter) => adapter.set(this.id, nodeValue));
     this.on_subscriptions.forEach(({ callback }) => {
@@ -82,9 +83,9 @@ export default class Node {
     await Promise.all(promises);
   }
 
-  private async putChildValues(value: JsonObject, updatedAt: number) {
+  private async putChildValues(value: JsonObject, updatedAt: number, expiresAt?: number) {
     const promises = this.adapters.map((adapter) =>
-      adapter.set(this.id, { value: DIR_VALUE, updatedAt }),
+      adapter.set(this.id, { value: DIR_VALUE, updatedAt, expiresAt }),
     );
     const children = Object.keys(value);
     // the following probably causes the same callbacks to be fired too many times
@@ -97,11 +98,11 @@ export default class Node {
    * @param value
    * @example node.get('users').get('alice').put({name: 'Alice'})
    */
-  async put(value: JsonValue, updatedAt = Date.now()) {
+  async put(value: JsonValue, updatedAt = Date.now(), expiresAt?: number) {
     if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-      await this.putChildValues(value, updatedAt);
+      await this.putChildValues(value, updatedAt, expiresAt);
     } else {
-      await this.putValue(value, updatedAt);
+      await this.putValue(value, updatedAt, expiresAt);
     }
 
     if (this.parent) {

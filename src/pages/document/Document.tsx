@@ -1,5 +1,7 @@
-import { ChangeEventHandler, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
+import ContentEditable from 'react-contenteditable';
 import { useParams } from 'react-router-dom';
+import sanitizeHtml from 'sanitize-html';
 
 import useAuthors from '@/irisdb/useAuthors.ts';
 import { useLocalState, usePublicState } from '@/irisdb/useNodeState.ts';
@@ -13,31 +15,24 @@ export default function Document() {
     user !== 'follows' ? `${docName}/writers` : undefined,
   );
   const editable = authors.includes(myPubKey);
-  const [text, setText] = usePublicState(authors, `${docName}/text`, '');
+  const [content, setContent] = usePublicState(authors, `${docName}/content`, '');
 
-  const moveCursorToEnd = (element: HTMLDivElement) => {
-    const range = document.createRange();
-    const selection = window.getSelection();
+  const onContentChange = useCallback((evt: { currentTarget: { innerHTML: string } }) => {
+    const sanitizeConf = {
+      allowedTags: ['b', 'i', 'a', 'p'],
+      allowedAttributes: { a: ['href'] },
+    };
 
-    range.selectNodeContents(element);
-    range.collapse(false);
-    selection?.removeAllRanges();
-    selection?.addRange(range);
-  };
-
-  const onInput: ChangeEventHandler<HTMLDivElement> = (e) => {
-    setText(e.currentTarget.textContent || '');
-    moveCursorToEnd(e.currentTarget);
-  };
+    setContent(sanitizeHtml(evt.currentTarget.innerHTML, sanitizeConf));
+  }, []);
 
   return (
-    <div
-      className="flex flex-1 flex-col p-4 outline-none"
+    <ContentEditable
       contentEditable={editable}
-      suppressContentEditableWarning
-      onInput={onInput}
-    >
-      {text}
-    </div>
+      onChange={onContentChange}
+      onBlur={onContentChange}
+      html={content}
+      className="flex flex-1 flex-col p-4 outline-none"
+    />
   );
 }

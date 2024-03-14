@@ -8,6 +8,7 @@ export type JsonValue = JsonPrimitive | JsonObject | JsonArray | undefined;
 export type NodeValue = {
   updatedAt: number;
   value: JsonValue;
+  expiresAt?: number;
 };
 export type Callback = (
   value: JsonValue,
