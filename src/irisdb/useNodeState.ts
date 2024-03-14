@@ -26,6 +26,7 @@ function useNodeState(node: Node, key: string, initialValue: any = undefined, on
   }, [node, key, once]);
   const setter = useCallback(
     (new_value: JsonValue) => {
+      console.log('setting', key, new_value);
       node.get(key).put(new_value);
     },
     [node, key],

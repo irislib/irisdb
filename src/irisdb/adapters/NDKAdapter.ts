@@ -41,8 +41,15 @@ export default class NDKAdapter extends Adapter {
     }
 
     const seen = this.seenValues.get(path);
-    if (seen && seen.updatedAt <= value.updatedAt) {
-      return;
+    if (seen) {
+      if (seen.updatedAt > value.updatedAt) {
+        return;
+      }
+      if (seen.updatedAt === value.updatedAt) {
+        if ((seen.value || '') > (value.value || '')) {
+          return;
+        }
+      }
     }
     this.seenValues.set(path, value);
 
