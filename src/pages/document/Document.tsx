@@ -28,7 +28,7 @@ export default function Document() {
 
   return (
     <ContentEditable
-      contentEditable={editable}
+      disabled={!editable}
       onChange={onContentChange}
       onBlur={onContentChange}
       html={content}
