@@ -1,7 +1,7 @@
 {
-  "name": "osty",
-  "short_name": "osty",
-  "description": "osty",
+  "name": "Iris Docs",
+  "short_name": "Iris Docs",
+  "description": "Iris Docs",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000",
