@@ -8,15 +8,6 @@ type Props = {
   className?: string;
 };
 
-const copyToClipboard = (str: string) => {
-  const el = document.createElement('textarea');
-  el.value = str;
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand('copy');
-  document.body.removeChild(el);
-};
-
 const Copy = ({ copyStr, text, className }: Props) => {
   const [copied, setCopied] = useState(false);
   const [originalWidth, setOriginalWidth] = useState<number | undefined>(undefined);
@@ -26,7 +17,7 @@ const Copy = ({ copyStr, text, className }: Props) => {
     if (e.target === null) {
       return;
     }
-    copyToClipboard(copyStr);
+    navigator.clipboard.writeText(copyStr);
 
     const target = e.target as HTMLElement;
     const width = target.offsetWidth;

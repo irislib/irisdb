@@ -3,7 +3,7 @@ import { useRef } from 'react';
 
 import { ShareMenuModal } from '@/shared/components/share/ShareMenuModal.tsx';
 
-export default function ShareButton() {
+export default function ShareButton({ file }: { file: string }) {
   const modalRef = useRef<HTMLDialogElement>(null);
 
   return (
@@ -16,7 +16,7 @@ export default function ShareButton() {
         <UserPlusIcon className="w-6 h-6" />
         Share
       </button>
-      <ShareMenuModal modalRef={modalRef} />
+      <ShareMenuModal modalRef={modalRef} file={file} />
     </>
   );
 }

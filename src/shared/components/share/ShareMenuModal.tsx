@@ -8,8 +8,14 @@ import Show from '@/shared/components/Show.tsx';
 import { useLocalState } from '@/state/useNodeState.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
-export function ShareMenuModal({ modalRef }: { modalRef: RefObject<HTMLDialogElement> }) {
-  const { file, user } = useParams();
+export function ShareMenuModal({
+  modalRef,
+  file,
+}: {
+  modalRef: RefObject<HTMLDialogElement>;
+  file: string;
+}) {
+  const { user } = useParams();
   const [myPubKey] = useLocalState('user/publicKey', '');
   const userPublicKey = useMemo(() => {
     if (!user || user === 'follows') return;

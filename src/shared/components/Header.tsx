@@ -5,11 +5,9 @@ import ShareButton from '@/shared/components/share/ShareButton.tsx';
 import Show from '@/shared/components/Show.tsx';
 import UserButton from '@/shared/components/UserButton.tsx';
 import useAuthors from '@/state/useAuthors.ts';
-import { useLocalState } from '@/state/useNodeState.ts';
 
 export default function Header({ file }: { file?: string }) {
   const { user } = useParams();
-  const [pubKey] = useLocalState('user/publicKey', '');
   const authors = useAuthors(user || '', file ? `${file}/writers` : undefined);
 
   if (!user && file) return null;
@@ -27,12 +25,8 @@ export default function Header({ file }: { file?: string }) {
         </Show>
       </div>
       <div className="flex items-center gap-4">
-        <Show when={!!file}>
-          <ShareButton />
-        </Show>
-        <Show when={pubKey || user}>
-          <UserButton />
-        </Show>
+        {file && <ShareButton file={file} />}
+        <UserButton />
       </div>
     </header>
   );

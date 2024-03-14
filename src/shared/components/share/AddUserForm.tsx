@@ -23,7 +23,7 @@ export const AddUserForm = ({ file }: { file: string }) => {
     e.preventDefault();
     if (userToAddValid) {
       publicState([myPubKey])
-        .get(`apps/canvas/documents/${file}/writers/${new PublicKey(userToAdd).toString()}`)
+        .get(`${file}/writers/${new PublicKey(userToAdd).toString()}`)
         .put(true);
       setUserToAdd('');
     }

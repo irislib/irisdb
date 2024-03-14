@@ -16,11 +16,7 @@ type WriteAccessUsersProps = {
 };
 export const WriteAccessUsers = ({ user, isMine, file }: WriteAccessUsersProps) => {
   const [myPubKey] = useLocalState('user/publicKey', '');
-  const docName = useMemo(() => `apps/canvas/documents/${file || 'public'}`, [file]);
-  const authors = useAuthors(
-    user || 'public',
-    user !== 'follows' ? `${docName}/writers` : undefined,
-  );
+  const authors = useAuthors(user || 'public', user !== 'follows' ? `${file}/writers` : undefined);
   const userHex = useMemo(
     () => (user === 'follows' ? '' : new PublicKey(user).toString()),
     [user, myPubKey],
@@ -59,7 +55,7 @@ export const WriteAccessUsers = ({ user, isMine, file }: WriteAccessUsersProps) 
                 type="button"
                 onClick={() => {
                   publicState([new PublicKey(myPubKey)])
-                    .get(`apps/canvas/documents/${file}/writers/${pubKey}`)
+                    .get(`${file}/writers/${pubKey}`)
                     .put(false);
                 }}
               >
