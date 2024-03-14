@@ -22,14 +22,14 @@ export default function CanvasPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <Header />
+      <Header file={file && `apps/canvas/documents/${file}`} />
       <Show when={!pubKey && !user}>
         <div className="flex flex-col items-center justify-center h-full my-4">
           <LoginDialog />
         </div>
       </Show>
       <Show when={!!user && !file}>
-        <FileList />
+        <FileList directory="apps/canvas/documents" baseUrl="/canvas" />
       </Show>
       <Show when={!!(user && file)}>
         <Canvas />

@@ -22,14 +22,14 @@ export default function DocsPage() {
 
   return (
     <div className="flex flex-1 flex-col h-full">
-      <Header />
+      <Header file={file && `apps/docs/documents/${file}`} />
       <Show when={!pubKey && !user}>
         <div className="flex flex-col items-center justify-center h-full my-4">
           <LoginDialog />
         </div>
       </Show>
       <Show when={!!user && !file}>
-        <FileList />
+        <FileList directory="apps/docs/documents" baseUrl="/document" />
       </Show>
       <Show when={!!(user && file)}>
         <Document />

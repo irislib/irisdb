@@ -13,26 +13,20 @@ export default function Document() {
     user !== 'follows' ? `${docName}/writers` : undefined,
   );
   const editable = authors.includes(myPubKey);
-  const [text, setText] = usePublicState(authors, docName, '');
-
-  console.log('text', text);
+  const [text, setText] = usePublicState(authors, `${docName}/text`, '');
 
   const moveCursorToEnd = (element: HTMLDivElement) => {
     const range = document.createRange();
     const selection = window.getSelection();
 
-    range.selectNodeContents(element); // Select the entire content of the element
-    range.collapse(false); // Collapse the range to the end point, false means end of the content
-    selection?.removeAllRanges(); // Remove any existing selections
-    selection?.addRange(range); // Add the new range
+    range.selectNodeContents(element);
+    range.collapse(false);
+    selection?.removeAllRanges();
+    selection?.addRange(range);
   };
 
   const onInput: ChangeEventHandler<HTMLDivElement> = (e) => {
-    // Update text as before
     setText(e.currentTarget.textContent || '');
-
-    // Optionally, move cursor to end
-    // You might want to do this conditionally, depending on your app's logic
     moveCursorToEnd(e.currentTarget);
   };
 

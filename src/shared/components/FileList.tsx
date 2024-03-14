@@ -11,7 +11,7 @@ import useAuthors from '@/state/useAuthors.ts';
 import { useLocalState } from '@/state/useNodeState.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
-export function FileList() {
+export function FileList({ directory, baseUrl }: { directory: string; baseUrl: string }) {
   const { user } = useParams();
   const [files, setFiles] = useState(new Map<string, string>());
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export function FileList() {
 
   useEffect(() => {
     return publicState(authors.map((author) => new PublicKey(author)))
-      .get('apps/canvas/documents')
+      .get(directory)
       .map((value, path) => {
         // Type guard to ensure 'value' is an object with a 'name' property
         if (typeof value === 'object' && value !== null && 'name' in value) {
@@ -43,7 +43,7 @@ export function FileList() {
   const createNew = (e: FormEvent) => {
     e.preventDefault();
     const uid = nanoid();
-    navigate(`/canvas/${user}/${uid}`);
+    navigate(`${baseUrl}/${user}/${uid}`);
   };
 
   const isMine = myPubKey === pubKeyHex;
@@ -66,7 +66,7 @@ export function FileList() {
       <Show when={!isMine && myPubKey}>
         <Link
           className="card card-compact bg-neutral shadow-xl cursor-pointer hover:opacity-90"
-          to={`/canvas`}
+          to={baseUrl}
         >
           <div className="card-body">
             <div className="flex flex-row items-center gap-2 justify-between">
@@ -83,7 +83,7 @@ export function FileList() {
       <Show when={myPubKey && user !== 'follows'}>
         <Link
           className="card card-compact bg-neutral shadow-xl cursor-pointer hover:opacity-90"
-          to={`/canvas/follows`}
+          to={`${baseUrl}/follows`}
         >
           <div className="card-body">
             <div className="flex flex-row items-center gap-2 justify-between">
@@ -119,21 +119,21 @@ export function FileList() {
             <div>
               <button className="btn btn-outline" onClick={createNew}>
                 <PlusIcon className="w-6 h-6" />
-                Create new canvas
+                Create new
               </button>
             </div>
           </Show>
           {Array.from(files.entries()).map((file) => (
             <Link
-              to={`/canvas/${user}/${file[0].split('/').pop()}`}
+              to={`${baseUrl}/${user}/${file[0].split('/').pop()}`}
               key={file[0]}
               className="font-bold p-2 border-b border-neutral-content/10 hover:bg-neutral-content/10 hover:rounded-md hover:border-b-transparent justify-between flex items-center gap-2"
             >
-              {file[1] || 'Untitled canvas'}
+              {file[1] || 'Untitled'}
               <Show when={isMine}>
                 <button
                   className="btn btn-circle btn-ghost btn-sm"
-                  onClick={(event) => deleteFile(file[0], file[1] || 'Untitled canvas', event)}
+                  onClick={(event) => deleteFile(file[0], file[1] || 'Untitled', event)}
                 >
                   <TrashIcon className="w-4 h-4" />
                 </button>

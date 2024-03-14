@@ -2,7 +2,7 @@ import { nip19 } from 'nostr-tools';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import LoginDialog from '@/shared/components/LoginDialog.tsx';
+import Header from '@/shared/components/Header.tsx';
 import localState from '@/state/LocalState.ts';
 import publicState from '@/state/PublicState.ts';
 import { useLocalState } from '@/state/useNodeState.ts';
@@ -32,9 +32,7 @@ const Explorer = ({ p }: Props) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="px-2 md:px-0">
-        <LoginDialog />
-      </div>
+      <Header />
       <div>{p}</div>
       <div className="mb-4">
         <ExplorerNode expanded={true} name="Local state" node={localState} />
