@@ -158,7 +158,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
             }
             return (
               <Link
-                to={`${baseUrl}/${user}/${file.name.split('/').pop()}`}
+                to={`${baseUrl}/${user}/${path.split('/').pop()}`}
                 key={path}
                 className="font-bold p-2 border-b border-neutral-content/10 hover:bg-neutral-content/10 hover:rounded-md hover:border-b-transparent justify-between flex items-center gap-2"
               >
