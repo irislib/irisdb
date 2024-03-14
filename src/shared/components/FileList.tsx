@@ -8,12 +8,20 @@ import publicState from '@/irisdb/PublicState.ts';
 import useAuthors from '@/irisdb/useAuthors.ts';
 import { useLocalState } from '@/irisdb/useNodeState.ts';
 import Show from '@/shared/components/Show.tsx';
+import { UpdatedAt } from '@/shared/components/UpdatedAt.tsx';
 import { UserRow } from '@/shared/components/user/UserRow.tsx';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
+type FileListItem = {
+  name: string;
+  updatedAt?: number;
+};
+
 export function FileList({ directory, baseUrl }: { directory: string; baseUrl: string }) {
   const { user } = useParams();
-  const [files, setFiles] = useState(new Map<string, string>());
+  const [files, setFiles] = useState(new Map<string, FileListItem>());
+  const [sortBy] = useState<keyof FileListItem>('updatedAt');
+  const [sortDesc] = useState(true);
   const navigate = useNavigate();
   const [myPubKey] = useLocalState('user/publicKey', '');
   const pubKeyHex = useMemo(
@@ -22,13 +30,33 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
   );
   const authors = useAuthors(user);
 
+  const sortedFilePaths = useMemo(() => {
+    return Array.from(files.keys()).sort((a, b) => {
+      const aItem = files.get(a);
+      const bItem = files.get(b);
+      if (!aItem || !bItem) {
+        return 0;
+      }
+      if (aItem[sortBy] === bItem[sortBy]) {
+        return a.localeCompare(b);
+      }
+      // may be sorted by number or string
+      const aVal = aItem[sortBy] || -1;
+      const bVal = bItem[sortBy] || -1;
+      return sortDesc ? (aVal > bVal ? -1 : 1) : aVal > bVal ? 1 : -1;
+    });
+  }, [files, sortBy]);
+
   useEffect(() => {
     return publicState(authors.map((author) => new PublicKey(author)))
       .get(directory)
-      .map((value, path) => {
+      .map((value, path, updatedAt) => {
         // Type guard to ensure 'value' is an object with a 'name' property
         if (typeof value === 'object' && value !== null && 'name' in value) {
-          setFiles((files) => new Map(files.set(path, (value.name as string) || '')));
+          setFiles((files) => {
+            const item = { name: (value.name as string) || '', updatedAt };
+            return new Map(files.set(path, item));
+          });
         }
         if (value === null) {
           setFiles((files) => {
@@ -123,23 +151,34 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
               </button>
             </div>
           </Show>
-          {Array.from(files.entries()).map((file) => (
-            <Link
-              to={`${baseUrl}/${user}/${file[0].split('/').pop()}`}
-              key={file[0]}
-              className="font-bold p-2 border-b border-neutral-content/10 hover:bg-neutral-content/10 hover:rounded-md hover:border-b-transparent justify-between flex items-center gap-2"
-            >
-              {file[1] || 'Untitled'}
-              <Show when={isMine}>
-                <button
-                  className="btn btn-circle btn-ghost btn-sm"
-                  onClick={(event) => deleteFile(file[0], file[1] || 'Untitled', event)}
-                >
-                  <TrashIcon className="w-4 h-4" />
-                </button>
-              </Show>
-            </Link>
-          ))}
+          {sortedFilePaths.map((path) => {
+            const file = files.get(path);
+            if (!file) {
+              return null;
+            }
+            return (
+              <Link
+                to={`${baseUrl}/${user}/${file.name.split('/').pop()}`}
+                key={path}
+                className="font-bold p-2 border-b border-neutral-content/10 hover:bg-neutral-content/10 hover:rounded-md hover:border-b-transparent justify-between flex items-center gap-2"
+              >
+                <div className="flex-1">{file.name || 'Untitled'}</div>
+                {file.updatedAt && (
+                  <span className="text-neutral-content">
+                    <UpdatedAt updatedAt={file.updatedAt} />
+                  </span>
+                )}
+                <Show when={isMine}>
+                  <button
+                    className="btn btn-circle btn-ghost btn-sm"
+                    onClick={(event) => deleteFile(path, file.name || 'Untitled', event)}
+                  >
+                    <TrashIcon className="w-4 h-4" />
+                  </button>
+                </Show>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>
