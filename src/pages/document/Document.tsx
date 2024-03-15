@@ -32,7 +32,7 @@ export default function Document() {
       onChange={onContentChange}
       onBlur={onContentChange}
       html={content}
-      className="flex flex-1 flex-col p-4 outline-none"
+      className="flex flex-1 flex-col p-4 outline-none whitespace-pre-wrap"
     />
   );
 }

@@ -22,6 +22,12 @@ export default function NodeValue({
     setEditing(false);
   };
 
+  const onClick = () => {
+    if (!editable) return;
+    setNewValue(value);
+    setEditing(true);
+  };
+
   const debouncedSetValue = useMemo(() => debounce(setValue, 500), [setValue]);
 
   if (editing) {
@@ -42,7 +48,7 @@ export default function NodeValue({
   }
 
   return (
-    <span onClick={() => editable && setEditing(true)} className="cursor-pointer">
+    <span onClick={onClick} className="cursor-pointer">
       <Show when={value}>{value}</Show>
       <Show when={!value}>
         <span className="italic text-neutral-content">Untitled</span>
