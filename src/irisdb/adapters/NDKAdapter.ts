@@ -8,6 +8,9 @@ const EVENT_KIND = 30078;
 
 const log = debug('nostree:ndk-adapter');
 
+/**
+ * Stores and syncs data over [Nostr](https://nostr.com/) using the [Nostr Dev Kit](https://github.com/nostr-dev-kit/ndk).
+ */
 export default class NDKAdapter extends Adapter {
   seenValues = new Map<string, NodeValue>();
   ndk: NDK;

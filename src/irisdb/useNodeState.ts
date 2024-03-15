@@ -6,7 +6,15 @@ import publicState from '@/irisdb/PublicState.ts';
 import { JsonValue } from '@/irisdb/types.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
-function useNodeState(node: Node, key: string, initialValue: any = undefined, once = false) {
+/**
+ * Similar to React's useState, but for a Node's value. Lets you easily persist your application state locally or sync it over the network.
+ * @param node
+ * @param key
+ * @param initialValue
+ * @param once
+ * @example const [value, setValue] = useNodeState(publicState, 'apps/canvas/documents/test/name', 'Untitled Canvas'})
+ */
+export function useNodeState(node: Node, key: string, initialValue: any = undefined, once = false) {
   useEffect(() => {
     if (!initialValue) {
       node.get(key).once((val) => {

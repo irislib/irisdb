@@ -13,13 +13,13 @@ import {
   Inspired by https://github.com/amark/gun
  */
 
-type NodeProps = {
+export type NodeProps = {
   id?: string;
   adapters?: Adapter[];
   parent?: Node | null;
 };
 
-type Subscription = {
+export type Subscription = {
   callback: Callback;
   recursion: number;
 };
@@ -34,13 +34,14 @@ export const DIR_VALUE = '__DIR__';
 export default class Node {
   id: string;
   parent: Node | null;
-  children = new Map<string, Node>();
-  // should subscriptions also include the desired level of recursion?
-  on_subscriptions = new Map<number, Subscription>();
-  map_subscriptions = new Map<number, Subscription>();
-  adapters: Adapter[];
+  private children = new Map<string, Node>();
+  private on_subscriptions = new Map<number, Subscription>();
+  private map_subscriptions = new Map<number, Subscription>();
+  private adapters: Adapter[];
   private counter = 0;
 
+  /**
+   */
   constructor({ id = '', adapters, parent = null }: NodeProps = {}) {
     this.id = id;
     this.parent = parent;
@@ -52,7 +53,8 @@ export default class Node {
    *
    * @param key
    * @returns {Node}
-   * @example node.get('users/alice').put({name: 'Alice'})
+   * @example node.get('apps/canvas/documents/test').put({name: 'Test Document'})
+   * @example node.get('apps').get('canvas').get('documents').get('test').on((value) => console.log(`Document name: ${value.name}`))
    */
   get(key: string): Node {
     const splitKey = key.split('/');
@@ -96,7 +98,7 @@ export default class Node {
   /**
    * Set a value to the node. If the value is an object, it will be converted to child nodes.
    * @param value
-   * @example node.get('users').get('alice').put({name: 'Alice'})
+   * @example node.get('apps/canvas/documents/test').put({name: 'Test Canvas'})
    */
   async put(value: JsonValue, updatedAt = Date.now(), expiresAt?: number) {
     if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
@@ -125,9 +127,7 @@ export default class Node {
   }
 
   /**
-   * Callback for all child nodes in the same object
-   * @param callback
-   * @param recursion
+   * Callback that returns all child nodes in the same response object
    */
   open(callback: Callback, recursion = 0): Unsubscribe {
     const aggregated: JsonObject = {};
@@ -144,7 +144,6 @@ export default class Node {
 
   /**
    * Subscribe to a value
-   * @param callback
    */
   on(callback: Callback, returnIfUndefined: boolean = false, recursion = 1): Unsubscribe {
     let latestValue: NodeValue | null = null;

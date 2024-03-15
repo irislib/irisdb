@@ -1,5 +1,8 @@
 import { Adapter, Callback, NodeValue, Unsubscribe } from '@/irisdb/types.ts';
 
+/**
+ * An adapter that stores data in the browser's local storage and memory.
+ */
 export default class LocalStorageMemoryAdapter extends Adapter {
   private storage = new Map<string, NodeValue>();
   private isLoaded = false;

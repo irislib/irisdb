@@ -1,5 +1,8 @@
 import { Adapter, Callback, NodeValue, Unsubscribe } from '@/irisdb/types.ts';
 
+/**
+ * Memory-only adapter
+ */
 export default class MemoryAdapter extends Adapter {
   private storage = new Map<string, NodeValue>();
 
