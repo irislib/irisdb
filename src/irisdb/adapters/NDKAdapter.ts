@@ -62,14 +62,14 @@ export default class NDKAdapter extends Adapter {
     const e = new NDKEvent(this.ndk);
     e.kind = EVENT_KIND;
     e.content = JSON.stringify(value.value);
-    e.created_at = Math.ceil(value.updatedAt / 1000);
+    e.created_at = Math.floor(value.updatedAt / 1000);
     e.tags = [
       ['d', path],
       ['f', directory],
     ];
     if (value.expiresAt) {
       // NIP-40
-      e.tags.push(['expiration', Math.ceil(value.expiresAt / 1000).toString()]);
+      e.tags.push(['expiration', Math.floor(value.expiresAt / 1000).toString()]);
     }
     try {
       await e.publish();
