@@ -1,5 +1,5 @@
 import { RefObject, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { useLocalState } from '@/irisdb/useNodeState.ts';
 import CopyButton from '@/shared/components/CopyButton.tsx';
@@ -37,7 +37,22 @@ export function ShareMenuModal({
         </Show>
         <h3 className="text-xl">People with write access</h3>
         <WriteAccessUsers user={user || 'follows'} isMine={isMine} file={file} />
-        <h3 className="text-xl">Read access: public</h3>
+        <h3 className="text-xl">
+          Read access: <span className="text-primary">public</span>
+        </h3>
+        <Show when={user !== 'follows'}>
+          <h3 className="text-xl">Other versions</h3>
+          <ul className="list-disc list-inside">
+            <li>
+              <Link
+                to={`/${window.location.pathname.split('/')[1]}/follows/${file.split('/').pop()}`}
+                className="link link-accent"
+              >
+                Editable by your followed users
+              </Link>
+            </li>
+          </ul>
+        </Show>
         <div className="flex flex-row gap-4 justify-between">
           <CopyButton copyStr={window.location.href} text="Copy link" className="btn btn-neutral" />
           <button
