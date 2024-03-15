@@ -40,7 +40,18 @@ export function ShareMenuModal({
         <h3 className="text-xl">
           Read access: <span className="text-primary">public</span>
         </h3>
+        <div className="flex flex-row gap-4 justify-between">
+          <CopyButton copyStr={window.location.href} text="Copy link" className="btn btn-neutral" />
+          <button
+            className="btn btn-primary"
+            type="button"
+            onClick={() => modalRef.current?.close()}
+          >
+            Done
+          </button>
+        </div>
         <Show when={user !== 'follows'}>
+          <hr />
           <h3 className="text-xl">Other versions</h3>
           <ul className="list-disc list-inside">
             <li>
@@ -53,16 +64,6 @@ export function ShareMenuModal({
             </li>
           </ul>
         </Show>
-        <div className="flex flex-row gap-4 justify-between">
-          <CopyButton copyStr={window.location.href} text="Copy link" className="btn btn-neutral" />
-          <button
-            className="btn btn-primary"
-            type="button"
-            onClick={() => modalRef.current?.close()}
-          >
-            Done
-          </button>
-        </div>
       </div>
       <form method="dialog" className="modal-backdrop">
         <button type="button" onClick={() => modalRef.current?.close()}>

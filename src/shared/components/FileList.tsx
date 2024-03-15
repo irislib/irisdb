@@ -93,7 +93,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
     <div className="flex flex-col gap-2 p-4">
       <Show when={!isMine && myPubKey}>
         <Link
-          className="card card-compact bg-neutral shadow-xl cursor-pointer hover:opacity-90"
+          className="card card-compact bg-base-100 shadow-xl cursor-pointer hover:opacity-90"
           to={baseUrl}
         >
           <div className="card-body">
@@ -101,7 +101,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
               <div className="flex items-center gap-2 flex-row">
                 <UserRow pubKey={myPubKey} />
               </div>
-              <span className="text-neutral-content">
+              <span className="text-base-content">
                 <FolderIcon className="w-6 h-6" />
               </span>
             </div>
@@ -110,36 +110,36 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
       </Show>
       <Show when={myPubKey && user !== 'follows'}>
         <Link
-          className="card card-compact bg-neutral shadow-xl cursor-pointer hover:opacity-90"
+          className="card card-compact bg-base-100 shadow-xl cursor-pointer hover:opacity-90"
           to={`${baseUrl}/follows`}
         >
           <div className="card-body">
             <div className="flex flex-row items-center gap-2 justify-between">
               <div className="flex items-center gap-2 flex-row">
                 <UserPlusIcon className="w-6 h-6" />
-                <h2 className="text-xl text-neutral-content">Files by followed users</h2>
+                <h2 className="text-xl text-base-content">Files by followed users</h2>
               </div>
-              <span className="text-neutral-content">
+              <span className="text-base-content">
                 <FolderIcon className="w-6 h-6" />
               </span>
             </div>
           </div>
         </Link>
       </Show>
-      <div className="card bg-neutral shadow-xl card-compact">
+      <div className="card bg-base-100 shadow-xl card-compact">
         <div className="card-body">
           <div className="flex flex-row items-center gap-2 justify-between">
             <div className="flex items-center gap-2 flex-row">
               {user === 'follows' ? (
                 <>
                   <UserPlusIcon className="w-6 h-6" />
-                  <h2 className="text-xl text-neutral-content">Files by followed users</h2>
+                  <h2 className="text-xl text-base-content">Files by followed users</h2>
                 </>
               ) : (
                 <UserRow pubKey={user!} />
               )}
             </div>
-            <span className="text-neutral-content">
+            <span className="text-base-content">
               <FolderOpenIcon className="w-6 h-6" />
             </span>
           </div>
@@ -160,11 +160,11 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
               <Link
                 to={`${baseUrl}/${user}/${path.split('/').pop()}`}
                 key={path}
-                className="font-bold p-2 border-b border-neutral-content/10 hover:bg-neutral-content/10 hover:rounded-md hover:border-b-transparent justify-between flex items-center gap-2"
+                className="font-bold p-2 border-b border-base-content/10 hover:bg-base-content/10 hover:rounded-md hover:border-b-transparent justify-between flex items-center gap-2"
               >
                 <div className="flex-1">{file.name || 'Untitled'}</div>
                 {file.updatedAt && (
-                  <span className="text-neutral-content">
+                  <span className="text-base-content">
                     <UpdatedAt updatedAt={file.updatedAt} />
                   </span>
                 )}

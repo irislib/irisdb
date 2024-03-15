@@ -70,7 +70,7 @@ export default function LoginDialog() {
   }
 
   return (
-    <div className="flex flex-row items-center gap-2 justify-between card card-compact bg-neutral">
+    <div className="flex flex-row items-center gap-2 justify-between card card-compact bg-base-100">
       <div className="card-body">
         <Show when={!publicKey}>
           <div className="flex flex-col gap-2">
@@ -115,7 +115,7 @@ export default function LoginDialog() {
               <button className="btn btn-sm btn-secondary" onClick={() => copyPrivateKey()}>
                 Copy secret key
               </button>
-              <span className={'text-xs text-neutral-content'}>
+              <span className={'text-xs text-base-content'}>
                 Secret key grants full access to your account. Keep it safe.
               </span>
             </Show>

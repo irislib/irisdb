@@ -51,7 +51,7 @@ export default function NodeValue({
     <span onClick={onClick} className="cursor-pointer">
       <Show when={value}>{value}</Show>
       <Show when={!value}>
-        <span className="italic text-neutral-content">Untitled</span>
+        <span className="italic text-base-content">Untitled</span>
       </Show>
     </span>
   );

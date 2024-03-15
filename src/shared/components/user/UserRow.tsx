@@ -8,7 +8,7 @@ export function UserRow({ pubKey, description }: { pubKey: string; description?:
         <Avatar pubKey={pubKey} />
         <Name pubKey={pubKey} />
       </div>
-      <span className="text-neutral-content">{description}</span>
+      <span className="text-base-content">{description}</span>
     </div>
   );
 }

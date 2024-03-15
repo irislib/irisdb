@@ -25,7 +25,7 @@ export const Avatar = ({ pubKey }: { pubKey: string }) => {
   };
 
   return (
-    <div className="w-12 h-12 rounded-full bg-neutral flex items-center justify-center overflow-hidden border-neutral-content border-2">
+    <div className="w-12 h-12 rounded-full bg-base-100 flex items-center justify-center overflow-hidden border-base-content border-2">
       {image ? (
         <img
           src={image}
