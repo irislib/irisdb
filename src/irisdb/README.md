@@ -16,9 +16,11 @@ It's inspired by [GunDB](https://github.com/amark/gun) and has a similar API.
 
 ```tsx
 import { Node, useNodeState, LocalStorageMemoryAdapter, BroadcastChannelAdapter } from 'irisdb';
+
 const localState = new Node({
   adapters: [new LocalStorageMemoryAdapter(), new BroadcastChannelAdapter()],
 });
+
 const [myPrivateKey, setMyPrivateKey] = useNodeState(localState, 'user/privateKey', '');
 
 if (!myPrivateKey) {
@@ -45,12 +47,15 @@ Uses the [NDK](https://github.com/nostr-dev-kit/ndk) adapter to sync over [Nostr
 ```tsx
 import { Node, useNodeState, MemoryAdapter, NDKAdapter } from 'irisdb';
 import { ndk } from '../my-ndk-singleton';
+
 const myPublicKey = 'npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk';
 const friendPublicKey = 'npub1az9xj85cmxv8e9j9y80lvqp97crsqdu2fpu3srwthd99qfu9qsgstam8y8';
 const authors = [myPublicKey, friendPublicKey];
+
 const publicState = new Node({
   adapters: [new MemoryAdapter(), new NDKAdapter(ndk, authors)],
 });
+
 const path = 'apps/canvas/documents/test1/title';
 const [docName, setDocName] = useNodeState(publicState, path, 'Untitled Document');
 
