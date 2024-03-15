@@ -5,3 +5,17 @@ Collaborative editing tool. Decentralized: accounts are [Nostr](https://nostr.co
 Currently features canvas, text editor and an explorer for the underlying [IrisDB](./src/irisdb/README.md) data structure.
 
 Deployed on [docs.iris.to](https://docs.iris.to/).
+
+## Stack
+* Vite
+* React
+* [Tailwind](https://tailwindcss.com/docs/installation)
+* [DaisyUI](https://daisyui.com/)
+* [IrisDB](./src/irisdb/README.md)
+* [NDK](https://github.com/nostr-dev-kit/ndk) for syncing data over [Nostr](https://nostr.com)
+
+## Development
+```sh
+npm install
+npm run dev
+```

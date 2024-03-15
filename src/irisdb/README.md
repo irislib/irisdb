@@ -1,7 +1,7 @@
 IrisDB
 ======
 IrisDB is a simple treelike data structure whose nodes can be subscribed to. It can be easily synced over different transports.
-
+ 
 For example, it provides a very simple way for local state management in React applications. The state can be optionally persisted in localStorage or synced between browser tabs.
 
 Similarly it can be used for "public state" management to synchronize with other users and devices. You can easily build all kinds of decentralized applications where accounts are public keys.
@@ -56,11 +56,11 @@ const publicState = new Node({
   adapters: [new MemoryAdapter(), new NDKAdapter(ndk, authors)],
 });
 
-const path = 'apps/canvas/documents/test1/title';
-const [docName, setDocName] = useNodeState(publicState, path, 'Untitled Document');
+const titlePath = 'apps/canvas/documents/test1/title';
+const [docName, setDocName] = useNodeState(publicState, titlePath, 'Untitled Document');
 
 publicState.get(path).on((value) => {
-  console.log('Name changed to', value);
+  console.log('Title changed to', value);
 });
 
 return (
