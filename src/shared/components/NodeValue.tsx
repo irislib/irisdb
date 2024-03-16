@@ -1,5 +1,4 @@
-import { debounce } from 'lodash';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import { usePublicState } from '@/irisdb/useNodeState.ts';
 import Show from '@/shared/components/Show.tsx';
@@ -28,8 +27,6 @@ export default function NodeValue({
     setEditing(true);
   };
 
-  const debouncedSetValue = useMemo(() => debounce(setValue, 500), [setValue]);
-
   if (editing) {
     return (
       <input
@@ -39,7 +36,6 @@ export default function NodeValue({
         value={newValue}
         onChange={(e) => {
           setNewValue(e.target.value);
-          debouncedSetValue(e.target.value);
         }}
         onBlur={save}
         onKeyDown={(e) => e.key === 'Enter' && save()}

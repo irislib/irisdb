@@ -41,7 +41,7 @@ export function ShareMenuModal({
           Read access: <span className="text-primary">public</span>
         </h3>
         <div className="flex flex-row gap-4 justify-between">
-          <CopyButton copyStr={window.location.href} text="Copy link" className="btn btn-neutral" />
+          <CopyButton copyStr={window.location.href} text="Copy link" className="btn btn-outline" />
           <button
             className="btn btn-primary"
             type="button"

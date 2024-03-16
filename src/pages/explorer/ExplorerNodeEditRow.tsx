@@ -68,7 +68,7 @@ export const ExplorerNodeEditRow = ({ level, parent }: EditRowProps) => {
           <button type="submit" className="btn btn-sm btn-primary">
             Create
           </button>
-          <button className="btn btn-sm btn-neutral" onClick={() => setShowDirForm(false)}>
+          <button className="btn btn-sm btn-outline" onClick={() => setShowDirForm(false)}>
             Cancel
           </button>
         </form>
@@ -93,7 +93,7 @@ export const ExplorerNodeEditRow = ({ level, parent }: EditRowProps) => {
           <button className="btn btn-sm btn-primary" type="submit">
             Create
           </button>
-          <button className="btn btn-sm btn-neutral" onClick={() => setShowValueForm(false)}>
+          <button className="btn btn-sm btn-outline" onClick={() => setShowValueForm(false)}>
             Cancel
           </button>
         </form>

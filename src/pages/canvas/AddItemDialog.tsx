@@ -53,7 +53,7 @@ export function AddItemDialog({
       <button className="btn btn-primary bg-primary" type="submit">
         Add
       </button>
-      <button className="btn btn-neutral" type="button" onClick={onClose}>
+      <button className="btn btn-outline" type="button" onClick={onClose}>
         Cancel
       </button>
     </form>

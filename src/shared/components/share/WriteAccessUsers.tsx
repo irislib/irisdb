@@ -51,7 +51,7 @@ export const WriteAccessUsers = ({ user, isMine, file }: WriteAccessUsersProps) 
             </div>
             <Show when={isMine}>
               <button
-                className="btn btn-circle btn-sm btn-neutral"
+                className="btn btn-circle btn-sm btn-outline"
                 type="button"
                 onClick={() => {
                   publicState([new PublicKey(myPubKey)])
