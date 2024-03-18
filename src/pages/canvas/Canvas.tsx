@@ -1,6 +1,6 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { throttle } from 'lodash';
-import { nanoid } from 'nanoid';
+import { v4 as uuidv4 } from 'uuid';
 import {
   DragEventHandler,
   FormEvent,
@@ -141,7 +141,7 @@ export default function Canvas() {
 
   function addItemToCanvas(item: Item) {
     if (!editable) return;
-    const id = nanoid();
+    const id = uuidv4();
     const value = JSON.stringify(item);
     publicState([pubKey]).get(docName).get('items').get(id).put(value);
   }

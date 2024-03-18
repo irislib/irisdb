@@ -12,6 +12,7 @@
     "docs": "typedoc --out dist/irisdb src/irisdb/index.ts"
   },
   "dependencies": {
+    "@automerge/automerge": "^2.1.11-richtext-alpha.1",
     "@heroicons/react": "^2.1.1",
     "@nostr-dev-kit/ndk": "^2.5.0",
     "@nostr-dev-kit/ndk-cache-dexie": "^2.2.7",
@@ -20,14 +21,16 @@
     "eslint-plugin-simple-import-sort": "^12.0.0",
     "lodash": "^4.17.21",
     "minidenticons": "^4.2.1",
-    "nanoid": "^5.0.6",
     "nostr-hooks": "^2.3.9",
     "nostr-tools": "^2.3.1",
     "react": "^18.2.0",
     "react-contenteditable": "^3.3.7",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.2",
-    "sanitize-html": "^2.12.1"
+    "sanitize-html": "^2.12.1",
+    "uuid": "^9.0.1",
+    "vite-plugin-top-level-await": "^1.4.1",
+    "vite-plugin-wasm": "^3.3.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
@@ -36,6 +39,7 @@
     "@types/react": "^18.2.63",
     "@types/react-dom": "^18.2.19",
     "@types/sanitize-html": "^2.11.0",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "@vitejs/plugin-react": "^4.2.1",

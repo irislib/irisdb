@@ -1,8 +1,8 @@
 import { FolderIcon } from '@heroicons/react/24/outline';
 import { FolderOpenIcon, PlusIcon, TrashIcon, UserPlusIcon } from '@heroicons/react/24/solid';
-import { nanoid } from 'nanoid';
 import { FormEvent, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 import publicState from '@/irisdb/PublicState.ts';
 import useAuthors from '@/irisdb/useAuthors.ts';
@@ -70,7 +70,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
 
   const createNew = (e: FormEvent) => {
     e.preventDefault();
-    const uid = nanoid();
+    const uid = uuidv4();
     navigate(`${baseUrl}/${user}/${uid}`);
   };
 
