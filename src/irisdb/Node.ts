@@ -195,6 +195,7 @@ export default class Node {
    * @param callback
    */
   map(callback: Callback, recursion = 0): Unsubscribe {
+    // should map be called list? on the other hand, map calls back for each change of child node separately
     const id = this.counter++;
     this.map_subscriptions.set(id, { callback, recursion });
     const latestMap = new Map<string, NodeValue>();
