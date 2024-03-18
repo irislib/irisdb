@@ -1,6 +1,7 @@
 import * as automerge from '@automerge/automerge';
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 import debug from 'debug';
+import { diffChars } from 'diff';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import { useParams } from 'react-router-dom';
@@ -44,9 +45,7 @@ export default function Document() {
             bytes,
           );
 
-          // Update to the latest document state after receiving the sync message
           const newDoc = automerge.clone(receivedDoc);
-
           docRef.current = newDoc;
           syncStateRef.current = newSyncState;
           log('newDoc', newDoc);
@@ -59,23 +58,38 @@ export default function Document() {
 
   const onContentChange = useCallback(
     (evt: ContentEditableEvent) => {
-      const sanitizeConf = {
-        allowedTags: ['b', 'i', 'em', 'strong', 'a', 'p', 'ul', 'ol', 'li'],
-        allowedAttributes: { a: ['href'] },
-      };
-      const sanitizedContent = sanitizeHtml(evt.currentTarget.innerHTML, sanitizeConf);
-
-      // Clone the current document to ensure it's up-to-date
-      let currentDoc = automerge.clone(docRef.current);
-
-      currentDoc = automerge.change(currentDoc, 'Update document content', (doc) => {
-        doc.content.deleteAt(0, doc.content.length);
-        sanitizedContent.split('').forEach((char) => {
-          doc.content.insertAt(doc.content.length, char);
-        });
+      const newContent = sanitizeHtml(evt.currentTarget.textContent, {
+        allowedTags: [],
+        allowedAttributes: {},
       });
 
-      // Update the reference to the current document
+      const diffs = diffChars(content, newContent);
+
+      let currentDoc = automerge.clone(docRef.current);
+      let cursor = 0; // Track the current position in the document
+
+      diffs.forEach((part) => {
+        log('part', part.value);
+        if (part.added) {
+          currentDoc = automerge.change(currentDoc, (doc) => {
+            // Insert the whole string at once at the current cursor position
+            for (let i = 0; i < part.value.length; i++) {
+              doc.content.insertAt(cursor + i, part.value[i]);
+            }
+          });
+          cursor += part.value.length;
+        } else if (part.removed) {
+          currentDoc = automerge.change(currentDoc, (doc) => {
+            // Delete the range of characters
+            for (let i = 0; i < (part.count || 0); i++) {
+              doc.content.deleteAt(cursor);
+            }
+          });
+        } else {
+          cursor += part.count || 0; // Move cursor forward for unchanged parts
+        }
+      });
+
       docRef.current = currentDoc;
 
       const [newSyncState, msg] = automerge.generateSyncMessage(
@@ -90,7 +104,7 @@ export default function Document() {
         publicState(authorPublicKeys).get(`${docName}/edits`).get(uuidv4()).put(hex);
       }
     },
-    [authors, docName],
+    [content, authors, docName],
   );
 
   return (
