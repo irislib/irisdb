@@ -1,6 +1,5 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { throttle } from 'lodash';
-import { v4 as uuidv4 } from 'uuid';
 import {
   DragEventHandler,
   FormEvent,
@@ -11,6 +10,7 @@ import {
   WheelEventHandler,
 } from 'react';
 import { useParams } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 import publicState from '@/irisdb/PublicState';
 import useAuthors from '@/irisdb/useAuthors.ts';
