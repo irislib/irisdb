@@ -43,6 +43,7 @@ export default function useAuthors(ownerOrGroup?: string, groupPath?: string): s
   }, [ownerOrGroup, myPubKey]);
 
   useEffect(() => {
+    setAuthors(new Set(initialAuthors));
     if (!ownerOrGroup || ownerOrGroup === 'follows') return;
     if (groupPath) {
       return publicState([new PublicKey(ownerOrGroup)])
