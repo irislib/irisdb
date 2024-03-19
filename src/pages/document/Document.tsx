@@ -1,4 +1,5 @@
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
+import { debounce } from 'lodash';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import { useParams } from 'react-router-dom';
@@ -70,6 +71,7 @@ export default function Document() {
       .get(`${docName}/edits`)
       .map((update) => {
         if (typeof update === 'string') {
+          console.log('got update');
           const decodedUpdate = hexToBytes(update);
           Y.applyUpdate(docRef.current, decodedUpdate);
         }
@@ -77,6 +79,16 @@ export default function Document() {
 
     return () => unsubscribe();
   }, [authors, docName, user]);
+
+  const sendUpdate = useCallback(
+    debounce(() => {
+      console.log('sending update');
+      const update = Y.encodeStateAsUpdate(docRef.current);
+      const hexUpdate = bytesToHex(update);
+      publicState(authorPublicKeys).get(`${docName}/edits`).get(uuidv4()).put(hexUpdate);
+    }, 1000),
+    [docRef.current, authorPublicKeys, docName],
+  ); // Adjust debounce time (500ms) as needed
 
   const onContentChange = useCallback(
     (evt: ContentEditableEvent) => {
@@ -86,17 +98,18 @@ export default function Document() {
         return;
       }
 
+      setHtmlContent(newContent);
+
       const yText = docRef.current.getText('content');
       docRef.current.transact(() => {
         yText.delete(0, yText.length);
         yText.insert(0, newContent);
       });
 
-      const update = Y.encodeStateAsUpdate(docRef.current);
-      const hexUpdate = bytesToHex(update);
-      publicState(authorPublicKeys).get(`${docName}/edits`).get(uuidv4()).put(hexUpdate);
+      // Call the debounced sendUpdate function instead of directly sending the update
+      sendUpdate();
     },
-    [htmlContent, authors, docName],
+    [htmlContent, sendUpdate],
   );
 
   return (
