@@ -16,7 +16,7 @@ export default function ShareButton({ file }: { file: string }) {
         <UserPlusIcon className="w-6 h-6" />
         Share
       </button>
-      <ShareMenuModal modalRef={modalRef} file={file} />
+      <ShareMenuModal modalRef={modalRef} filePath={file} />
     </>
   );
 }
