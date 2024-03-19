@@ -76,6 +76,7 @@ export default function LoginDialog() {
           <div className="flex flex-col gap-2">
             <form className="flex flex-row items-center gap-2" onSubmit={(e) => onNewUserLogin(e)}>
               <input
+                autoComplete="name"
                 className="input input-sm input-bordered"
                 type="text"
                 placeholder="What's your name?"
@@ -90,6 +91,7 @@ export default function LoginDialog() {
             <div className="flex flex-row items-center gap-2">
               <form onSubmit={(e) => e.preventDefault()}>
                 <input
+                  autoComplete="nsec"
                   type="password"
                   className={classNames('input input-sm input-bordered', {
                     'input-error': inputPrivateKey && inputPrivateKey.length < 60,
