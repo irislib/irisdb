@@ -4,7 +4,6 @@ import MemoryAdapter from '@/irisdb/adapters/MemoryAdapter.ts';
 import NDKAdapter from '@/irisdb/adapters/NDKAdapter.ts';
 
 import Node from './Node';
-export type { NodeProps, Subscription } from './Node';
 export * from '@/irisdb/types.ts';
 export { useNodeState } from '@/irisdb/useNodeState.ts';
 

@@ -5,24 +5,11 @@ import {
   Callback,
   JsonObject,
   JsonValue,
+  NodeProps,
   NodeValue,
+  Subscription,
   Unsubscribe,
 } from '@/irisdb/types.ts';
-
-/**
-  Inspired by https://github.com/amark/gun
- */
-
-export type NodeProps = {
-  id?: string;
-  adapters?: Adapter[];
-  parent?: Node | null;
-};
-
-export type Subscription = {
-  callback: Callback;
-  recursion: number;
-};
 
 export const DIR_VALUE = '__DIR__';
 

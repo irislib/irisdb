@@ -1,3 +1,5 @@
+import Node from '@/irisdb/Node.ts';
+
 export type Unsubscribe = () => void;
 export type JsonPrimitive = string | number | boolean | null;
 export type JsonArray = JsonValue[];
@@ -21,3 +23,17 @@ export abstract class Adapter {
   abstract set(path: string, data: NodeValue): Promise<void>;
   abstract list(path: string, callback: Callback): Unsubscribe;
 }
+
+/**
+ Inspired by https://github.com/amark/gun
+ */
+
+export type NodeProps = {
+  id?: string;
+  adapters?: Adapter[];
+  parent?: Node | null;
+};
+export type Subscription = {
+  callback: Callback;
+  recursion: number;
+};

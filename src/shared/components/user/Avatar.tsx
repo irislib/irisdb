@@ -4,7 +4,7 @@ import MinidenticonImg from '@/shared/components/user/MinidenticonImg.tsx';
 import ndk from '@/shared/ndk.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
-export const Avatar = ({ pubKey }: { pubKey: string }) => {
+export const Avatar = ({ pubKey, className }: { pubKey: string; className?: string }) => {
   const [image, setImage] = useState('');
   const pubKeyHex = useMemo(() => pubKey && new PublicKey(pubKey).toString(), [pubKey]);
 
@@ -25,7 +25,9 @@ export const Avatar = ({ pubKey }: { pubKey: string }) => {
   };
 
   return (
-    <div className="w-12 h-12 rounded-full bg-base-100 flex items-center justify-center overflow-hidden border-base-content border-2">
+    <div
+      className={`${className || 'w-12 h-12'} rounded-full bg-base-100 flex items-center justify-center overflow-hidden border-base-content border-2`}
+    >
       {image ? (
         <img
           src={image}
