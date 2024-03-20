@@ -46,9 +46,9 @@ const sanitize = (html: string): string => {
 export default function Document() {
   const [myPubKey] = useLocalState('user/publicKey', '');
   const { user, file } = useParams();
-  const docName = useMemo(() => `apps/docs/documents/${file || 'public'}`, [file]);
+  const docName = useMemo(() => `apps/docs/documents/${file}`, [file]);
   const authors = useAuthors(
-    user || 'public',
+    user || 'follows',
     user !== 'follows' ? `${docName}/writers` : undefined,
   );
   const editable = authors.includes(myPubKey);
@@ -78,6 +78,8 @@ export default function Document() {
           Y.applyUpdate(docRef.current, decodedUpdate);
         }
       });
+
+    console.log('subscribed to updates', docName, authorPublicKeys, user, myPubKey);
 
     // saving the file to our own recently opened list
     let userHex = user;

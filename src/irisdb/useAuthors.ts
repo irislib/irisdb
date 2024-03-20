@@ -24,18 +24,22 @@ export default function useAuthors(ownerOrGroup?: string, groupPath?: string): s
       const sub = ndk.subscribe({ kinds: [3], authors: [myPubKey] });
       sub.on('event', (event) => {
         if (event.kind === 3) {
-          const newAuthors = new Set([myPubKey]);
+          const newAuthors = new Set(authors);
+          let updated = false;
           event.tags.forEach((tag: NDKTag) => {
             if (tag[0] === 'p') {
               try {
                 new Hex(tag[1], 64);
-                newAuthors.add(tag[1]);
+                if (!newAuthors.has(tag[1])) {
+                  newAuthors.add(tag[1]);
+                  updated = true;
+                }
               } catch (e) {
                 console.error('Invalid public key', tag[1]);
               }
             }
           });
-          setAuthors(newAuthors);
+          if (updated) setAuthors(newAuthors);
         }
       });
       return () => sub.stop();
@@ -43,7 +47,14 @@ export default function useAuthors(ownerOrGroup?: string, groupPath?: string): s
   }, [ownerOrGroup, myPubKey]);
 
   useEffect(() => {
-    setAuthors(new Set(initialAuthors));
+    const initialSet = new Set(initialAuthors);
+    if (
+      !authors ||
+      Array.from(authors).sort().toString() !== Array.from(initialSet).sort().toString()
+    ) {
+      setAuthors(initialSet);
+    }
+
     if (!ownerOrGroup || ownerOrGroup === 'follows') return;
     if (groupPath) {
       return publicState([new PublicKey(ownerOrGroup)])
@@ -51,18 +62,20 @@ export default function useAuthors(ownerOrGroup?: string, groupPath?: string): s
         .map((value, path) => {
           setAuthors((prev) => {
             const key = path.split('/').pop()!;
-            if (!!value === prev.has(key)) return prev; // no state update if value is the same
             const newAuthors = new Set(prev);
-            if (value) {
+            const hasKey = newAuthors.has(key);
+            if (!!value && !hasKey) {
               newAuthors.add(key);
-            } else {
+              return newAuthors;
+            } else if (!value && hasKey) {
               newAuthors.delete(key);
+              return newAuthors;
             }
-            return newAuthors;
+            return prev;
           });
         });
     }
-  }, [ownerOrGroup, groupPath]);
+  }, [ownerOrGroup, groupPath, initialAuthors]);
 
   const arr = useMemo(() => Array.from(authors), [authors]);
 
