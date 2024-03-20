@@ -1,5 +1,6 @@
 import { FolderIcon } from '@heroicons/react/24/outline';
 import { FolderOpenIcon, PlusIcon, TrashIcon, UserPlusIcon } from '@heroicons/react/24/solid';
+import { nip19 } from 'nostr-tools';
 import { FormEvent, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -9,11 +10,14 @@ import useAuthors from '@/irisdb/useAuthors.ts';
 import { useLocalState } from '@/irisdb/useNodeState.ts';
 import Show from '@/shared/components/Show.tsx';
 import { UpdatedAt } from '@/shared/components/UpdatedAt.tsx';
+import { Name } from '@/shared/components/user/Name.tsx';
 import { UserRow } from '@/shared/components/user/UserRow.tsx';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
 type FileListItem = {
   name: string;
+  owner?: string;
+  ownerNpub?: string;
   updatedAt?: number;
 };
 
@@ -52,9 +56,23 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
       .get(directory)
       .map((value, path, updatedAt) => {
         // Type guard to ensure 'value' is an object with a 'name' property
-        if (typeof value === 'object' && value !== null && 'name' in value) {
+        console.log('path', path, 'value', value);
+        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
           setFiles((files) => {
-            const item = { name: (value.name as string) || '', updatedAt };
+            let owner = value.owner as string;
+            let ownerNpub;
+            try {
+              owner = new PublicKey(owner as string).toString();
+              ownerNpub = nip19.npubEncode(owner);
+            } catch (e) {
+              // ignore
+            }
+            const item = {
+              name: (value.name as string) || '',
+              owner,
+              ownerNpub,
+              updatedAt,
+            };
             return new Map(files.set(path, item));
           });
         }
@@ -158,11 +176,16 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
             }
             return (
               <Link
-                to={`${baseUrl}/${user}/${path.split('/').pop()}`}
+                to={`${baseUrl}/${file.ownerNpub || file.owner || user}/${path.split('/').pop()}`}
                 key={path}
-                className="font-bold p-2 border-b border-base-content/10 hover:bg-base-content/10 hover:rounded-md hover:border-b-transparent justify-between flex items-center gap-2"
+                className="p-2 border-b border-base-content/10 hover:bg-base-content/10 hover:rounded-md hover:border-b-transparent justify-between flex items-center gap-4"
               >
-                <div className="flex-1">{file.name || 'Untitled'}</div>
+                <div className="flex-1 font-bold">{file.name || 'Untitled'}</div>
+                {file.owner && (
+                  <span className="text-base-content">
+                    {file.owner === myPubKey ? 'me' : <Name pubKey={file.owner} />}
+                  </span>
+                )}
                 {file.updatedAt && (
                   <span className="text-base-content">
                     <UpdatedAt updatedAt={file.updatedAt} />

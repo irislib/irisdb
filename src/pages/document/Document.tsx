@@ -55,6 +55,7 @@ export default function Document() {
   const [htmlContent, setHtmlContent] = useState('');
 
   const docRef = useRef(new Y.Doc());
+
   useEffect(() => {
     const yText = docRef.current.getText('content');
     const updateContent = () => {
@@ -68,7 +69,8 @@ export default function Document() {
 
   useEffect(() => {
     const unsubscribe = publicState(authorPublicKeys)
-      .get(`${docName}/edits`)
+      .get(docName)
+      .get('edits')
       .map((update) => {
         if (typeof update === 'string') {
           console.log('got update');
@@ -77,8 +79,17 @@ export default function Document() {
         }
       });
 
+    // saving the file to our own recently opened list
+    let userHex = user;
+    try {
+      userHex = new PublicKey(user as string).toString();
+    } catch (e) {
+      // ignore
+    }
+    myPubKey && publicState(authorPublicKeys).get(docName).get('owner').put(userHex);
+
     return () => unsubscribe();
-  }, [authors, docName, user]);
+  }, [authorPublicKeys, docName, user, myPubKey]);
 
   const sendUpdate = useCallback(
     debounce(() => {

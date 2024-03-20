@@ -75,7 +75,7 @@ export function ViewingUsers({ file, authors }: ViewingUsersProps) {
   }, [myPubKey]);
 
   return (
-    <div className="flex flex-row items-center gap-2">
+    <div className="hidden md:flex flex-row items-center gap-2">
       {Array.from(viewingUsers.keys()).map((k) => (
         <Avatar key={k} pubKey={k} className="w-8 h-8" />
       ))}

@@ -17,7 +17,7 @@ export function Name({ pubKey }: { pubKey: string }) {
   }, [pubKeyHex]);
 
   return (
-    <div className="text-base font-bold">
+    <div className="text-base">
       {!name && `${pubKey.slice(0, 6)}...${pubKey.slice(-6)}`}
       {name}
     </div>

@@ -104,7 +104,8 @@ export default function Canvas() {
 
   useEffect(() => {
     setItems(new Map());
-    const unsubscribe = publicState(authors.map((w) => new PublicKey(w)))
+    const pks = authors.map((w) => new PublicKey(w));
+    const unsubscribe = publicState(pks)
       .get(docName)
       .get('items')
       .map((value, key) => {
@@ -124,6 +125,7 @@ export default function Canvas() {
           console.error(e);
         }
       });
+    publicState(pks).get(docName).get('owner').put(user);
     return () => unsubscribe();
   }, [authors, docName]);
 
