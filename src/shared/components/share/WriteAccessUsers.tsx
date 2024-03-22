@@ -1,5 +1,6 @@
 import { TrashIcon } from '@heroicons/react/24/solid';
 import { useMemo } from 'react';
+import {Link, useLocation} from 'react-router-dom';
 
 import publicState from '@/irisdb/PublicState.ts';
 import useAuthors from '@/irisdb/useAuthors.ts';
@@ -21,6 +22,8 @@ export const WriteAccessUsers = ({ user, isMine, file }: WriteAccessUsersProps) 
     () => (user === 'follows' ? '' : new PublicKey(user).toString()),
     [user, myPubKey],
   );
+  const location = useLocation();
+  const basePath = location.pathname.split('/')[1];
 
   if (user === 'follows') {
     // TODO people search & follow here
@@ -41,13 +44,17 @@ export const WriteAccessUsers = ({ user, isMine, file }: WriteAccessUsersProps) 
 
   return (
     <>
-      <UserRow pubKey={user!} description="Owner" />
+      <Link to={`/${basePath}?user=${user}`}>
+        <UserRow pubKey={user!} description="Owner" />
+      </Link>
       {authors
         .filter((pubKey) => pubKey !== userHex)
         .map((pubKey) => (
           <div className="flex flex-row gap-2 items-center" key={pubKey}>
             <div className="flex-1">
-              <UserRow pubKey={pubKey} description="Write access" />
+              <Link to={{ pathname: `/${basePath}}`, search: `?user=${pubKey}` }}>
+                <UserRow pubKey={pubKey} description="Write access" />
+              </Link>
             </div>
             <Show when={isMine}>
               <button

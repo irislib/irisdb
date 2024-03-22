@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import {Link, useLocation, useParams} from 'react-router-dom';
 
 import useAuthors from '@/irisdb/useAuthors.ts';
 import NodeValue from '@/shared/components/NodeValue.tsx';
@@ -18,13 +18,16 @@ export default function Header() {
     () => Array.from(new Set([...authors, ...followedUsers])),
     [authors, followedUsers],
   );
+  const location = useLocation();
+  const basePath = location.pathname.split('/')[1];
+  const link = file ? `/${basePath}` : '/';
 
   if (!user && file) return null;
 
   return (
     <header className="flex items-center justify-between bg-base-100 text-base-content p-2 z-30 select-none">
       <div className="flex items-center gap-4">
-        <Link to="./.." className="flex items-center gap-2">
+        <Link to={link} className="flex items-center gap-2">
           <h1 className="text-2xl text-base-content">Iris Docs</h1>
         </Link>
         <Show when={!!file}>
