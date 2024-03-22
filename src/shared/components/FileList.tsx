@@ -183,9 +183,15 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
               >
                 <div className="flex-1 font-bold">{file.name || 'Untitled'}</div>
                 {file.owner && (
-                  <span className="text-base-content">
-                    {file.owner === myPubKey ? 'me' : <Name pubKey={file.owner} />}
-                  </span>
+                  <Link
+                    to={`${baseUrl}/?user=${file.owner}`}
+                    className="hover:underline"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <span className="text-base-content">
+                      {file.owner === myPubKey ? 'me' : <Name pubKey={file.owner} />}
+                    </span>
+                  </Link>
                 )}
                 {file.updatedAt && (
                   <span className="text-base-content">
