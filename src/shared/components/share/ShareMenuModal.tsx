@@ -1,6 +1,6 @@
 import { nip19 } from 'nostr-tools';
 import { RefObject, useMemo } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { useLocalState } from '@/irisdb/useNodeState.ts';
 import CopyButton from '@/shared/components/CopyButton.tsx';

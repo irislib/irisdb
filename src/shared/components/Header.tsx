@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import useAuthors from '@/irisdb/useAuthors.ts';
 import NodeValue from '@/shared/components/NodeValue.tsx';
@@ -9,8 +9,9 @@ import UserButton from '@/shared/components/UserButton.tsx';
 import { ViewingUsers } from '@/shared/components/ViewingUsers.tsx';
 import useSearchParam from '@/shared/hooks/useSearchParam.ts';
 
-export default function Header({ file }: { file?: string }) {
+export default function Header() {
   const user = useSearchParam('user', 'follows');
+  const { file } = useParams();
   const authors = useAuthors(user || '', file ? `${file}/writers` : undefined);
   const followedUsers = useAuthors('follows');
   const all = useMemo(

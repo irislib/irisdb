@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useLocalState } from '@/irisdb/useNodeState.ts';
 import Document from '@/pages/document/Document.tsx';
 import { FileList } from '@/shared/components/FileList.tsx';
-import Header from '@/shared/components/Header.tsx';
 import LoginDialog from '@/shared/components/LoginDialog.tsx';
 import Show from '@/shared/components/Show.tsx';
 import useSearchParam from '@/shared/hooks/useSearchParam.ts';
@@ -15,7 +14,6 @@ export default function DocsPage() {
 
   return (
     <div className="flex flex-1 flex-col h-full">
-      <Header file={file && `apps/docs/documents/${file}`} />
       <Show when={!pubKey && user === 'follows'}>
         <div className="flex flex-col items-center justify-center h-full my-4">
           <LoginDialog />
