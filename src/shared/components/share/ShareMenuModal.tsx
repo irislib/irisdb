@@ -8,6 +8,7 @@ import { AddUserForm } from '@/shared/components/share/AddUserForm.tsx';
 import { WriteAccessUsers } from '@/shared/components/share/WriteAccessUsers.tsx';
 import Show from '@/shared/components/Show.tsx';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
+import useSearchParam from "@/shared/hooks/useSearchParam.ts";
 
 export function ShareMenuModal({
   modalRef,
@@ -16,7 +17,7 @@ export function ShareMenuModal({
   modalRef: RefObject<HTMLDialogElement>;
   filePath: string;
 }) {
-  const { user } = useParams();
+  const user = useSearchParam('user', 'follows');
   const [myPubKey] = useLocalState('user/publicKey', '');
   const myNpub = useMemo(() => nip19.npubEncode(myPubKey), [myPubKey]);
   const userPublicKey = useMemo(() => {
