@@ -55,7 +55,6 @@ export default function Document() {
   );
   const editable = authors.includes(myPubKey);
   const [htmlContent, setHtmlContent] = useState('');
-  console.log('authors', authors, myPubKey, user, file, docName, 'isEditable', editable);
 
   const docRef = useRef(new Y.Doc());
 
