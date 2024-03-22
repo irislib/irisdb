@@ -41,11 +41,11 @@ export function ViewingUsers({ file, authors }: ViewingUsersProps) {
         return next;
       });
     });
-  }, [file, authors]);
+  }, [file, authors, myPubKey]);
 
   useEffect(() => {
-    if (!myPubKey) return;
     const setViewing = (isViewing = true) => {
+      if (!myPubKey) return;
       const expiresAt = Date.now() + 30000;
       publicState(authors.map((k) => new PublicKey(k)))
         .get(file)

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import {Link, useLocation, useParams} from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 import useAuthors from '@/irisdb/useAuthors.ts';
 import NodeValue from '@/shared/components/NodeValue.tsx';

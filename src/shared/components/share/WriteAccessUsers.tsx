@@ -1,6 +1,6 @@
 import { TrashIcon } from '@heroicons/react/24/solid';
 import { useMemo } from 'react';
-import {Link, useLocation} from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import publicState from '@/irisdb/PublicState.ts';
 import useAuthors from '@/irisdb/useAuthors.ts';
