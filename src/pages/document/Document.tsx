@@ -55,6 +55,7 @@ export default function Document() {
   );
   const editable = authors.includes(myPubKey);
   const [htmlContent, setHtmlContent] = useState('');
+  console.log('authors', authors, myPubKey, user, file, docName, 'isEditable', editable);
 
   const docRef = useRef(new Y.Doc());
 
@@ -75,13 +76,10 @@ export default function Document() {
       .get('edits')
       .map((update) => {
         if (typeof update === 'string') {
-          console.log('got update');
           const decodedUpdate = hexToBytes(update);
           Y.applyUpdate(docRef.current, decodedUpdate);
         }
       });
-
-    console.log('subscribed to updates', docName, authorPublicKeys, user, myPubKey);
 
     // saving the file to our own recently opened list
     let userHex = user;

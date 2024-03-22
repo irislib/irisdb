@@ -24,7 +24,7 @@ export default function useAuthors(ownerOrGroup?: string, groupPath?: string): s
       const sub = ndk.subscribe({ kinds: [3], authors: [myPubKey] });
       sub.on('event', (event) => {
         if (event.kind === 3) {
-          const newAuthors = new Set(authors);
+          const newAuthors = new Set([myPubKey]);
           let updated = false;
           event.tags.forEach((tag: NDKTag) => {
             if (tag[0] === 'p') {
