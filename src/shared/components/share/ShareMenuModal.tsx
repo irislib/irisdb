@@ -7,8 +7,8 @@ import CopyButton from '@/shared/components/CopyButton.tsx';
 import { AddUserForm } from '@/shared/components/share/AddUserForm.tsx';
 import { WriteAccessUsers } from '@/shared/components/share/WriteAccessUsers.tsx';
 import Show from '@/shared/components/Show.tsx';
+import useSearchParam from '@/shared/hooks/useSearchParam.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
-import useSearchParam from "@/shared/hooks/useSearchParam.ts";
 
 export function ShareMenuModal({
   modalRef,

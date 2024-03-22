@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 
 import ndk from '@/shared/ndk.ts';
@@ -18,6 +19,7 @@ export function Name({ pubKey }: { pubKey: string }) {
     return animalName(pubKeyHex);
   }, [pubKey, pubKeyHex]);
   const [name, setName] = useState(initialName);
+  const isPlaceHolder = name === initialName;
 
   useEffect(() => {
     if (!pubKeyHex) {
@@ -31,5 +33,13 @@ export function Name({ pubKey }: { pubKey: string }) {
     });
   }, [pubKeyHex]);
 
-  return <div className="text-base">{name}</div>;
+  return (
+    <div
+      className={classNames({
+        italic: isPlaceHolder,
+      })}
+    >
+      {name}
+    </div>
+  );
 }
