@@ -19,6 +19,7 @@ import { AddItemDialog } from '@/pages/canvas/AddItemDialog.tsx';
 import { ItemComponent } from '@/pages/canvas/ItemComponent.tsx';
 import { Item } from '@/pages/canvas/types.ts';
 import Show from '@/shared/components/Show';
+import useSearchParam from '@/shared/hooks/useSearchParam.ts';
 import { uploadFile } from '@/shared/upload.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
@@ -40,7 +41,8 @@ export default function Canvas() {
     x: window.innerWidth / 2,
     y: window.innerHeight / 2,
   });
-  const { user, file } = useParams();
+  const user = useSearchParam('user', 'follows');
+  const { file } = useParams();
   const [scale, setScale] = useState(1);
   const docName = useMemo(() => `apps/canvas/documents/${file || 'public'}`, [file]);
   const authors = useAuthors(

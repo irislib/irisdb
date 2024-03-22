@@ -1,6 +1,4 @@
-import { nip19 } from 'nostr-tools';
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { useLocalState } from '@/irisdb/useNodeState.ts';
 import Canvas from '@/pages/canvas/Canvas.tsx';
@@ -8,17 +6,12 @@ import { FileList } from '@/shared/components/FileList.tsx';
 import Header from '@/shared/components/Header.tsx';
 import LoginDialog from '@/shared/components/LoginDialog.tsx';
 import Show from '@/shared/components/Show.tsx';
+import useSearchParam from '@/shared/hooks/useSearchParam.ts';
 
 export default function CanvasPage() {
   const [pubKey] = useLocalState('user/publicKey', '');
-  const { user, file } = useParams();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (pubKey && !user) {
-      navigate(`./${nip19.npubEncode(pubKey)}`, { replace: true });
-    }
-  }, [pubKey, user]);
+  const { file } = useParams();
+  const user = useSearchParam('user', 'follows');
 
   return (
     <div className="flex flex-col h-full">

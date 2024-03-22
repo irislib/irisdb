@@ -60,7 +60,7 @@ export function ShareMenuModal({
             <Show when={!isMine}>
               <li>
                 <Link
-                  to={`/${window.location.pathname.split('/')[1]}/${myNpub}/${fileName}`}
+                  to={`/${window.location.pathname.split('/')[1]}/${fileName}?user=${myNpub}`}
                   className="link link-accent"
                 >
                   Owned by you
@@ -70,7 +70,7 @@ export function ShareMenuModal({
             <Show when={user !== 'follows'}>
               <li>
                 <Link
-                  to={`/${window.location.pathname.split('/')[1]}/follows/${fileName}`}
+                  to={`/${window.location.pathname.split('/')[1]}/${fileName}?user=follows`}
                   className="link link-accent"
                 >
                   Editable by your followed users

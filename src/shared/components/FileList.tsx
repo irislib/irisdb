@@ -2,7 +2,7 @@ import { FolderIcon } from '@heroicons/react/24/outline';
 import { FolderOpenIcon, PlusIcon, TrashIcon, UserPlusIcon } from '@heroicons/react/24/solid';
 import { nip19 } from 'nostr-tools';
 import { FormEvent, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import publicState from '@/irisdb/PublicState.ts';
@@ -12,6 +12,7 @@ import Show from '@/shared/components/Show.tsx';
 import { UpdatedAt } from '@/shared/components/UpdatedAt.tsx';
 import { Name } from '@/shared/components/user/Name.tsx';
 import { UserRow } from '@/shared/components/user/UserRow.tsx';
+import useSearchParam from '@/shared/hooks/useSearchParam.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
 type FileListItem = {
@@ -22,7 +23,7 @@ type FileListItem = {
 };
 
 export function FileList({ directory, baseUrl }: { directory: string; baseUrl: string }) {
-  const { user } = useParams();
+  const user = useSearchParam('user', 'follows');
   const [files, setFiles] = useState(new Map<string, FileListItem>());
   const [sortBy] = useState<keyof FileListItem>('updatedAt');
   const [sortDesc] = useState(true);
@@ -89,7 +90,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
   const createNew = (e: FormEvent) => {
     e.preventDefault();
     const uid = uuidv4();
-    navigate(`${baseUrl}/${user}/${uid}`);
+    navigate(`${baseUrl}/${uid}?user=${user}`);
   };
 
   const isMine = myPubKey === pubKeyHex;
@@ -112,7 +113,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
       <Show when={!isMine && myPubKey}>
         <Link
           className="card card-compact bg-base-100 shadow-xl cursor-pointer hover:opacity-90"
-          to={baseUrl}
+          to={`${baseUrl}/?user=${nip19.npubEncode(myPubKey)}`}
         >
           <div className="card-body">
             <div className="flex flex-row items-center gap-2 justify-between">
@@ -129,7 +130,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
       <Show when={myPubKey && user !== 'follows'}>
         <Link
           className="card card-compact bg-base-100 shadow-xl cursor-pointer hover:opacity-90"
-          to={`${baseUrl}/follows`}
+          to={`${baseUrl}/?user=follows`}
         >
           <div className="card-body">
             <div className="flex flex-row items-center gap-2 justify-between">
@@ -161,7 +162,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
               <FolderOpenIcon className="w-6 h-6" />
             </span>
           </div>
-          <Show when={isMine}>
+          <Show when={isMine || user === 'follows'}>
             <div>
               <button className="btn btn-outline" onClick={createNew}>
                 <PlusIcon className="w-6 h-6" />
@@ -176,7 +177,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
             }
             return (
               <Link
-                to={`${baseUrl}/${file.ownerNpub || file.owner || user}/${path.split('/').pop()}`}
+                to={`${baseUrl}/${path.split('/').pop()}?user=${file.ownerNpub || file.owner || user}`}
                 key={path}
                 className="p-2 border-b border-base-content/10 hover:bg-base-content/10 hover:rounded-md hover:border-b-transparent justify-between flex items-center gap-4"
               >

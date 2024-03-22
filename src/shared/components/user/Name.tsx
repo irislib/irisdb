@@ -5,9 +5,17 @@ import { PublicKey } from '@/utils/Hex/Hex.ts';
 
 export function Name({ pubKey }: { pubKey: string }) {
   const [name, setName] = useState('');
-  const pubKeyHex = useMemo(() => pubKey && new PublicKey(pubKey).toString(), [pubKey]);
+  const pubKeyHex = useMemo(() => {
+    if (!pubKey || pubKey === 'follows') {
+      return '';
+    }
+    return new PublicKey(pubKey).toString();
+  }, [pubKey]);
 
   useEffect(() => {
+    if (!pubKeyHex) {
+      setName(pubKey);
+    }
     const user = ndk.getUser({ pubkey: pubKeyHex });
     user.fetchProfile().then((profile) => {
       if (profile) {

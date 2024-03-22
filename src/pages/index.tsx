@@ -8,8 +8,8 @@ import Home from '@/pages/home/Home.tsx';
 export const router = createBrowserRouter(
   createRoutesFromElements([
     <Route path="/" element={<Home />} />,
-    <Route path="/explorer/:user?/:file?" element={<Explorer />} />,
-    <Route path="/canvas/:user?/:file?" element={<CanvasPage />} />,
-    <Route path="/document/:user?/:file?" element={<DocsPage />} />,
+    <Route path="/explorer/:file?" element={<Explorer />} />,
+    <Route path="/canvas/:file?" element={<CanvasPage />} />,
+    <Route path="/document/:file?" element={<DocsPage />} />,
   ]),
 );

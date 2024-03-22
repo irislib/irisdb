@@ -6,7 +6,12 @@ import { PublicKey } from '@/utils/Hex/Hex.ts';
 
 export const Avatar = ({ pubKey, className }: { pubKey: string; className?: string }) => {
   const [image, setImage] = useState('');
-  const pubKeyHex = useMemo(() => pubKey && new PublicKey(pubKey).toString(), [pubKey]);
+  const pubKeyHex = useMemo(() => {
+    if (!pubKey || pubKey === 'follows') {
+      return '';
+    }
+    return new PublicKey(pubKey).toString();
+  }, [pubKey]);
 
   useEffect(() => {
     const fetchImage = async () => {

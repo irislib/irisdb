@@ -10,6 +10,7 @@ import * as Y from 'yjs';
 import publicState from '@/irisdb/PublicState.ts';
 import useAuthors from '@/irisdb/useAuthors.ts';
 import { useLocalState } from '@/irisdb/useNodeState.ts';
+import useSearchParam from '@/shared/hooks/useSearchParam.ts';
 import { PublicKey } from '@/utils/Hex/Hex.ts';
 
 const sanitize = (html: string): string => {
@@ -45,7 +46,8 @@ const sanitize = (html: string): string => {
 
 export default function Document() {
   const [myPubKey] = useLocalState('user/publicKey', '');
-  const { user, file } = useParams();
+  const user = useSearchParam('user', 'follows');
+  const { file } = useParams();
   const docName = useMemo(() => `apps/docs/documents/${file}`, [file]);
   const authors = useAuthors(
     user || 'follows',
