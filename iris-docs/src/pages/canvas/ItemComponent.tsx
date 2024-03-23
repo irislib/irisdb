@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 
-import { Item } from '@/pages/canvas/types.ts';
+import { Item } from '@/pages/canvas/types';
 
 type ItemComponentProps = {
   item: Item;

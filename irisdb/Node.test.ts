@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import MemoryAdapter from 'irisdb/adapters/MemoryAdapter.ts';
-import { Callback, Unsubscribe } from 'irisdb/types.ts';
+import MemoryAdapter from 'irisdb/adapters/MemoryAdapter';
+import { Callback, Unsubscribe } from 'irisdb/types';
 
-import Node, { DIR_VALUE } from './Node.ts';
+import Node, { DIR_VALUE } from './Node';
 
 describe('Node', () => {
   let node: Node;

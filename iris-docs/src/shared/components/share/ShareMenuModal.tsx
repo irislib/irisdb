@@ -1,14 +1,14 @@
+import { useLocalState } from 'irisdb/useNodeState';
+import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
 import { nip19 } from 'nostr-tools';
 import { RefObject, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useLocalState } from 'irisdb/useNodeState.ts';
-import CopyButton from '@/shared/components/CopyButton.tsx';
-import { AddUserForm } from '@/shared/components/share/AddUserForm.tsx';
-import { WriteAccessUsers } from '@/shared/components/share/WriteAccessUsers.tsx';
-import Show from '@/shared/components/Show.tsx';
-import useSearchParam from '@/shared/hooks/useSearchParam.ts';
-import { PublicKey } from '@/utils/Hex/Hex.ts';
+import CopyButton from '@/shared/components/CopyButton';
+import { AddUserForm } from '@/shared/components/share/AddUserForm';
+import { WriteAccessUsers } from '@/shared/components/share/WriteAccessUsers';
+import Show from '@/shared/components/Show';
+import useSearchParam from '@/shared/hooks/useSearchParam';
 
 export function ShareMenuModal({
   modalRef,

@@ -1,10 +1,10 @@
 import classNames from 'classnames';
+import { useLocalState } from 'irisdb/useNodeState';
+import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
+import ndk from 'irisdb-ndk/ndk';
 import { FormEvent, useMemo, useState } from 'react';
 
-import { useLocalState } from 'irisdb/useNodeState.ts';
-import { UserRow } from '@/shared/components/user/UserRow.tsx';
-import ndk from '@/shared/ndk.ts';
-import { PublicKey } from '@/utils/Hex/Hex.ts';
+import { UserRow } from '@/shared/components/user/UserRow';
 
 export const FollowUserForm = () => {
   const [myPubKey] = useLocalState('user/publicKey', '');

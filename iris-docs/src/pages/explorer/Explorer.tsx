@@ -1,11 +1,10 @@
+import localState from 'irisdb/LocalState';
+import { useLocalState } from 'irisdb/useNodeState';
+import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
+import publicState from 'irisdb-ndk/PublicState';
 import { useParams } from 'react-router-dom';
 
-import localState from 'irisdb/LocalState.ts';
-import publicState from 'irisdb/PublicState.ts';
-import { useLocalState } from 'irisdb/useNodeState.ts';
-import { PublicKey } from '@/utils/Hex/Hex.ts';
-
-import ExplorerNode from './ExplorerNode.tsx';
+import ExplorerNode from './ExplorerNode';
 
 type Props = {
   p?: string;

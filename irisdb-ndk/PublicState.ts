@@ -1,9 +1,9 @@
-import MemoryAdapter from 'irisdbadapters/MemoryAdapter.ts';
-import NDKAdapter from 'irisdbadapters/NDKAdapter.ts';
-import ndk from '@/shared/ndk.ts';
-import { PublicKey } from '@/utils/Hex/Hex.ts';
+import MemoryAdapter from 'irisdb/adapters/MemoryAdapter';
+import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
 
-import Node from '../irisdb/Node.ts';
+import Node from '../irisdb/Node';
+import ndk from './ndk';
+import NDKAdapter from './NDKAdapter';
 
 const publicState = (authors: PublicKey[]) =>
   new Node({

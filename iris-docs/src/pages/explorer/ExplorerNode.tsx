@@ -1,13 +1,13 @@
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import { useEffect, useState } from 'react';
 
-import Node, { DIR_VALUE } from 'irisdb/Node.ts';
-import { JsonValue } from 'irisdb/types.ts';
-import Show from '@/shared/components/Show.tsx';
-import { SortedMap } from '@/utils/SortedMap/SortedMap.tsx';
+import Node, { DIR_VALUE } from 'irisdb/Node';
+import { JsonValue } from 'irisdb/types';
+import Show from '@/shared/components/Show';
+import { SortedMap } from '@/utils/SortedMap/SortedMap';
 
-import { ExplorerNodeEditRow } from './ExplorerNodeEditRow.tsx';
-import ExplorerNodeValue from './ExplorerNodeValue.tsx';
+import { ExplorerNodeEditRow } from './ExplorerNodeEditRow';
+import ExplorerNodeValue from './ExplorerNodeValue';
 
 type Props = {
   node: Node;

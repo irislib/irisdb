@@ -1,10 +1,9 @@
-import BroadcastChannelAdapter from 'irisdb/adapters/BroadcastChannelAdapter.ts';
-import LocalStorageMemoryAdapter from 'irisdb/adapters/LocalStorageMemoryAdapter.ts';
-import MemoryAdapter from 'irisdb/adapters/MemoryAdapter.ts';
-import NDKAdapter from 'irisdb/adapters/NDKAdapter.ts';
+import BroadcastChannelAdapter from 'irisdb/adapters/BroadcastChannelAdapter';
+import LocalStorageMemoryAdapter from 'irisdb/adapters/LocalStorageMemoryAdapter';
+import MemoryAdapter from 'irisdb/adapters/MemoryAdapter';
 
-import Node from './Node.ts';
-export * from 'irisdb/types.ts';
-export { useNodeState } from 'irisdb/useNodeState.ts';
+import Node from './Node';
+export * from 'irisdb/types';
+export { useNodeState } from 'irisdb/useNodeState';
 
-export { BroadcastChannelAdapter, LocalStorageMemoryAdapter, MemoryAdapter, NDKAdapter, Node };
+export { BroadcastChannelAdapter, LocalStorageMemoryAdapter, MemoryAdapter, Node };

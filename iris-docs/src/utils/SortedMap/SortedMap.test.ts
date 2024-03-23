@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { SortedMap } from './SortedMap.tsx';
+import { SortedMap } from './SortedMap';
 
 function runTestsForMap(MapConstructor: any, mapName: string) {
   describe(mapName, () => {

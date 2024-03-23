@@ -1,19 +1,19 @@
 import { FolderIcon } from '@heroicons/react/24/outline';
 import { FolderOpenIcon, PlusIcon, TrashIcon, UserPlusIcon } from '@heroicons/react/24/solid';
+import { useLocalState } from 'irisdb/useNodeState';
+import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
+import publicState from 'irisdb-ndk/PublicState';
+import useAuthors from 'irisdb-ndk/useAuthors';
 import { nip19 } from 'nostr-tools';
 import { FormEvent, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-import publicState from 'irisdb/PublicState.ts';
-import useAuthors from 'irisdb/useAuthors.ts';
-import { useLocalState } from 'irisdb/useNodeState.ts';
-import Show from '@/shared/components/Show.tsx';
-import { UpdatedAt } from '@/shared/components/UpdatedAt.tsx';
-import { Name } from '@/shared/components/user/Name.tsx';
-import { UserRow } from '@/shared/components/user/UserRow.tsx';
-import useSearchParam from '@/shared/hooks/useSearchParam.ts';
-import { PublicKey } from '@/utils/Hex/Hex.ts';
+import Show from '@/shared/components/Show';
+import { UpdatedAt } from '@/shared/components/UpdatedAt';
+import { Name } from '@/shared/components/user/Name';
+import { UserRow } from '@/shared/components/user/UserRow';
+import useSearchParam from '@/shared/hooks/useSearchParam';
 
 type FileListItem = {
   name: string;

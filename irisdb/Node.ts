@@ -1,5 +1,5 @@
-import LocalStorageAdapter from 'irisdb/adapters/LocalStorageAdapter.ts';
-import MemoryAdapter from 'irisdb/adapters/MemoryAdapter.ts';
+import LocalStorageAdapter from 'irisdb/adapters/LocalStorageAdapter';
+import MemoryAdapter from 'irisdb/adapters/MemoryAdapter';
 import {
   Adapter,
   Callback,
@@ -9,7 +9,7 @@ import {
   NodeValue,
   Subscription,
   Unsubscribe,
-} from 'irisdb/types.ts';
+} from 'irisdb/types';
 
 export const DIR_VALUE = '__DIR__';
 

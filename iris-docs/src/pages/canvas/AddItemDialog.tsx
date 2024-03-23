@@ -1,6 +1,6 @@
 import { FormEvent, useRef } from 'react';
 
-import { uploadFile } from '@/shared/upload.ts';
+import { uploadFile } from '@/shared/upload';
 
 type AddItemDialogProps = {
   onSubmit: (e?: FormEvent) => void;

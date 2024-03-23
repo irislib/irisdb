@@ -1,7 +1,7 @@
-import BroadcastChannelAdapter from 'irisdb/adapters/BroadcastChannelAdapter.ts';
-import LocalStorageMemoryAdapter from 'irisdb/adapters/LocalStorageMemoryAdapter.ts';
+import BroadcastChannelAdapter from 'irisdb/adapters/BroadcastChannelAdapter';
+import LocalStorageMemoryAdapter from 'irisdb/adapters/LocalStorageMemoryAdapter';
 
-import Node from './Node.ts';
+import Node from './Node';
 
 const NAME = 'localState';
 const localState = new Node({

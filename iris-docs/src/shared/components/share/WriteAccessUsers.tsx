@@ -1,20 +1,21 @@
 import { TrashIcon } from '@heroicons/react/24/solid';
+import { useLocalState } from 'irisdb/useNodeState';
+import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
+import publicState from 'irisdb-ndk/PublicState';
+import useAuthors from 'irisdb-ndk/useAuthors';
 import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import publicState from 'irisdb/PublicState.ts';
-import useAuthors from 'irisdb/useAuthors.ts';
-import { useLocalState } from 'irisdb/useNodeState.ts';
-import { FollowUserForm } from '@/shared/components/share/FollowUserForm.tsx';
-import Show from '@/shared/components/Show.tsx';
-import { UserRow } from '@/shared/components/user/UserRow.tsx';
-import { PublicKey } from '@/utils/Hex/Hex.ts';
+import { FollowUserForm } from '@/shared/components/share/FollowUserForm';
+import Show from '@/shared/components/Show';
+import { UserRow } from '@/shared/components/user/UserRow';
 
 type WriteAccessUsersProps = {
   user: string;
   isMine: boolean;
   file: string;
 };
+
 export const WriteAccessUsers = ({ user, isMine, file }: WriteAccessUsersProps) => {
   const [myPubKey] = useLocalState('user/publicKey', '');
   const authors = useAuthors(user || 'public', user !== 'follows' ? `${file}/writers` : undefined);

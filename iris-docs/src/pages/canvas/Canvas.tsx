@@ -1,4 +1,8 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
+import { useLocalState } from 'irisdb/useNodeState';
+import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
+import publicState from 'irisdb-ndk/PublicState';
+import useAuthors from 'irisdb-ndk/useAuthors';
 import { throttle } from 'lodash';
 import {
   DragEventHandler,
@@ -12,16 +16,12 @@ import {
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-import publicState from 'irisdb/PublicState.ts';
-import useAuthors from 'irisdb/useAuthors.ts';
-import { useLocalState } from 'irisdb/useNodeState.ts';
-import { AddItemDialog } from '@/pages/canvas/AddItemDialog.tsx';
-import { ItemComponent } from '@/pages/canvas/ItemComponent.tsx';
-import { Item } from '@/pages/canvas/types.ts';
-import Show from '@/shared/components/Show.tsx';
-import useSearchParam from '@/shared/hooks/useSearchParam.ts';
-import { uploadFile } from '@/shared/upload.ts';
-import { PublicKey } from '@/utils/Hex/Hex.ts';
+import { AddItemDialog } from '@/pages/canvas/AddItemDialog';
+import { ItemComponent } from '@/pages/canvas/ItemComponent';
+import { Item } from '@/pages/canvas/types';
+import Show from '@/shared/components/Show';
+import useSearchParam from '@/shared/hooks/useSearchParam';
+import { uploadFile } from '@/shared/upload';
 
 const getUrl = (url: string) => {
   try {

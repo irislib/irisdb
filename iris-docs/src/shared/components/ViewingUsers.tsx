@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import publicState from 'irisdb/PublicState.ts';
-import { useLocalState } from 'irisdb/useNodeState.ts';
-import { Avatar } from '@/shared/components/user/Avatar.tsx';
-import { PublicKey } from '@/utils/Hex/Hex.ts';
+import publicState from 'irisdb-ndk/PublicState';
+import { useLocalState } from 'irisdb/useNodeState';
+import { Avatar } from '@/shared/components/user/Avatar';
+import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
 
 interface ViewingUsersProps {
   file: string;

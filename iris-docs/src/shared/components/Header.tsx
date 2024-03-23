@@ -1,13 +1,13 @@
+import useAuthors from 'irisdb-ndk/useAuthors';
 import { useMemo } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
-import useAuthors from 'irisdb/useAuthors.ts';
-import NodeValue from '@/shared/components/NodeValue.tsx';
-import ShareButton from '@/shared/components/share/ShareButton.tsx';
-import Show from '@/shared/components/Show.tsx';
-import UserButton from '@/shared/components/UserButton.tsx';
-import { ViewingUsers } from '@/shared/components/ViewingUsers.tsx';
-import useSearchParam from '@/shared/hooks/useSearchParam.ts';
+import NodeValue from '@/shared/components/NodeValue';
+import ShareButton from '@/shared/components/share/ShareButton';
+import Show from '@/shared/components/Show';
+import UserButton from '@/shared/components/UserButton';
+import { ViewingUsers } from '@/shared/components/ViewingUsers';
+import useSearchParam from '@/shared/hooks/useSearchParam';
 
 export default function Header() {
   const user = useSearchParam('user', 'follows');

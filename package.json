@@ -6,6 +6,9 @@
     "irisdb",
     "irisdb-ndk"
   ],
+  "scripts": {
+    "build": "npm run build --workspace=iris-docs"
+  },
   "devDependencies": {
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",

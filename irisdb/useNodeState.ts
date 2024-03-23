@@ -1,10 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import {useCallback, useEffect, useState} from 'react';
 
-import localState from 'irisdb/LocalState.ts';
-import Node from 'irisdb/Node.ts';
-import publicState from 'irisdb/PublicState.ts';
-import { JsonValue } from 'irisdb/types.ts';
-import { PublicKey } from '@/utils/Hex/Hex.ts';
+import localState from 'irisdb/LocalState';
+import Node from 'irisdb/Node';
+import {JsonValue} from 'irisdb/types';
 
 /**
  * Similar to React's useState, but for a Node's value. Lets you easily persist your application state locally or sync it over the network.
@@ -44,9 +42,4 @@ export function useNodeState(node: Node, key: string, initialValue: any = undefi
 
 export function useLocalState(key: string, initialValue: any = undefined) {
   return useNodeState(localState, key, initialValue);
-}
-
-export function usePublicState(authors: string[], key: string, initialValue: any = undefined) {
-  const node = useMemo(() => publicState(authors.map((a) => new PublicKey(a))), [authors]);
-  return useNodeState(node, key, initialValue);
 }

@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
 
-import { useLocalState } from 'irisdb/useNodeState.ts';
-import Canvas from '@/pages/canvas/Canvas.tsx';
-import { FileList } from '@/shared/components/FileList.tsx';
-import LoginDialog from '@/shared/components/LoginDialog.tsx';
-import Show from '@/shared/components/Show.tsx';
-import useSearchParam from '@/shared/hooks/useSearchParam.ts';
+import { useLocalState } from 'irisdb/useNodeState';
+import Canvas from '@/pages/canvas/Canvas';
+import { FileList } from '@/shared/components/FileList';
+import LoginDialog from '@/shared/components/LoginDialog';
+import Show from '@/shared/components/Show';
+import useSearchParam from '@/shared/hooks/useSearchParam';
 
 export default function CanvasPage() {
   const [pubKey] = useLocalState('user/publicKey', '');

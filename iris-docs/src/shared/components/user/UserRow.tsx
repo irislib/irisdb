@@ -1,5 +1,5 @@
-import { Avatar } from '@/shared/components/user/Avatar.tsx';
-import { Name } from '@/shared/components/user/Name.tsx';
+import { Avatar } from '@/shared/components/user/Avatar';
+import { Name } from '@/shared/components/user/Name';
 
 export function UserRow({ pubKey, description }: { pubKey: string; description?: string }) {
   return (

@@ -1,9 +1,9 @@
 import classNames from 'classnames';
+import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
+import ndk from 'irisdb-ndk/ndk';
 import { useEffect, useMemo, useState } from 'react';
 
-import ndk from '@/shared/ndk.ts';
-import animalName from '@/utils/AnimalName.ts';
-import { PublicKey } from '@/utils/Hex/Hex.ts';
+import animalName from '@/utils/AnimalName';
 
 export function Name({ pubKey }: { pubKey: string }) {
   const pubKeyHex = useMemo(() => {

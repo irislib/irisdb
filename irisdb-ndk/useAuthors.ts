@@ -1,10 +1,11 @@
 import { NDKTag } from '@nostr-dev-kit/ndk';
+import { useLocalState } from 'irisdb/useNodeState';
+import { Hex } from 'irisdb-ndk/Hex/Hex';
+import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
+import publicState from 'irisdb-ndk/PublicState';
 import { useEffect, useMemo, useState } from 'react';
 
-import publicState from 'irisdb/PublicState.ts';
-import { useLocalState } from 'irisdb/useNodeState.ts';
-import ndk from '@/shared/ndk.ts';
-import { Hex, PublicKey } from '@/utils/Hex/Hex.ts';
+import ndk from './ndk';
 
 export default function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] {
   const [myPubKey] = useLocalState('user/publicKey', '');

@@ -1,4 +1,4 @@
-import Node from 'irisdb/Node.ts';
+import Node from 'irisdb/Node';
 
 export type Unsubscribe = () => void;
 export type JsonPrimitive = string | number | boolean | null;

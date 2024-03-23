@@ -1,8 +1,8 @@
+import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
+import ndk from 'irisdb-ndk/ndk';
 import { useEffect, useMemo, useState } from 'react';
 
-import MinidenticonImg from '@/shared/components/user/MinidenticonImg.tsx';
-import ndk from '@/shared/ndk.ts';
-import { PublicKey } from '@/utils/Hex/Hex.ts';
+import MinidenticonImg from '@/shared/components/user/MinidenticonImg';
 
 export const Avatar = ({ pubKey, className }: { pubKey: string; className?: string }) => {
   const [image, setImage] = useState('');

@@ -1,7 +1,7 @@
 import { UserPlusIcon } from '@heroicons/react/24/outline';
 import { useRef } from 'react';
 
-import { ShareMenuModal } from '@/shared/components/share/ShareMenuModal.tsx';
+import { ShareMenuModal } from '@/shared/components/share/ShareMenuModal';
 
 export default function ShareButton({ file }: { file: string }) {
   const modalRef = useRef<HTMLDialogElement>(null);

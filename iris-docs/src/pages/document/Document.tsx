@@ -1,4 +1,8 @@
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
+import { useLocalState } from 'irisdb/useNodeState';
+import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
+import publicState from 'irisdb-ndk/PublicState';
+import useAuthors from 'irisdb-ndk/useAuthors';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
@@ -7,11 +11,7 @@ import sanitizeHtml from 'sanitize-html';
 import { v4 as uuidv4 } from 'uuid';
 import * as Y from 'yjs';
 
-import publicState from 'irisdb/PublicState.ts';
-import useAuthors from 'irisdb/useAuthors.ts';
-import { useLocalState } from 'irisdb/useNodeState.ts';
-import useSearchParam from '@/shared/hooks/useSearchParam.ts';
-import { PublicKey } from '@/utils/Hex/Hex.ts';
+import useSearchParam from '@/shared/hooks/useSearchParam';
 
 const sanitize = (html: string): string => {
   return sanitizeHtml(html, {

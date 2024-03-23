@@ -1,7 +1,7 @@
+import { usePublicState } from 'irisdb-ndk/usePublicState';
 import { useState } from 'react';
 
-import { usePublicState } from 'irisdb/useNodeState.ts';
-import Show from '@/shared/components/Show.tsx';
+import Show from '@/shared/components/Show';
 
 export default function NodeValue({
   authors,

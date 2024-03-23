@@ -1,12 +1,12 @@
 import { hexToBytes } from '@noble/hashes/utils';
 import classNames from 'classnames';
+import { useLocalState } from 'irisdb/useNodeState';
+import { newUserLogin, privateKeyLogin } from 'irisdb-ndk/ndk';
 import { nip19 } from 'nostr-tools';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
-import { useLocalState } from 'irisdb/useNodeState.ts';
-import Show from '@/shared/components/Show.tsx';
-import { UserRow } from '@/shared/components/user/UserRow.tsx';
-import { newUserLogin, privateKeyLogin } from '@/shared/ndk.ts';
+import Show from '@/shared/components/Show';
+import { UserRow } from '@/shared/components/user/UserRow';
 
 const NSEC_NPUB_REGEX = /(nsec1|npub1)[a-zA-Z0-9]{20,65}/gi;
 

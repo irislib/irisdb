@@ -2,9 +2,9 @@ import { createBrowserRouter, createRoutesFromElements, Route } from 'react-rout
 
 import CanvasPage from '@/pages/canvas';
 import DocsPage from '@/pages/document';
-import Explorer from '@/pages/explorer/Explorer.tsx';
-import Home from '@/pages/home/Home.tsx';
-import Layout from '@/shared/components/Layout.tsx';
+import Explorer from '@/pages/explorer/Explorer';
+import Home from '@/pages/home/Home';
+import Layout from '@/shared/components/Layout';
 
 export const router = createBrowserRouter(
   createRoutesFromElements([
