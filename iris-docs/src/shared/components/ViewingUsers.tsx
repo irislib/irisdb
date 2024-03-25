@@ -1,9 +1,8 @@
+import { useLocalState } from 'irisdb';
+import { PublicKey, publicState } from 'irisdb-ndk';
 import { useEffect, useState } from 'react';
 
-import publicState from 'irisdb-ndk/PublicState';
-import { useLocalState } from 'irisdb/useNodeState';
 import { Avatar } from '@/shared/components/user/Avatar';
-import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
 
 interface ViewingUsersProps {
   file: string;
@@ -50,7 +49,7 @@ export function ViewingUsers({ file, authors }: ViewingUsersProps) {
       publicState(authors.map((k) => new PublicKey(k)))
         .get(file)
         .get('viewing')
-        .get(myPubKey)
+        .get(String(myPubKey))
         .put(isViewing, undefined, expiresAt);
     };
     setViewing();

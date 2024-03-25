@@ -1,4 +1,4 @@
-import { Adapter, Callback, NodeValue, Unsubscribe } from 'irisdb/types';
+import { Adapter, Callback, NodeValue, Unsubscribe } from 'irisdb';
 
 /**
  * Sync between browser tabs over a [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel).

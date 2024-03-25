@@ -1,4 +1,4 @@
-import { useLocalState } from 'irisdb/useNodeState';
+import { useLocalState } from 'irisdb';
 import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
 import { nip19 } from 'nostr-tools';
 import { RefObject, useMemo } from 'react';
@@ -19,7 +19,7 @@ export function ShareMenuModal({
 }) {
   const user = useSearchParam('user', 'follows');
   const [myPubKey] = useLocalState('user/publicKey', '');
-  const myNpub = useMemo(() => nip19.npubEncode(myPubKey), [myPubKey]);
+  const myNpub = useMemo(() => nip19.npubEncode(String(myPubKey)), [myPubKey]);
   const userPublicKey = useMemo(() => {
     if (!user || user === 'follows') return;
     return new PublicKey(user);

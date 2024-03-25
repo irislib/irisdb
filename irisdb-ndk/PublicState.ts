@@ -1,7 +1,6 @@
-import MemoryAdapter from 'irisdb/adapters/MemoryAdapter';
+import { MemoryAdapter, Node } from 'irisdb';
 import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
 
-import Node from '../irisdb/Node';
 import ndk from './ndk';
 import NDKAdapter from './NDKAdapter';
 

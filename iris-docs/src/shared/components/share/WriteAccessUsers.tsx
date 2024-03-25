@@ -1,5 +1,5 @@
 import { TrashIcon } from '@heroicons/react/24/solid';
-import { useLocalState } from 'irisdb/useNodeState';
+import { useLocalState } from 'irisdb';
 import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
 import publicState from 'irisdb-ndk/PublicState';
 import useAuthors from 'irisdb-ndk/useAuthors';
@@ -62,7 +62,7 @@ export const WriteAccessUsers = ({ user, isMine, file }: WriteAccessUsersProps) 
                 className="btn btn-circle btn-sm btn-outline"
                 type="button"
                 onClick={() => {
-                  publicState([new PublicKey(myPubKey)])
+                  publicState([new PublicKey(String(myPubKey))])
                     .get(`${file}/writers/${pubKey}`)
                     .put(false);
                 }}

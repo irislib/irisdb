@@ -1,5 +1,5 @@
 import { NDKTag } from '@nostr-dev-kit/ndk';
-import { useLocalState } from 'irisdb/useNodeState';
+import { useLocalState } from 'irisdb';
 import { Hex } from 'irisdb-ndk/Hex/Hex';
 import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
 import publicState from 'irisdb-ndk/PublicState';
@@ -9,10 +9,10 @@ import ndk from './ndk';
 
 export default function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] {
   const [myPubKey] = useLocalState('user/publicKey', '');
-  const initialAuthors = useMemo(() => {
+  const initialAuthors = useMemo((): string[] => {
     if (!ownerOrGroup) return [];
     if (ownerOrGroup === 'follows') {
-      return myPubKey ? [myPubKey] : [];
+      return myPubKey ? [String(myPubKey)] : [];
     } else {
       const k = new PublicKey(ownerOrGroup);
       return [k.toString()];
@@ -22,10 +22,10 @@ export default function useAuthors(ownerOrGroup?: string, groupPath?: string): s
 
   useEffect(() => {
     if (ownerOrGroup === 'follows') {
-      const sub = ndk.subscribe({ kinds: [3], authors: [myPubKey] });
+      const sub = ndk.subscribe({ kinds: [3], authors: [String(myPubKey)] });
       sub.on('event', (event) => {
         if (event.kind === 3) {
-          const newAuthors = new Set([myPubKey]);
+          const newAuthors = new Set([String(myPubKey)]);
           let updated = false;
           event.tags.forEach((tag: NDKTag) => {
             if (tag[0] === 'p') {

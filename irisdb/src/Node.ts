@@ -1,15 +1,14 @@
-import LocalStorageAdapter from 'irisdb/adapters/LocalStorageAdapter';
-import MemoryAdapter from 'irisdb/adapters/MemoryAdapter';
 import {
   Adapter,
   Callback,
   JsonObject,
   JsonValue,
-  NodeProps,
+  LocalStorageMemoryAdapter,
   NodeValue,
   Subscription,
+  TypeGuard,
   Unsubscribe,
-} from 'irisdb/types';
+} from 'irisdb';
 
 export const DIR_VALUE = '__DIR__';
 
@@ -32,8 +31,7 @@ export default class Node {
   constructor({ id = '', adapters, parent = null }: NodeProps = {}) {
     this.id = id;
     this.parent = parent;
-    this.adapters = adapters ??
-      parent?.adapters ?? [new MemoryAdapter(), new LocalStorageAdapter()];
+    this.adapters = adapters ?? parent?.adapters ?? [new LocalStorageMemoryAdapter()];
   }
 
   /**
@@ -116,8 +114,12 @@ export default class Node {
   /**
    * Callback that returns all child nodes in the same response object
    */
-  open(callback: Callback, recursion = 0): Unsubscribe {
-    const aggregated: JsonObject = {};
+  open<T = JsonValue>(
+    callback: Callback<T>,
+    recursion = 0,
+    typeGuard = (value: Record<string, JsonValue>) => value as T,
+  ): Unsubscribe {
+    const aggregated: Record<string, JsonValue> = {};
     let latestTime: number | undefined;
     return this.map((childValue, path, updatedAt) => {
       if (updatedAt !== undefined && (!latestTime || latestTime < updatedAt)) {
@@ -125,14 +127,19 @@ export default class Node {
       }
       const childName = path.split('/').pop()!;
       aggregated[childName] = childValue;
-      callback(aggregated, this.id, latestTime, () => {});
+      callback(typeGuard(aggregated), this.id, latestTime, () => {});
     }, recursion);
   }
 
   /**
    * Subscribe to a value
    */
-  on(callback: Callback, returnIfUndefined: boolean = false, recursion = 1): Unsubscribe {
+  on<T = JsonValue>(
+    callback: Callback<T>,
+    returnIfUndefined: boolean = false,
+    recursion = 1,
+    typeGuard: TypeGuard<T> = (value: JsonValue) => value as T,
+  ): Unsubscribe {
     let latestValue: NodeValue | null = null;
     let openUnsubscribe: Unsubscribe | undefined;
     const uniqueId = this.counter++;
@@ -156,11 +163,11 @@ export default class Node {
       }
 
       if (value === DIR_VALUE && recursion > 0 && !openUnsubscribe) {
-        openUnsubscribe = this.open(callback, recursion - 1);
+        openUnsubscribe = this.open<T>(callback, recursion - 1, typeGuard);
       }
 
       if (value !== DIR_VALUE || recursion === 0) {
-        callback(value, path, updatedAt, unsubscribe);
+        callback(typeGuard(value), path, updatedAt, unsubscribe);
       }
     };
 
@@ -181,11 +188,18 @@ export default class Node {
    * Callback for each child node
    * @param callback
    */
-  map(callback: Callback, recursion = 0): Unsubscribe {
+  map<T = JsonValue>(
+    callback: Callback<T>,
+    recursion: number = 0,
+    typeGuard: TypeGuard<T> = (value: JsonValue) => value as T,
+  ): Unsubscribe {
     // should map be called list? on the other hand, map calls back for each change of child node separately
     const id = this.counter++;
-    this.map_subscriptions.set(id, { callback, recursion });
-    const latestMap = new Map<string, NodeValue>();
+    const typedCallback: Callback = (value, path, updatedAt, unsubscribe) => {
+      callback(typeGuard(value), path, updatedAt, unsubscribe);
+    };
+    this.map_subscriptions.set(id, { callback: typedCallback, recursion });
+    const latestMap = new Map<string, NodeValue<T | undefined>>();
 
     let adapterSubs: Unsubscribe[] = [];
     const openUnsubs: Record<string, Unsubscribe> = {}; // Changed to a dictionary
@@ -194,7 +208,7 @@ export default class Node {
       adapterSubs.forEach((unsub) => unsub());
     };
 
-    const cb: Callback = (value, path, updatedAt) => {
+    const cb: Callback<T> = (value, path, updatedAt) => {
       const latest = latestMap.get(path);
       if (updatedAt !== undefined && latest && latest.updatedAt >= updatedAt) {
         return;
@@ -205,7 +219,7 @@ export default class Node {
       }
 
       const childName = path.split('/').pop()!;
-      this.get(childName).put(value, updatedAt);
+      this.get(childName).put(value as JsonValue, updatedAt);
 
       if (recursion > 0 && value === DIR_VALUE) {
         if (!openUnsubs[childName]) {
@@ -221,7 +235,12 @@ export default class Node {
       }
     };
 
-    adapterSubs = this.adapters.map((adapter) => adapter.list(this.id, cb));
+    adapterSubs = this.adapters.map((adapter) =>
+      adapter.list(this.id, (value, path, updatedAt) => {
+        cb(typeGuard(value), path, updatedAt);
+        return () => {};
+      }),
+    );
 
     const unsubscribe = () => {
       this.map_subscriptions.delete(id);
@@ -236,17 +255,28 @@ export default class Node {
    * Same as on(), but will unsubscribe after the first callback
    * @param callback
    */
-  once(callback?: Callback, returnIfUndefined = false, recursion = 1): Promise<JsonValue> {
+  once<T = JsonValue>(
+    callback?: Callback<T>,
+    returnIfUndefined = false,
+    recursion = 1,
+    typeGuard = (value: JsonValue) => value as T,
+  ): Promise<T | undefined> {
     return new Promise((resolve) => {
       let resolved = false;
-      const cb: Callback = (value, updatedAt, path, unsub) => {
+      const cb: Callback<T> = (value, updatedAt, path, unsub) => {
         if (resolved) return;
         resolved = true;
         resolve(value);
         callback?.(value, updatedAt, path, () => {});
         unsub();
       };
-      this.on(cb, returnIfUndefined, recursion);
+      this.on(cb, returnIfUndefined, recursion, typeGuard);
     });
   }
 }
+
+export type NodeProps = {
+  id?: string;
+  adapters?: Adapter[];
+  parent?: Node | null;
+};

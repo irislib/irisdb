@@ -1,5 +1,5 @@
 import localState from 'irisdb/LocalState';
-import { useLocalState } from 'irisdb/useNodeState';
+import { useLocalState } from 'irisdb';
 import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
 import publicState from 'irisdb-ndk/PublicState';
 import { useParams } from 'react-router-dom';

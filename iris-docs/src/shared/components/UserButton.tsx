@@ -1,12 +1,12 @@
+import { useLocalState } from 'irisdb';
 import { useCallback, useEffect, useRef } from 'react';
 
-import { useLocalState } from 'irisdb/useNodeState';
 import LoginDialog from '@/shared/components/LoginDialog';
 import Show from '@/shared/components/Show';
 import { Avatar } from '@/shared/components/user/Avatar';
 
 export default function UserButton() {
-  const [pubKey] = useLocalState('user/publicKey', '');
+  const [pubKey] = useLocalState('user/publicKey', '', String);
   const userModal = useRef<HTMLDialogElement>(null);
 
   const showModal = useCallback(() => {
@@ -19,7 +19,7 @@ export default function UserButton() {
 
   return (
     <>
-      <Show when={pubKey}>
+      <Show when={!!pubKey}>
         <div className="ml-2 rounded-full cursor-pointer" onClick={showModal}>
           <Avatar pubKey={pubKey} />
         </div>

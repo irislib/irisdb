@@ -1,6 +1,6 @@
+import { useLocalState } from 'irisdb';
 import { useParams } from 'react-router-dom';
 
-import { useLocalState } from 'irisdb/useNodeState';
 import Document from '@/pages/document/Document';
 import { FileList } from '@/shared/components/FileList';
 import LoginDialog from '@/shared/components/LoginDialog';

@@ -1,6 +1,6 @@
 import { FolderIcon } from '@heroicons/react/24/outline';
 import { FolderOpenIcon, PlusIcon, TrashIcon, UserPlusIcon } from '@heroicons/react/24/solid';
-import { useLocalState } from 'irisdb/useNodeState';
+import { useLocalState } from 'irisdb';
 import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
 import publicState from 'irisdb-ndk/PublicState';
 import useAuthors from 'irisdb-ndk/useAuthors';

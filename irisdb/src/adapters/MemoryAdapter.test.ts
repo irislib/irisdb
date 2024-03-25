@@ -1,7 +1,5 @@
+import { Callback, MemoryAdapter, Unsubscribe } from 'irisdb';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-
-import MemoryAdapter from 'irisdb/adapters/MemoryAdapter';
-import { Callback, Unsubscribe } from 'irisdb/types';
 
 describe('MemoryAdapter', () => {
   let adapter: MemoryAdapter;

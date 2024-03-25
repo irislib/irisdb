@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useLocalState } from 'irisdb/useNodeState';
+import { useLocalState } from 'irisdb';
 import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
 import ndk from 'irisdb-ndk/ndk';
 import { FormEvent, useMemo, useState } from 'react';
@@ -22,7 +22,7 @@ export const FollowUserForm = () => {
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (userToAddValid) {
-      const me = ndk.getUser({ pubkey: myPubKey });
+      const me = ndk.getUser({ pubkey: String(myPubKey) });
       const userToFollow = ndk.getUser({ pubkey: new PublicKey(userToAdd).toString() });
       me.follow(userToFollow);
       setUserToAdd('');

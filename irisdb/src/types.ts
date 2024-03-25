@@ -1,5 +1,3 @@
-import Node from 'irisdb/Node';
-
 export type Unsubscribe = () => void;
 export type JsonPrimitive = string | number | boolean | null;
 export type JsonArray = JsonValue[];
@@ -7,13 +5,13 @@ export interface JsonObject {
   [key: string]: JsonValue;
 }
 export type JsonValue = JsonPrimitive | JsonObject | JsonArray | undefined;
-export type NodeValue = {
+export type NodeValue<T = JsonValue> = {
   updatedAt: number;
-  value: JsonValue;
+  value: T;
   expiresAt?: number;
 };
-export type Callback = (
-  value: JsonValue,
+export type Callback<T = JsonValue> = (
+  value: T | undefined,
   path: string,
   updatedAt: number | undefined,
   unsubscribe: Unsubscribe,
@@ -24,16 +22,8 @@ export abstract class Adapter {
   abstract list(path: string, callback: Callback): Unsubscribe;
 }
 
-/**
- Inspired by https://github.com/amark/gun
- */
-
-export type NodeProps = {
-  id?: string;
-  adapters?: Adapter[];
-  parent?: Node | null;
-};
 export type Subscription = {
   callback: Callback;
   recursion: number;
 };
+export type TypeGuard<T> = (value: JsonValue) => T;

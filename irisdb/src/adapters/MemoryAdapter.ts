@@ -1,4 +1,4 @@
-import { Adapter, Callback, NodeValue, Unsubscribe } from 'irisdb/types';
+import { Adapter, Callback, NodeValue, Unsubscribe } from 'irisdb';
 
 /**
  * Memory-only adapter

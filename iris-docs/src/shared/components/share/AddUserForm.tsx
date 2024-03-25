@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useLocalState } from 'irisdb/useNodeState';
+import { useLocalState } from 'irisdb';
 import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
 import publicState from 'irisdb-ndk/PublicState';
 import { FormEvent, useMemo, useState } from 'react';
@@ -7,7 +7,7 @@ import { FormEvent, useMemo, useState } from 'react';
 import { UserRow } from '@/shared/components/user/UserRow';
 
 export const AddUserForm = ({ file }: { file: string }) => {
-  const [myPubKey] = useLocalState('user/publicKey', '');
+  const [myPubKey] = useLocalState('user/publicKey', '', String);
   const [userToAdd, setUserToAdd] = useState('');
   const userToAddValid = useMemo(() => {
     if (userToAdd === myPubKey) return false;
@@ -22,7 +22,7 @@ export const AddUserForm = ({ file }: { file: string }) => {
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (userToAddValid) {
-      publicState([myPubKey])
+      publicState([new PublicKey(myPubKey)])
         .get(`${file}/writers/${new PublicKey(userToAdd).toString()}`)
         .put(true);
       setUserToAdd('');

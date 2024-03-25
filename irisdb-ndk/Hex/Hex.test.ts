@@ -1,6 +1,5 @@
-import { describe, expect, it } from 'vitest';
-
 import { EventID, PublicKey } from 'irisdb-ndk/Hex/Hex';
+import { describe, expect, it } from 'vitest';
 
 describe('PublicKey', () => {
   it('should convert npub bech32 to hex', () => {

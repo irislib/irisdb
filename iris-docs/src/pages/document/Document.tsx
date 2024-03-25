@@ -1,5 +1,5 @@
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
-import { useLocalState } from 'irisdb/useNodeState';
+import { useLocalState } from 'irisdb';
 import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
 import publicState from 'irisdb-ndk/PublicState';
 import useAuthors from 'irisdb-ndk/useAuthors';
