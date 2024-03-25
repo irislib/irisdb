@@ -1,6 +1,6 @@
 IrisDB
 ======
-IrisDB is a simple treelike data structure whose nodes can be subscribed to. It can be easily synced over different transports.
+IrisDB is a simple treelike data structure with subscribable nodes. It can be easily synced over different transports.
  
 For example, it provides a very simple way for local state management in React applications. The state can be optionally persisted in localStorage or synced between browser tabs.
 
@@ -12,31 +12,29 @@ It's inspired by [GunDB](https://github.com/amark/gun) and has a similar API.
 
 ## Example
 
-### Persist local state in localStorage and sync between tabs
+### Persist React app local state in localStorage and sync between tabs
 
 ```tsx
-import { Node, useNodeState, LocalStorageMemoryAdapter, BroadcastChannelAdapter } from 'irisdb';
+import { useLocalState } from 'irisdb';
 
-const localState = new Node({
-  adapters: [new LocalStorageMemoryAdapter(), new BroadcastChannelAdapter()],
-});
+function LoginDialog() {
+  const [myPrivateKey, setMyPrivateKey] = useLocalState('user/privateKey', '');
 
-const [myPrivateKey, setMyPrivateKey] = useNodeState(localState, 'user/privateKey', '');
-
-if (!myPrivateKey) {
+  if (!myPrivateKey) {
+    return (
+      <div>
+        <input value={myPrivateKey} onChange={e => setMyPrivateKey(e.target.value)} />
+      </div>
+    );
+  }
+    
   return (
     <div>
-      <input value={myPrivateKey} onChange={e => setMyPrivateKey(e.target.value)} />
+      <p>Logged in</p>
+      <button onClick={() => setMyPrivateKey('')}>Log out</button>
     </div>
   );
 }
-
-return (
-  <div>
-    <p>Logged in</p>
-    <button onClick={() => setMyPrivateKey('')}>Log out</button>
-  </div>
-);
 ```
 
 

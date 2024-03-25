@@ -58,7 +58,7 @@ export default function useAuthors(ownerOrGroup?: string, groupPath?: string): s
 
     if (!ownerOrGroup || ownerOrGroup === 'follows') return;
     if (groupPath) {
-      return publicState([ownerOrGroup])
+      return publicState(ownerOrGroup)
         .get(groupPath)
         .map((value, path) => {
           setAuthors((prev) => {

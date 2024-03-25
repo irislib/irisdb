@@ -1,5 +1,5 @@
 import { useLocalState } from 'irisdb/src';
-import { PublicKey, publicState } from 'irisdb-nostr/src';
+import { publicState } from 'irisdb-nostr/src';
 import { useEffect, useState } from 'react';
 
 import { Avatar } from '@/shared/components/user/Avatar';
@@ -14,10 +14,7 @@ export function ViewingUsers({ file, authors }: ViewingUsersProps) {
   const [viewingUsers, setViewingUsers] = useState<Map<string, number>>(new Map());
 
   useEffect(() => {
-    const pks = authors.map((k) => new PublicKey(k));
-    const state = publicState(pks);
-
-    const node = state.get(file).get('viewing');
+    const node = publicState(authors).get(file).get('viewing');
 
     return node.map((isViewing, nodePath, updatedAt) => {
       // TODO we need a way to reliably find out who wrote the value. return nostr event in the callback?

@@ -62,9 +62,7 @@ export const WriteAccessUsers = ({ user, isMine, file }: WriteAccessUsersProps) 
                 className="btn btn-circle btn-sm btn-outline"
                 type="button"
                 onClick={() => {
-                  publicState([new PublicKey(String(myPubKey))])
-                    .get(`${file}/writers/${pubKey}`)
-                    .put(false);
+                  publicState(myPubKey).get(`${file}/writers/${pubKey}`).put(false);
                 }}
               >
                 <TrashIcon className="w-4 h-4" />

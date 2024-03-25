@@ -67,10 +67,8 @@ export default function Document() {
     return () => yText.unobserve(updateContent);
   }, []);
 
-  const authorPublicKeys = useMemo(() => authors.map((a) => new PublicKey(a)), [authors]);
-
   useEffect(() => {
-    const unsubscribe = publicState(authorPublicKeys)
+    const unsubscribe = publicState(authors)
       .get(docName)
       .get('edits')
       .map((update) => {
@@ -87,19 +85,19 @@ export default function Document() {
     } catch (e) {
       // ignore
     }
-    myPubKey && publicState(authorPublicKeys).get(docName).get('owner').put(userHex);
+    myPubKey && publicState(authors).get(docName).get('owner').put(userHex);
 
     return () => unsubscribe();
-  }, [authorPublicKeys, docName, user, myPubKey]);
+  }, [authors, docName, user, myPubKey]);
 
   const sendUpdate = useCallback(
     debounce(() => {
       console.log('sending update');
       const update = Y.encodeStateAsUpdate(docRef.current);
       const hexUpdate = bytesToHex(update);
-      publicState(authorPublicKeys).get(`${docName}/edits`).get(uuidv4()).put(hexUpdate);
+      publicState(authors).get(`${docName}/edits`).get(uuidv4()).put(hexUpdate);
     }, 1000),
-    [docRef.current, authorPublicKeys, docName],
+    [docRef.current, authors, docName],
   ); // Adjust debounce time (500ms) as needed
 
   const onContentChange = useCallback(

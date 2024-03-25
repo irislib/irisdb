@@ -1,6 +1,6 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { useLocalState } from 'irisdb/src';
-import { PublicKey, publicState, useAuthors } from 'irisdb-nostr/src';
+import { publicState, useAuthors } from 'irisdb-nostr/src';
 import { throttle } from 'lodash';
 import {
   DragEventHandler,
@@ -102,28 +102,25 @@ export default function Canvas() {
 
   useEffect(() => {
     setItems(new Map());
-    const pks = authors.map((w) => new PublicKey(w));
-    const unsubscribe = publicState(pks)
-      .get(docName)
-      .get('items')
-      .map((value, key) => {
-        if (typeof key !== 'string') return;
-        const id = key.split('/').pop()!;
-        try {
-          const obj = JSON.parse(value as string);
-          // check it has the correct fields
-          if (
-            typeof obj.x === 'number' &&
-            typeof obj.y === 'number' &&
-            typeof obj.data === 'string'
-          ) {
-            setItems((prev) => new Map(prev).set(id, obj));
-          }
-        } catch (e) {
-          console.error(e);
+    const doc = publicState(authors).get(docName);
+    const unsubscribe = doc.get('items').map((value, key) => {
+      if (typeof key !== 'string') return;
+      const id = key.split('/').pop()!;
+      try {
+        const obj = JSON.parse(value as string);
+        // check it has the correct fields
+        if (
+          typeof obj.x === 'number' &&
+          typeof obj.y === 'number' &&
+          typeof obj.data === 'string'
+        ) {
+          setItems((prev) => new Map(prev).set(id, obj));
         }
-      });
-    publicState(pks).get(docName).get('owner').put(user);
+      } catch (e) {
+        console.error(e);
+      }
+    });
+    doc.get('owner').put(user);
     return () => unsubscribe();
   }, [authors, docName]);
 
@@ -178,11 +175,7 @@ export default function Canvas() {
 
   const throttledSave = useCallback(
     throttle((key, updatedItem) => {
-      publicState([new PublicKey(pubKey)])
-        .get(docName)
-        .get('items')
-        .get(key)
-        .put(JSON.stringify(updatedItem));
+      publicState(pubKey).get(docName).get('items').get(key).put(JSON.stringify(updatedItem));
     }, 200),
     [pubKey],
   );

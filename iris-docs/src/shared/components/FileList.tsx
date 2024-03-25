@@ -53,7 +53,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
   }, [files, sortBy]);
 
   useEffect(() => {
-    return publicState(authors.map((author) => new PublicKey(author)))
+    return publicState(authors)
       .get(directory)
       .map((value, path, updatedAt) => {
         // Type guard to ensure 'value' is an object with a 'name' property
@@ -101,10 +101,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
       if (path[0] === '/') {
         path = path.slice(1);
       }
-      myPubKey &&
-        publicState([new PublicKey(myPubKey)])
-          .get(path)
-          .put(null);
+      myPubKey && publicState(myPubKey).get(path).put(null);
     }
   };
 

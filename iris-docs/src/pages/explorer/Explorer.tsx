@@ -1,5 +1,5 @@
 import { localState, useLocalState } from 'irisdb/src';
-import { PublicKey, publicState } from 'irisdb-nostr/src';
+import { publicState } from 'irisdb-nostr/src';
 import { useParams } from 'react-router-dom';
 
 import ExplorerNode from './ExplorerNode';
@@ -24,20 +24,12 @@ const Explorer = ({ p }: Props) => {
       </div>
       {user && (
         <div className="mb-4">
-          <ExplorerNode
-            expanded={true}
-            name="User public state"
-            node={publicState([new PublicKey(user)])}
-          />
+          <ExplorerNode expanded={true} name="User public state" node={publicState(user)} />
         </div>
       )}
       {!user && pubKey && (
         <div className="mb-4">
-          <ExplorerNode
-            expanded={true}
-            name={publicStateText}
-            node={publicState([new PublicKey(pubKey)])}
-          />
+          <ExplorerNode expanded={true} name={publicStateText} node={publicState(pubKey)} />
         </div>
       )}
     </div>

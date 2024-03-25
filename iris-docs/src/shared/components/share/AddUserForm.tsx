@@ -22,7 +22,7 @@ export const AddUserForm = ({ file }: { file: string }) => {
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (userToAddValid) {
-      publicState([new PublicKey(myPubKey)])
+      publicState(myPubKey)
         .get(`${file}/writers/${new PublicKey(userToAdd).toString()}`)
         .put(true);
       setUserToAdd('');
