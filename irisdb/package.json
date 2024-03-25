@@ -21,7 +21,7 @@
     "url": "https://github.com/irislib/iris/issues"
   },
   "homepage": "https://github.com/irislib/iris/iris-docs",
-  "dependencies": {
+  "devDependencies": {
     "typedoc": "^0.25.12"
   },
   "files": [

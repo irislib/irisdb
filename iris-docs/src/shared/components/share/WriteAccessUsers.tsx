@@ -1,8 +1,8 @@
 import { TrashIcon } from '@heroicons/react/24/solid';
 import { useLocalState } from 'irisdb/src';
-import { PublicKey } from 'irisdb-nostr/Hex/PublicKey';
-import publicState from 'irisdb-nostr/PublicState';
-import useAuthors from 'irisdb-nostr/useAuthors';
+import { PublicKey } from 'irisdb-nostr/src/Hex/PublicKey';
+import publicState from 'irisdb-nostr/src/PublicState';
+import useAuthors from 'irisdb-nostr/src/useAuthors';
 import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
