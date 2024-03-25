@@ -1,4 +1,4 @@
-import { Adapter, Callback, NodeValue } from 'irisdb';
+import {Adapter, NodeValue, Callback} from "../types.ts";
 
 const unsub = () => {};
 

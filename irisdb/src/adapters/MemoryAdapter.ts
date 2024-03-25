@@ -1,6 +1,4 @@
-import { Callback, NodeValue, Unsubscribe } from 'irisdb';
-
-import { Adapter } from '../types.ts';
+import {Adapter, Callback, NodeValue, Unsubscribe} from '../types.ts';
 
 /**
  * Memory-only adapter

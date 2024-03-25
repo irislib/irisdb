@@ -1,7 +1,8 @@
-import { JsonValue, localState, Node, Unsubscribe } from 'irisdb';
 import { useCallback, useEffect, useState } from 'react';
 
-import { TypeGuard } from './types.ts';
+import {JsonValue, TypeGuard, Unsubscribe} from './types.ts';
+import { Node} from './Node.ts';
+import {localState} from "./LocalState.ts";
 
 /**
  * Similar to React's useState, but for a Node's value. Lets you easily persist your application state locally or sync it over the network.

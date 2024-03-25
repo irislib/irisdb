@@ -1,8 +1,8 @@
-import { Callback, MemoryAdapter, Unsubscribe } from 'irisdb';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { MemoryAdapter } from './adapters/MemoryAdapter.ts';
 import { DIRECTORY_VALUE, isDirectory, Node } from './Node';
-import { JsonValue } from './types.ts';
+import { Callback, JsonValue, Unsubscribe } from './types.ts';
 
 describe('Node', () => {
   let node: Node;

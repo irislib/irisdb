@@ -1,6 +1,4 @@
-import { Callback, NodeValue, Unsubscribe } from 'irisdb';
-
-import { Adapter } from '../types';
+import { Adapter, Callback, NodeValue, Unsubscribe } from '../types';
 
 /**
  * An adapter that stores data in the browser's local storage and memory.

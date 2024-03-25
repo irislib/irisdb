@@ -1,14 +1,5 @@
-import {
-  Adapter,
-  Callback,
-  JsonObject,
-  JsonValue,
-  LocalStorageMemoryAdapter,
-  NodeValue,
-  Subscription,
-  TypeGuard,
-  Unsubscribe,
-} from 'irisdb';
+import {Adapter, Callback, JsonObject, JsonValue, NodeValue, Subscription, TypeGuard, Unsubscribe} from "./types.ts";
+import {LocalStorageMemoryAdapter} from "./adapters/LocalStorageMemoryAdapter.ts";
 
 export const DIRECTORY_VALUE = {};
 export const isDirectory = (value: JsonValue) =>

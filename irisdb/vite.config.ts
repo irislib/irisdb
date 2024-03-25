@@ -1,16 +1,22 @@
 import { defineConfig } from 'vitest/config';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   build: {
+    lib: {
+      entry: 'src/index.ts',
+      name: 'irisdb',
+      // The file name for the generated bundle (entry point of your library)
+      fileName: (format) => `irisdb.${format}.js`,
+    },
     rollupOptions: {
+      // Externalize dependencies so they're not bundled into your library
+      external: [],
       output: {
-        manualChunks: {
-          'react-stuff': ['react', 'react-dom', 'react-router-dom'],
-          'nostr-dev-kit': ['@nostr-dev-kit/ndk', '@nostr-dev-kit/ndk-cache-dexie'],
-        },
+        // Provide globals here if necessary
+        globals: {},
       },
     },
+    outDir: 'dist',
   },
   test: {
     environment: 'jsdom',

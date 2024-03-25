@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "type": "module",
   "description": "object-like data structure that can be subscribed to and easily synced over different transports",
-  "main": "src/index.ts",
+  "main": "dist/irisdb.umd.js",
+  "module": "dist/irisdb.es.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "vitest",
-    "docs": "typedoc --out docs ./src/index.ts"
+    "docs": "typedoc --out docs ./src/index.ts",
+    "build": "vite build && tsc"
   },
   "repository": {
     "type": "git",
@@ -15,10 +18,14 @@
   "author": "Martti Malmi",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/irislib/iris-docs/issues"
+    "url": "https://github.com/irislib/iris/issues"
   },
   "homepage": "https://github.com/irislib/iris/iris-docs",
   "dependencies": {
     "typedoc": "^0.25.12"
-  }
+  },
+  "files": [
+    "src",
+    "dist"
+  ]
 }
