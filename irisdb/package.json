@@ -5,7 +5,7 @@
   "description": "object-like data structure that can be subscribed to and easily synced over different transports",
   "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "docs": "typedoc --out docs ./src/index.ts"
   },
   "repository": {
