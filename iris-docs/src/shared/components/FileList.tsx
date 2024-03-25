@@ -28,7 +28,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
   const [sortBy] = useState<keyof FileListItem>('updatedAt');
   const [sortDesc] = useState(true);
   const navigate = useNavigate();
-  const [myPubKey] = useLocalState('user/publicKey', '');
+  const [myPubKey] = useLocalState('user/publicKey', '', String);
   const pubKeyHex = useMemo(
     () => user && user !== 'follows' && new PublicKey(user).toString(),
     [user],
@@ -110,7 +110,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
 
   return (
     <div className="flex flex-col gap-2 p-4">
-      <Show when={!isMine && myPubKey}>
+      <Show when={!isMine && !!myPubKey}>
         <Link
           className="card card-compact bg-base-100 shadow-xl cursor-pointer hover:opacity-90"
           to={`${baseUrl}/?user=${nip19.npubEncode(myPubKey)}`}
@@ -127,7 +127,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
           </div>
         </Link>
       </Show>
-      <Show when={myPubKey && user !== 'follows'}>
+      <Show when={!!myPubKey && user !== 'follows'}>
         <Link
           className="card card-compact bg-base-100 shadow-xl cursor-pointer hover:opacity-90"
           to={`${baseUrl}/?user=follows`}

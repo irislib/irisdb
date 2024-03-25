@@ -3,7 +3,7 @@ import { Adapter, Callback, NodeValue, Unsubscribe } from 'irisdb';
 /**
  * An adapter that stores data in the browser's local storage and memory.
  */
-export default class LocalStorageMemoryAdapter extends Adapter {
+export class LocalStorageMemoryAdapter extends Adapter {
   private storage = new Map<string, NodeValue>();
   private isLoaded = false;
   private loadingPromise: Promise<void>;

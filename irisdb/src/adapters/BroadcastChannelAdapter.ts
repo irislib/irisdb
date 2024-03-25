@@ -1,9 +1,11 @@
-import { Adapter, Callback, NodeValue, Unsubscribe } from 'irisdb';
+import { Callback, NodeValue, Unsubscribe } from 'irisdb';
+
+import { Adapter } from '../types';
 
 /**
  * Sync between browser tabs over a [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel).
  */
-export default class BroadcastChannelAdapter extends Adapter {
+export class BroadcastChannelAdapter extends Adapter {
   channel: BroadcastChannel;
 
   constructor(channelName: string) {

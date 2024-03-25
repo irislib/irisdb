@@ -1,8 +1,6 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { useLocalState } from 'irisdb';
-import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
-import publicState from 'irisdb-ndk/PublicState';
-import useAuthors from 'irisdb-ndk/useAuthors';
+import { PublicKey, publicState, useAuthors } from 'irisdb-ndk';
 import { throttle } from 'lodash';
 import {
   DragEventHandler,
@@ -147,7 +145,11 @@ export default function Canvas() {
     if (!editable) return;
     const id = uuidv4();
     const value = JSON.stringify(item);
-    publicState([pubKey]).get(docName).get('items').get(id).put(value);
+    publicState([new PublicKey(pubKey)])
+      .get(docName)
+      .get('items')
+      .get(id)
+      .put(value);
   }
 
   const handleDragOver: DragEventHandler<HTMLDivElement> = (e) => {
@@ -194,7 +196,11 @@ export default function Canvas() {
 
   const throttledSave = useCallback(
     throttle((key, updatedItem) => {
-      publicState([pubKey]).get(docName).get('items').get(key).put(JSON.stringify(updatedItem));
+      publicState([new PublicKey(pubKey)])
+        .get(docName)
+        .get('items')
+        .get(key)
+        .put(JSON.stringify(updatedItem));
     }, 200),
     [pubKey],
   );
@@ -239,7 +245,7 @@ export default function Canvas() {
         onWheel={handleWheel}
         className="absolute top-0 left-0 right-0 bottom-0 overflow-hidden"
       >
-        <Show when={pubKey}>
+        <Show when={!!pubKey}>
           <div className="fixed bottom-8 right-8 z-20">
             <Show when={showNewItemDialog}>
               <AddItemDialog

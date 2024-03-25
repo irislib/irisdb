@@ -3,7 +3,7 @@ import { Adapter, Callback, NodeValue, Unsubscribe } from 'irisdb';
 /**
  * Memory-only adapter
  */
-export default class MemoryAdapter extends Adapter {
+export class MemoryAdapter extends Adapter {
   private storage = new Map<string, NodeValue>();
 
   get(path: string, callback: Callback): Unsubscribe {

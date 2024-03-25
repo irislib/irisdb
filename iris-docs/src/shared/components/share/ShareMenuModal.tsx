@@ -18,8 +18,8 @@ export function ShareMenuModal({
   filePath: string;
 }) {
   const user = useSearchParam('user', 'follows');
-  const [myPubKey] = useLocalState('user/publicKey', '');
-  const myNpub = useMemo(() => nip19.npubEncode(String(myPubKey)), [myPubKey]);
+  const [myPubKey] = useLocalState('user/publicKey', '', String);
+  const myNpub = useMemo(() => nip19.npubEncode(myPubKey), [myPubKey]);
   const userPublicKey = useMemo(() => {
     if (!user || user === 'follows') return;
     return new PublicKey(user);
@@ -54,7 +54,7 @@ export function ShareMenuModal({
             Done
           </button>
         </div>
-        <Show when={myPubKey}>
+        <Show when={!!myPubKey}>
           <hr />
           <h3 className="text-xl">Other versions</h3>
           <ul className="list-disc list-inside">

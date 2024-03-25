@@ -107,13 +107,13 @@ export default function LoginDialog() {
             </div>
           </div>
         </Show>
-        <Show when={publicKey}>
+        <Show when={!!publicKey}>
           <div className="flex flex-col gap-2">
             <UserRow pubKey={publicKey} />
             <button className="btn btn-sm btn-primary" onClick={() => copyPublicKey()}>
               Copy public key
             </button>
-            <Show when={privateKey}>
+            <Show when={!!privateKey}>
               <button className="btn btn-sm btn-secondary" onClick={() => copyPrivateKey()}>
                 Copy secret key
               </button>

@@ -2,7 +2,7 @@ import { Adapter, Callback, NodeValue } from 'irisdb';
 
 const unsub = () => {};
 
-export default class LocalStorageAdapter extends Adapter {
+export class LocalStorageAdapter extends Adapter {
   get(path: string, callback: Callback) {
     try {
       const storedData = localStorage.getItem(path);

@@ -10,14 +10,14 @@ import {
   Unsubscribe,
 } from 'irisdb';
 
-export const DIR_VALUE = '__DIR__';
+export const DIR_VALUE = '__DIR__'; // should this be {} ?
 
 /**
  * Nodes represent queries into the tree rather than the tree itself. The actual tree data is stored by Adapters.
  *
  * Node can be a branch node or a leaf node. Branch nodes have children, leaf nodes have a value (stored in an adapter).
  */
-export default class Node {
+export class Node {
   id: string;
   parent: Node | null;
   private children = new Map<string, Node>();
@@ -236,8 +236,8 @@ export default class Node {
     };
 
     adapterSubs = this.adapters.map((adapter) =>
-      adapter.list(this.id, (value, path, updatedAt) => {
-        cb(typeGuard(value), path, updatedAt);
+      adapter.list(this.id, (value, path, updatedAt, unsubscribe) => {
+        cb(typeGuard(value), path, updatedAt, unsubscribe);
         return () => {};
       }),
     );

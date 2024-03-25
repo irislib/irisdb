@@ -19,10 +19,10 @@ export default function DocsPage() {
           <LoginDialog />
         </div>
       </Show>
-      <Show when={(pubKey || user !== 'follows') && !file}>
+      <Show when={(!!pubKey || user !== 'follows') && !file}>
         <FileList directory="apps/docs/documents" baseUrl="/document" />
       </Show>
-      <Show when={(pubKey || user !== 'follows') && !!file}>
+      <Show when={(!!pubKey || user !== 'follows') && !!file}>
         <Document />
       </Show>
     </div>

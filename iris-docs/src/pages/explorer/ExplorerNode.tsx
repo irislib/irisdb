@@ -1,6 +1,5 @@
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
-import Node, { DIR_VALUE } from 'irisdb/Node';
-import { JsonValue } from 'irisdb/types';
+import { DIR_VALUE, JsonValue, Node } from 'irisdb';
 import { useEffect, useState } from 'react';
 
 import Show from '@/shared/components/Show';
