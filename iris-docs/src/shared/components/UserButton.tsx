@@ -1,4 +1,4 @@
-import { useLocalState } from 'irisdb';
+import { useLocalState } from 'irisdb/src';
 import { useCallback, useEffect, useRef } from 'react';
 
 import LoginDialog from '@/shared/components/LoginDialog';

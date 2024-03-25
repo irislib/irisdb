@@ -1,4 +1,4 @@
-import {Adapter, NodeValue, Callback} from "../types.ts";
+import { Adapter, Callback, NodeValue } from '../types.ts';
 
 const unsub = () => {};
 

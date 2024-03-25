@@ -1,4 +1,4 @@
-import { usePublicState } from 'irisdb-ndk/usePublicState';
+import { usePublicState } from 'irisdb-nostr/src/usePublicState';
 import { useState } from 'react';
 
 import Show from '@/shared/components/Show';
@@ -45,7 +45,7 @@ export default function NodeValue({
 
   return (
     <span onClick={onClick} className="cursor-pointer">
-      <Show when={value}>{value}</Show>
+      <Show when={!!value}>{value}</Show>
       <Show when={!value}>
         <span className="italic text-base-content">Untitled</span>
       </Show>

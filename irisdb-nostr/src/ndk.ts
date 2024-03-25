@@ -2,7 +2,7 @@ import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 import NDK, { NDKNip07Signer, NDKPrivateKeySigner } from '@nostr-dev-kit/ndk';
 import { NDKEvent } from '@nostr-dev-kit/ndk';
 import NDKCacheAdapterDexie from '@nostr-dev-kit/ndk-cache-dexie';
-import { localState } from 'irisdb';
+import { localState } from 'irisdb/src';
 import { generateSecretKey, getPublicKey, nip19 } from 'nostr-tools';
 
 const dexieAdapter = new NDKCacheAdapterDexie({ dbName: 'nostree-db' });

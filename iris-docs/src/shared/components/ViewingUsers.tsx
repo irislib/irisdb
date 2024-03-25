@@ -1,5 +1,5 @@
-import { useLocalState } from 'irisdb';
-import { PublicKey, publicState } from 'irisdb-ndk';
+import { useLocalState } from 'irisdb/src';
+import { PublicKey, publicState } from 'irisdb-nostr/src';
 import { useEffect, useState } from 'react';
 
 import { Avatar } from '@/shared/components/user/Avatar';
@@ -46,7 +46,7 @@ export function ViewingUsers({ file, authors }: ViewingUsersProps) {
     const setViewing = (isViewing = true) => {
       if (!myPubKey) return;
       const expiresAt = Date.now() + 30000;
-      publicState(authors.map((k) => new PublicKey(k)))
+      publicState(authors)
         .get(file)
         .get('viewing')
         .get(String(myPubKey))

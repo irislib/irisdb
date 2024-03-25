@@ -1,10 +1,10 @@
 {
-  "name": "irisdb",
+  "name": "irisdb-nostr",
   "version": "1.0.0",
   "type": "module",
-  "description": "Object-like subscribable data structure that can be easily synced over different transports",
-  "main": "dist/irisdb.umd.js",
-  "module": "dist/irisdb.es.js",
+  "description": "Nostr adapter for IrisDB",
+  "main": "dist/irisdb-nostr.umd.js",
+  "module": "dist/irisdb-nostr.es.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "vitest",
@@ -22,7 +22,10 @@
   },
   "homepage": "https://github.com/irislib/iris/iris-docs",
   "dependencies": {
-    "typedoc": "^0.25.12"
+    "irisdb": "*",
+    "@nostr-dev-kit/ndk": "^2.5.0",
+    "nostr-tools": "^2.3.1",
+    "debug": "^4.3.4"
   },
   "files": [
     "src",

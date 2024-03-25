@@ -4,7 +4,7 @@
   "workspaces": [
     "iris-docs",
     "irisdb",
-    "irisdb-ndk"
+    "irisdb-nostr"
   ],
   "scripts": {
     "build": "npm run build --workspace=iris-docs"

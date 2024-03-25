@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import {LocalStorageMemoryAdapter} from "./LocalStorageMemoryAdapter.ts";
-import {Callback, Unsubscribe} from "../types.ts";
+
+import { Callback, Unsubscribe } from '../types.ts';
+import { LocalStorageMemoryAdapter } from './LocalStorageMemoryAdapter.ts';
 
 describe('LocalStorageMemoryAdapter', () => {
   let adapter: LocalStorageMemoryAdapter;

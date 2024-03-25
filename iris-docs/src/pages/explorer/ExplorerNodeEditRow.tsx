@@ -1,4 +1,4 @@
-import { DIRECTORY_VALUE, Node } from 'irisdb';
+import { DIRECTORY_VALUE, Node } from 'irisdb/src';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
 type EditRowProps = {

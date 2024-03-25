@@ -1,6 +1,6 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
-import { useLocalState } from 'irisdb';
-import { PublicKey, publicState, useAuthors } from 'irisdb-ndk';
+import { useLocalState } from 'irisdb/src';
+import { PublicKey, publicState, useAuthors } from 'irisdb-nostr/src';
 import { throttle } from 'lodash';
 import {
   DragEventHandler,
@@ -131,11 +131,7 @@ export default function Canvas() {
     if (!editable) return;
     const id = uuidv4();
     const value = JSON.stringify(item);
-    publicState([new PublicKey(pubKey)])
-      .get(docName)
-      .get('items')
-      .get(id)
-      .put(value);
+    publicState(pubKey).get(docName).get('items').get(id).put(value);
   }
 
   const handleDragOver: DragEventHandler<HTMLDivElement> = (e) => {

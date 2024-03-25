@@ -1,5 +1,5 @@
-import { localState, useLocalState } from 'irisdb';
-import { PublicKey, publicState } from 'irisdb-ndk';
+import { localState, useLocalState } from 'irisdb/src';
+import { PublicKey, publicState } from 'irisdb-nostr/src';
 import { useParams } from 'react-router-dom';
 
 import ExplorerNode from './ExplorerNode';

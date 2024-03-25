@@ -1,4 +1,4 @@
-import {Adapter, Callback, NodeValue, Unsubscribe} from '../types';
+import { Adapter, Callback, NodeValue, Unsubscribe } from '../types';
 
 /**
  * Sync between browser tabs over a [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel).

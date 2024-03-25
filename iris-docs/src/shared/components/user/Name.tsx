@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
-import ndk from 'irisdb-ndk/ndk';
+import { PublicKey } from 'irisdb-nostr/Hex/PublicKey';
+import ndk from 'irisdb-nostr/ndk';
 import { useEffect, useMemo, useState } from 'react';
 
 import animalName from '@/utils/AnimalName';

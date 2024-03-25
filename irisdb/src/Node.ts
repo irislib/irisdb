@@ -1,5 +1,14 @@
-import {Adapter, Callback, JsonObject, JsonValue, NodeValue, Subscription, TypeGuard, Unsubscribe} from "./types.ts";
-import {LocalStorageMemoryAdapter} from "./adapters/LocalStorageMemoryAdapter.ts";
+import { LocalStorageMemoryAdapter } from './adapters/LocalStorageMemoryAdapter.ts';
+import {
+  Adapter,
+  Callback,
+  JsonObject,
+  JsonValue,
+  NodeValue,
+  Subscription,
+  TypeGuard,
+  Unsubscribe,
+} from './types.ts';
 
 export const DIRECTORY_VALUE = {};
 export const isDirectory = (value: JsonValue) =>

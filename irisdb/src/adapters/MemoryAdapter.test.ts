@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import {MemoryAdapter} from "./MemoryAdapter.ts";
-import {Callback, Unsubscribe} from "../types.ts";
+
+import { Callback, Unsubscribe } from '../types.ts';
+import { MemoryAdapter } from './MemoryAdapter.ts';
 
 describe('MemoryAdapter', () => {
   let adapter: MemoryAdapter;

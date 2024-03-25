@@ -1,5 +1,5 @@
-import { useLocalState } from 'irisdb';
-import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
+import { useLocalState } from 'irisdb/src';
+import { PublicKey } from 'irisdb-nostr/Hex/PublicKey';
 import { nip19 } from 'nostr-tools';
 import { RefObject, useMemo } from 'react';
 import { Link } from 'react-router-dom';

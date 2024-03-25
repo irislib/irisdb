@@ -1,6 +1,6 @@
 import NDK, { NDKEvent, NostrEvent } from '@nostr-dev-kit/ndk';
 import debug from 'debug';
-import { Adapter, Callback, NodeValue, Unsubscribe } from 'irisdb';
+import { Adapter, Callback, NodeValue, Unsubscribe } from 'irisdb/src';
 
 import { PublicKey } from './Hex/PublicKey';
 

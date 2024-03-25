@@ -1,7 +1,7 @@
 import { hexToBytes } from '@noble/hashes/utils';
 import classNames from 'classnames';
-import { useLocalState } from 'irisdb';
-import { newUserLogin, privateKeyLogin } from 'irisdb-ndk/ndk';
+import { useLocalState } from 'irisdb/src';
+import { newUserLogin, privateKeyLogin } from 'irisdb-nostr/ndk';
 import { nip19 } from 'nostr-tools';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 

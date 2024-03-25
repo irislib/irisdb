@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "irisdb": "*",
+    "irisdb-nostr": "*",
     "@heroicons/react": "^2.1.1",
     "@nostr-dev-kit/ndk": "^2.5.0",
     "@nostr-dev-kit/ndk-cache-dexie": "^2.2.7",

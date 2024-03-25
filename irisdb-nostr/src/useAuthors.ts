@@ -1,11 +1,11 @@
 import { NDKTag } from '@nostr-dev-kit/ndk';
-import { useLocalState } from 'irisdb';
-import { Hex } from 'irisdb-ndk/Hex/Hex';
-import { PublicKey } from 'irisdb-ndk/Hex/PublicKey';
-import publicState from 'irisdb-ndk/PublicState';
+import { useLocalState } from 'irisdb/src';
 import { useEffect, useMemo, useState } from 'react';
 
+import { Hex } from './Hex/Hex';
+import { PublicKey } from './Hex/PublicKey';
 import ndk from './ndk';
+import publicState from './PublicState';
 
 export default function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] {
   const [myPubKey] = useLocalState('user/publicKey', '');
@@ -58,7 +58,7 @@ export default function useAuthors(ownerOrGroup?: string, groupPath?: string): s
 
     if (!ownerOrGroup || ownerOrGroup === 'follows') return;
     if (groupPath) {
-      return publicState([new PublicKey(ownerOrGroup)])
+      return publicState([ownerOrGroup])
         .get(groupPath)
         .map((value, path) => {
           setAuthors((prev) => {
