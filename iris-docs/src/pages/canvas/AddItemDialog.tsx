@@ -1,27 +1,32 @@
-import { FormEvent, useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import { uploadFile } from '@/shared/upload';
 
 type AddItemDialogProps = {
-  onSubmit: (e?: FormEvent) => void;
-  newItemValue: string;
-  setNewItemValue: (value: string) => void;
+  addItem: (item: string) => void;
   onClose: () => void;
 };
 
-export function AddItemDialog({
-  onSubmit,
-  newItemValue,
-  setNewItemValue,
-  onClose,
-}: AddItemDialogProps) {
+export function AddItemDialog({ addItem, onClose }: AddItemDialogProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [newItemValue, setNewItemValue] = useState('');
 
   const onFileChange = async () => {
     if (fileInputRef.current?.files?.length) {
       const file = fileInputRef.current.files[0];
       const url = await uploadFile(file);
-      setNewItemValue(url);
+      setNewItemValue('');
+      addItem(url);
+      onClose();
+    }
+  };
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newItemValue) {
+      addItem(newItemValue);
+      setNewItemValue('');
+      onClose();
     }
   };
 

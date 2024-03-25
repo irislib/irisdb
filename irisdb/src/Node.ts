@@ -69,7 +69,8 @@ export class Node {
       expiresAt,
     };
     const promises = this.adapters.map((adapter) => adapter.set(this.id, nodeValue));
-    this.on_subscriptions.forEach(({ callback }) => {
+    this.on_subscriptions.forEach(({ callback, recursion }) => {
+      if (recursion > 0 && isDirectory(value)) return;
       callback(value, this.id, updatedAt, () => {});
     });
     await Promise.all(promises);
@@ -91,7 +92,12 @@ export class Node {
    * @example node.get('apps/canvas/documents/test').put({name: 'Test Canvas'})
    */
   async put(value: JsonValue, updatedAt = Date.now(), expiresAt?: number) {
-    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+    if (
+      typeof value === 'object' &&
+      value !== null &&
+      !Array.isArray(value) &&
+      Object.keys(value).length
+    ) {
       await this.putChildValues(value, updatedAt, expiresAt);
     } else {
       await this.putValue(value, updatedAt, expiresAt);

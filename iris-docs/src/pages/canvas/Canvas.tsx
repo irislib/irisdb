@@ -4,7 +4,6 @@ import { PublicKey, publicState, useAuthors } from 'irisdb-ndk';
 import { throttle } from 'lodash';
 import {
   DragEventHandler,
-  FormEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -32,7 +31,6 @@ const getUrl = (url: string) => {
 export default function Canvas() {
   const [showNewItemDialog, setShowNewItemDialog] = useState(false);
   const [pubKey] = useLocalState('user/publicKey', '');
-  const [newItemValue, setNewItemValue] = useState('');
   const [items, setItems] = useState(new Map<string, Item>());
   const [movingInterval, setMovingInterval] = useState<number | null>(null);
   const [canvasPosition, setCanvasPosition] = useState({
@@ -128,18 +126,6 @@ export default function Canvas() {
     publicState(pks).get(docName).get('owner').put(user);
     return () => unsubscribe();
   }, [authors, docName]);
-
-  function onSubmit(e?: FormEvent) {
-    e?.preventDefault();
-    if (!editable) return;
-    addItemToCanvas({
-      x: 0,
-      y: 0,
-      data: newItemValue,
-    });
-    setShowNewItemDialog(false);
-    setNewItemValue('');
-  }
 
   function addItemToCanvas(item: Item) {
     if (!editable) return;
@@ -249,11 +235,8 @@ export default function Canvas() {
           <div className="fixed bottom-8 right-8 z-20">
             <Show when={showNewItemDialog}>
               <AddItemDialog
-                onSubmit={onSubmit}
-                newItemValue={newItemValue}
-                setNewItemValue={setNewItemValue}
+                addItem={(url) => addItemToCanvas({ x: 0, y: 0, data: url })}
                 onClose={() => {
-                  setNewItemValue('');
                   setShowNewItemDialog(false);
                 }}
               />
