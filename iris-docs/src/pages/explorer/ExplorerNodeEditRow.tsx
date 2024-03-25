@@ -1,4 +1,4 @@
-import { DIR_VALUE, Node } from 'irisdb';
+import { DIRECTORY_VALUE, Node } from 'irisdb';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
 type EditRowProps = {
@@ -25,7 +25,7 @@ export const ExplorerNodeEditRow = ({ level, parent }: EditRowProps) => {
 
   const handleDirSubmit = (e: FormEvent) => {
     e.preventDefault();
-    parent.get(dirName).put(DIR_VALUE);
+    parent.get(dirName).put(DIRECTORY_VALUE);
     setDirName('');
     setShowDirForm(false);
   };

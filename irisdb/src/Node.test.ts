@@ -1,7 +1,8 @@
 import { Callback, MemoryAdapter, Unsubscribe } from 'irisdb';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import Node, { DIR_VALUE } from './Node';
+import { DIRECTORY_VALUE, isDirectory, Node } from './Node';
+import { JsonValue } from './types.ts';
 
 describe('Node', () => {
   let node: Node;
@@ -101,7 +102,7 @@ describe('Node', () => {
       const adapter = new MemoryAdapter();
       const node = new Node({ id: 'user', adapters: [adapter] });
 
-      let val = await new Promise((resolve) => {
+      let val: JsonValue = await new Promise((resolve) => {
         adapter.get('user', resolve);
       });
       expect(val).toBe(undefined);
@@ -111,7 +112,7 @@ describe('Node', () => {
       val = await new Promise((resolve) => {
         adapter.get('user', resolve);
       });
-      expect(val).toBe(DIR_VALUE);
+      expect(isDirectory(val)).toBe(true);
 
       const node2 = new Node({ id: 'user', adapters: [adapter] });
       const name = await node2.get('name').once();
@@ -196,7 +197,7 @@ describe('Node', () => {
       await node.get('chats').get('someChatId').get('latest').put({ id: 'messageId', text: 'hi' });
 
       expect(mockCallback).toHaveBeenCalledWith(
-        DIR_VALUE,
+        DIRECTORY_VALUE,
         'root/chats/someChatId',
         expect.any(Number),
         expect.any(Function),

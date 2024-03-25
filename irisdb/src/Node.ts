@@ -10,7 +10,12 @@ import {
   Unsubscribe,
 } from 'irisdb';
 
-export const DIR_VALUE = '__DIR__'; // should this be {} ?
+export const DIRECTORY_VALUE = {};
+export const isDirectory = (value: JsonValue) =>
+  typeof value === 'object' &&
+  value !== null && // length 0
+  Object.keys(value).length === 0 &&
+  !Array.isArray(value);
 
 /**
  * Nodes represent queries into the tree rather than the tree itself. The actual tree data is stored by Adapters.
@@ -55,7 +60,7 @@ export class Node {
   }
 
   private async putValue(value: JsonValue, updatedAt: number, expiresAt?: number) {
-    if (value !== DIR_VALUE) {
+    if (!isDirectory(value)) {
       this.children = new Map();
     }
     const nodeValue: NodeValue = {
@@ -72,7 +77,7 @@ export class Node {
 
   private async putChildValues(value: JsonObject, updatedAt: number, expiresAt?: number) {
     const promises = this.adapters.map((adapter) =>
-      adapter.set(this.id, { value: DIR_VALUE, updatedAt, expiresAt }),
+      adapter.set(this.id, { value: DIRECTORY_VALUE, updatedAt, expiresAt }),
     );
     const children = Object.keys(value);
     // the following probably causes the same callbacks to be fired too many times
@@ -93,13 +98,13 @@ export class Node {
     }
 
     if (this.parent) {
-      await this.parent.put(DIR_VALUE, updatedAt);
+      await this.parent.put(DIRECTORY_VALUE, updatedAt);
       const childName = this.id.split('/').pop()!;
       if (!this.parent.children.has(childName)) {
         this.parent.children.set(childName, this);
       }
       for (const [id, { callback, recursion }] of this.parent.map_subscriptions) {
-        if (value !== DIR_VALUE || recursion === 0) {
+        if (value !== DIRECTORY_VALUE || recursion === 0) {
           callback(value, this.id, updatedAt, () => {
             this.parent?.map_subscriptions.delete(id);
           });
@@ -162,11 +167,11 @@ export class Node {
         latestValue = { value, updatedAt };
       }
 
-      if (value === DIR_VALUE && recursion > 0 && !openUnsubscribe) {
+      if (value === DIRECTORY_VALUE && recursion > 0 && !openUnsubscribe) {
         openUnsubscribe = this.open<T>(callback, recursion - 1, typeGuard);
       }
 
-      if (value !== DIR_VALUE || recursion === 0) {
+      if (value !== DIRECTORY_VALUE || recursion === 0) {
         callback(typeGuard(value), path, updatedAt, unsubscribe);
       }
     };
@@ -221,7 +226,7 @@ export class Node {
       const childName = path.split('/').pop()!;
       this.get(childName).put(value as JsonValue, updatedAt);
 
-      if (recursion > 0 && value === DIR_VALUE) {
+      if (recursion > 0 && value === DIRECTORY_VALUE) {
         if (!openUnsubs[childName]) {
           // Check if an Unsubscribe exists for this child
           openUnsubs[childName] = this.get(childName).open(callback, recursion - 1);

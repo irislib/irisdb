@@ -1,5 +1,5 @@
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
-import { DIR_VALUE, JsonValue, Node } from 'irisdb';
+import { DIRECTORY_VALUE, isDirectory, JsonValue, Node } from 'irisdb';
 import { useEffect, useState } from 'react';
 
 import Show from '@/shared/components/Show';
@@ -22,7 +22,7 @@ type ChildMap = SortedMap<string, Child>;
 
 export default function ExplorerNode({
   node,
-  value = DIR_VALUE,
+  value = DIRECTORY_VALUE,
   level = 0,
   expanded = false,
   name,
@@ -31,10 +31,10 @@ export default function ExplorerNode({
   const [children, setChildren] = useState<ChildMap>(new SortedMap());
   const [isOpen, setIsOpen] = useState(expanded);
 
-  const isDirectory = value === DIR_VALUE;
+  const isDir = isDirectory(value);
 
   useEffect(() => {
-    if (!isDirectory) return;
+    if (!isDir) return;
     return node.map((value, key) => {
       if (!children.has(key)) {
         const childName = key.split('/').pop()!;
@@ -51,22 +51,22 @@ export default function ExplorerNode({
   const rowColor = parentCounter % 2 === 0 ? 'bg-base-300' : 'bg-base-100';
   const displayName = name || node.id.split('/').pop()!;
 
-  const paddingLeft = `${level * 15 + (isDirectory ? 0 : 16)}px`;
+  const paddingLeft = `${level * 15 + (isDir ? 0 : 16)}px`;
 
   return (
     <div className={`relative w-full ${rowColor}`}>
       <div
-        className={`flex items-center ${isDirectory ? 'cursor-pointer' : ''}`}
+        className={`flex items-center ${isDir ? 'cursor-pointer' : ''}`}
         onClick={toggleOpen}
         style={{ paddingLeft }}
       >
-        <Show when={isDirectory}>
+        <Show when={isDir}>
           <ChevronRightIcon
             className={`w-4 h-4 transition ${isOpen ? 'transform rotate-90' : ''}`}
           />
         </Show>
         <span className="ml-1 w-1/3 truncate">{displayName}</span>
-        <Show when={!isDirectory}>
+        <Show when={!isDir}>
           <div className="ml-auto w-1/2">
             <ExplorerNodeValue
               displayName={displayName}
@@ -76,7 +76,7 @@ export default function ExplorerNode({
           </div>
         </Show>
       </div>
-      {isDirectory && isOpen ? (
+      {isDir && isOpen ? (
         <div>
           <ExplorerNodeEditRow level={level + 1} parent={node} />
           {Array.from(children.values()).map((child, index) => (
