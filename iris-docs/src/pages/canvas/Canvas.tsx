@@ -174,9 +174,13 @@ export default function Canvas() {
   };
 
   const throttledSave = useCallback(
-    throttle((key, updatedItem) => {
-      publicState(myPubKey).get(docName).get('items').get(key).put(JSON.stringify(updatedItem));
-    }, 200),
+    throttle(
+      (key, updatedItem) => {
+        publicState(myPubKey).get(docName).get('items').get(key).put(JSON.stringify(updatedItem));
+      },
+      200,
+      { leading: false, trailing: true },
+    ),
     [myPubKey],
   );
 
