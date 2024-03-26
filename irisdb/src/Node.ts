@@ -110,7 +110,7 @@ export class Node {
         this.parent.children.set(childName, this);
       }
       for (const [id, { callback, recursion }] of this.parent.map_subscriptions) {
-        if (value !== DIRECTORY_VALUE || recursion === 0) {
+        if (!isDirectory(value) || recursion === 0) {
           callback(value, this.id, updatedAt, () => {
             this.parent?.map_subscriptions.delete(id);
           });
@@ -173,11 +173,11 @@ export class Node {
         latestValue = { value, updatedAt };
       }
 
-      if (value === DIRECTORY_VALUE && recursion > 0 && !openUnsubscribe) {
+      if (isDirectory(value) && recursion > 0 && !openUnsubscribe) {
         openUnsubscribe = this.open<T>(callback, recursion - 1, typeGuard);
       }
 
-      if (value !== DIRECTORY_VALUE || recursion === 0) {
+      if (!isDirectory(value) || recursion === 0) {
         callback(typeGuard(value), path, updatedAt, unsubscribe);
       }
     };
@@ -232,7 +232,7 @@ export class Node {
       const childName = path.split('/').pop()!;
       this.get(childName).put(value as JsonValue, updatedAt);
 
-      if (recursion > 0 && value === DIRECTORY_VALUE) {
+      if (recursion > 0 && value && isDirectory(value)) {
         if (!openUnsubs[childName]) {
           // Check if an Unsubscribe exists for this child
           openUnsubs[childName] = this.get(childName).open(callback, recursion - 1);
