@@ -55,7 +55,8 @@ Uses the `irisdb-nostr` adapter to sync over [Nostr](https://nostr.com).
 import { publicState, usePublicState, useAuthors } from 'irisdb-nostr';
 
 function DocumentTitle() {
-   // List of users you follow on Nostr. Alternatively, provide an array of public keys.
+  // List of users you follow on Nostr.
+  // Alternatively, provide an array of public keys.
   const authors =  useAuthors('follows');
   
   const titlePath = 'apps/canvas/documents/myDocument1/title';

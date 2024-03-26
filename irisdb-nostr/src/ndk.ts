@@ -5,7 +5,7 @@ import NDKCacheAdapterDexie from '@nostr-dev-kit/ndk-cache-dexie';
 import { localState } from 'irisdb/src';
 import { generateSecretKey, getPublicKey, nip19 } from 'nostr-tools';
 
-const dexieAdapter = new NDKCacheAdapterDexie({ dbName: 'nostree-db' });
+const dexieAdapter = new NDKCacheAdapterDexie({ dbName: 'irisdb-nostr' });
 
 const ndk = new NDK({
   explicitRelayUrls: [
