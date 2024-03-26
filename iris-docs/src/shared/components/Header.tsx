@@ -19,8 +19,9 @@ export default function Header() {
     [authors, followedUsers],
   );
   const location = useLocation();
-  const basePath = location.pathname.split('/')[1];
-  const link = file ? `/${basePath}` : '/';
+  const appName = location.pathname.split('/')[1];
+  const filePath = `apps/${appName === 'document' ? 'docs' : appName}/documents/${file}`;
+  const link = file ? `/${appName}` : '/';
 
   if (!user && file) return null;
 
@@ -32,13 +33,13 @@ export default function Header() {
         </Link>
         <Show when={!!file}>
           <span className="text-xl">
-            <NodeValue editable={true} authors={authors} path={`${file}/name`} />
+            <NodeValue editable={true} authors={authors} path={`${filePath}/name`} />
           </span>
         </Show>
       </div>
       <div className="flex items-center gap-4">
-        {file && <ViewingUsers file={file} authors={all} />}
-        {file && <ShareButton file={file} />}
+        {file && <ViewingUsers file={filePath} authors={all} />}
+        {file && <ShareButton file={filePath} />}
         <UserButton />
       </div>
     </header>

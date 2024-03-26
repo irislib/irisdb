@@ -30,7 +30,7 @@ const getUrl = (url: string) => {
 
 export default function Canvas() {
   const [showNewItemDialog, setShowNewItemDialog] = useState(false);
-  const [pubKey] = useLocalState('user/publicKey', '');
+  const [myPubKey] = useLocalState('user/publicKey', '');
   const [items, setItems] = useState(new Map<string, Item>());
   const [movingInterval, setMovingInterval] = useState<number | null>(null);
   const [canvasPosition, setCanvasPosition] = useState({
@@ -45,7 +45,7 @@ export default function Canvas() {
     user || 'public',
     user !== 'follows' ? `${docName}/writers` : undefined,
   );
-  const editable = authors.includes(pubKey);
+  const editable = authors.includes(myPubKey);
 
   const moveCanvas = (direction: string) => {
     const moveAmount = 10; // Adjust the movement speed as necessary
@@ -120,7 +120,7 @@ export default function Canvas() {
         console.error(e);
       }
     });
-    doc.get('owner').put(user);
+    myPubKey && publicState(authors).get(docName).get('owner').put(user);
     return () => unsubscribe();
   }, [authors, docName]);
 
@@ -128,7 +128,7 @@ export default function Canvas() {
     if (!editable) return;
     const id = uuidv4();
     const value = JSON.stringify(item);
-    publicState(pubKey).get(docName).get('items').get(id).put(value);
+    publicState(myPubKey).get(docName).get('items').get(id).put(value);
   }
 
   const handleDragOver: DragEventHandler<HTMLDivElement> = (e) => {
@@ -175,9 +175,9 @@ export default function Canvas() {
 
   const throttledSave = useCallback(
     throttle((key, updatedItem) => {
-      publicState(pubKey).get(docName).get('items').get(key).put(JSON.stringify(updatedItem));
+      publicState(myPubKey).get(docName).get('items').get(key).put(JSON.stringify(updatedItem));
     }, 200),
-    [pubKey],
+    [myPubKey],
   );
 
   const moveItem = (key: string, newX: number, newY: number) => {
@@ -220,7 +220,7 @@ export default function Canvas() {
         onWheel={handleWheel}
         className="absolute top-0 left-0 right-0 bottom-0 overflow-hidden"
       >
-        <Show when={!!pubKey}>
+        <Show when={!!myPubKey}>
           <div className="fixed bottom-8 right-8 z-20">
             <Show when={showNewItemDialog}>
               <AddItemDialog
