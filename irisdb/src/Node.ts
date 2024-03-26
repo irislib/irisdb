@@ -69,10 +69,7 @@ export class Node {
       expiresAt,
     };
     const promises = this.adapters.map((adapter) => adapter.set(this.id, nodeValue));
-    this.on_subscriptions.forEach(({ callback, recursion }) => {
-      if (recursion > 0 && isDirectory(value)) return;
-      callback(value, this.id, updatedAt, () => {});
-    });
+    this.notifyChange(value, updatedAt);
     await Promise.all(promises);
   }
 
@@ -195,6 +192,14 @@ export class Node {
     return unsubscribeAll;
   }
 
+  private notifyChange(value: JsonValue, updatedAt?: number) {
+    this.on_subscriptions.forEach(({ callback, recursion }) => {
+      if (recursion > 0 && isDirectory(value)) return;
+      callback(value, this.id, updatedAt, () => {});
+    });
+    // Notify map_subscriptions similarly if needed.
+  }
+
   /**
    * Callback for each child node
    * @param callback
@@ -230,7 +235,6 @@ export class Node {
       }
 
       const childName = path.split('/').pop()!;
-      this.get(childName).put(value as JsonValue, updatedAt);
 
       if (recursion > 0 && value && isDirectory(value)) {
         if (!openUnsubs[childName]) {
