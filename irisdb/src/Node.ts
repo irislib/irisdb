@@ -45,7 +45,7 @@ export class Node {
   }
 
   /**
-   *
+   * Get a child node
    * @param key
    * @returns {Node}
    * @example node.get('apps/canvas/documents/test').put({name: 'Test Document'})
@@ -125,7 +125,7 @@ export class Node {
   }
 
   /**
-   * Callback that returns all child nodes in the same response object
+   * Subscribe to all child nodes, returned in the same object
    */
   open<T = JsonValue>(
     callback: Callback<T>,
@@ -145,7 +145,7 @@ export class Node {
   }
 
   /**
-   * Subscribe to a value
+   * Subscribe to the node's value
    */
   on<T = JsonValue>(
     callback: Callback<T>,
