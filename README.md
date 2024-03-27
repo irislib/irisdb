@@ -17,7 +17,7 @@ It's inspired by [GunDB](https://github.com/amark/gun) and has a similar API.
 ### Persist React app local state in localStorage and sync between tabs
 
 ```tsx
-import { useLocalState } from 'irisdb';
+import { useLocalState } from 'irisdb-hooks';
 
 function LoginDialog() {
   const [myPrivateKey, setMyPrivateKey] = useLocalState('user/privateKey', '');
@@ -52,7 +52,8 @@ function LoginDialog() {
 Uses the `irisdb-nostr` adapter to sync over [Nostr](https://nostr.com).
 
 ```tsx
-import { publicState, usePublicState, useAuthors } from 'irisdb-nostr';
+import { publicState } from 'irisdb-nostr';
+import { usePublicState, useAuthors } from 'irisdb-hooks';
 
 function DocumentTitle() {
   // List of users you follow on Nostr.
