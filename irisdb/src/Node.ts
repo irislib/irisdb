@@ -31,8 +31,8 @@ export class Node {
   id: string;
   parent: Node | null;
   private children = new Map<string, Node>();
-  private on_subscriptions = new Map<number, Subscription>();
-  private map_subscriptions = new Map<number, Subscription>();
+  private onSubscriptions = new Map<number, Subscription>();
+  private forEachSubscriptions = new Map<number, Subscription>();
   private adapters: Adapter[];
   private counter = 0;
 
@@ -111,10 +111,10 @@ export class Node {
       if (!this.parent.children.has(childName)) {
         this.parent.children.set(childName, this);
       }
-      for (const [id, { callback, recursion }] of this.parent.map_subscriptions) {
+      for (const [id, { callback, recursion }] of this.parent.forEachSubscriptions) {
         if (!isDirectory(value) || recursion === 0) {
           callback(value, this.id, updatedAt, () => {
-            this.parent?.map_subscriptions.delete(id);
+            this.parent?.forEachSubscriptions.delete(id);
           });
         } else if (recursion > 0) {
           // TODO fix
@@ -134,7 +134,7 @@ export class Node {
   ): Unsubscribe {
     const aggregated: Record<string, JsonValue> = {};
     let latestTime: number | undefined;
-    return this.map((childValue, path, updatedAt) => {
+    return this.forEach((childValue, path, updatedAt) => {
       if (updatedAt !== undefined && (!latestTime || latestTime < updatedAt)) {
         latestTime = updatedAt;
       }
@@ -184,12 +184,12 @@ export class Node {
       }
     };
 
-    this.on_subscriptions.set(uniqueId, { callback: localCallback, recursion });
+    this.onSubscriptions.set(uniqueId, { callback: localCallback, recursion });
 
     const adapterUnsubscribes = this.adapters.map((adapter) => adapter.get(this.id, localCallback));
 
     const unsubscribeAll = () => {
-      this.on_subscriptions.delete(uniqueId);
+      this.onSubscriptions.delete(uniqueId);
       adapterUnsubscribes.forEach((unsub) => unsub());
       openUnsubscribe?.();
     };
@@ -198,18 +198,18 @@ export class Node {
   }
 
   private notifyChange(value: JsonValue, updatedAt?: number) {
-    this.on_subscriptions.forEach(({ callback, recursion }) => {
+    this.onSubscriptions.forEach(({ callback, recursion }) => {
       if (recursion > 0 && isDirectory(value)) return;
       callback(value, this.id, updatedAt, () => {});
     });
-    // Notify map_subscriptions similarly if needed.
+    // Notify forEachSubscriptions similarly if needed.
   }
 
   /**
-   * Callback for each child node
+   * Subscribe to child nodes
    * @param callback
    */
-  map<T = JsonValue>(
+  forEach<T = JsonValue>(
     callback: Callback<T>,
     recursion: number = 0,
     typeGuard: TypeGuard<T> = (value: JsonValue) => value as T,
@@ -219,7 +219,7 @@ export class Node {
     const typedCallback: Callback = (value, path, updatedAt, unsubscribe) => {
       callback(typeGuard(value), path, updatedAt, unsubscribe);
     };
-    this.map_subscriptions.set(id, { callback: typedCallback, recursion });
+    this.forEachSubscriptions.set(id, { callback: typedCallback, recursion });
     const latestMap = new Map<string, NodeValue<T | undefined>>();
 
     let adapterSubs: Unsubscribe[] = [];
@@ -248,7 +248,7 @@ export class Node {
         }
       } else {
         callback(value, path, updatedAt, () => {
-          this.map_subscriptions.delete(id);
+          this.forEachSubscriptions.delete(id);
           unsubscribeFromAdapters();
           Object.values(openUnsubs).forEach((unsub) => unsub()); // Unsubscribe all
         });
@@ -263,7 +263,7 @@ export class Node {
     );
 
     const unsubscribe = () => {
-      this.map_subscriptions.delete(id);
+      this.forEachSubscriptions.delete(id);
       unsubscribeFromAdapters();
       Object.values(openUnsubs).forEach((unsub) => unsub()); // Unsubscribe all
     };

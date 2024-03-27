@@ -53,7 +53,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
   useEffect(() => {
     return publicState(authors)
       .get(directory)
-      .map((value, path, updatedAt) => {
+      .forEach((value, path, updatedAt) => {
         // Type guard to ensure 'value' is an object with a 'name' property
         console.log('path', path, 'value', value);
         if (typeof value === 'object' && value !== null && !Array.isArray(value)) {

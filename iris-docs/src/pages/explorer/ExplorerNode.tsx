@@ -35,7 +35,7 @@ export default function ExplorerNode({
 
   useEffect(() => {
     if (!isDir) return;
-    return node.map((value, key) => {
+    return node.forEach((value, key) => {
       if (!children.has(key)) {
         const childName = key.split('/').pop()!;
         setChildren((prev: ChildMap) => {

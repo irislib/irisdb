@@ -62,7 +62,7 @@ export function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] 
     if (groupPath) {
       return publicState(ownerOrGroup)
         .get(groupPath)
-        .map((value, path) => {
+        .forEach((value, path) => {
           setAuthors((prev) => {
             const key = path.split('/').pop()!;
             const newAuthors = new Set(prev);

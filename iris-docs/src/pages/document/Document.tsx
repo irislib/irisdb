@@ -69,7 +69,7 @@ export default function Document() {
     const unsubscribe = publicState(authors)
       .get(docName)
       .get('edits')
-      .map((update) => {
+      .forEach((update) => {
         if (typeof update === 'string') {
           const decodedUpdate = hexToBytes(update);
           Y.applyUpdate(docRef.current, decodedUpdate);

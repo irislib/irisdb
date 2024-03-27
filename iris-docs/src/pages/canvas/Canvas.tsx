@@ -103,7 +103,7 @@ export default function Canvas() {
   useEffect(() => {
     setItems(new Map());
     const doc = publicState(authors).get(docName);
-    const unsubscribe = doc.get('items').map((value, key) => {
+    const unsubscribe = doc.get('items').forEach((value, key) => {
       if (typeof key !== 'string') return;
       const id = key.split('/').pop()!;
       try {

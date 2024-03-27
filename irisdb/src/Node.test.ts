@@ -146,7 +146,7 @@ describe('Node', () => {
       );
 
       const mapMockCallback: Callback = vi.fn();
-      const unsubscribe: Unsubscribe = node.map(mapMockCallback);
+      const unsubscribe: Unsubscribe = node.forEach(mapMockCallback);
       expect(mapMockCallback).toHaveBeenCalledWith(
         'value1',
         'test/child1',
@@ -167,7 +167,7 @@ describe('Node', () => {
 
     it('should trigger map callbacks when children are added', async () => {
       const mockCallback: Callback = vi.fn();
-      const unsubscribe: Unsubscribe = node.map(mockCallback);
+      const unsubscribe: Unsubscribe = node.forEach(mockCallback);
 
       await node.get('child1').put('value1');
       await node.get('child2').put('value2');
@@ -193,7 +193,7 @@ describe('Node', () => {
     it('should trigger map callbacks when a nested child is added', async () => {
       const node = new Node({ id: 'root', adapters: [new MemoryAdapter()] });
       const mockCallback: Callback = vi.fn();
-      const unsubscribe = node.get('chats').map(mockCallback);
+      const unsubscribe = node.get('chats').forEach(mockCallback);
       await node.get('chats').get('someChatId').get('latest').put({ id: 'messageId', text: 'hi' });
 
       expect(mockCallback).toHaveBeenCalledWith(
@@ -214,7 +214,7 @@ describe('Node', () => {
       await node.put({ name: 'Snowden', age: 30 });
       const node2 = new Node({ id: 'user', adapters: [adapter] });
       const fn = vi.fn();
-      node2.map(fn);
+      node2.forEach(fn);
       expect(fn).toHaveBeenCalledWith(
         'Snowden',
         'user/name',
@@ -233,7 +233,7 @@ describe('Node', () => {
         .get('chat2')
         .put({ latest: { id: 'cowMessage', text: "Mooove over, I'm coming too!" } });
 
-      node.map(mockCallback, 3);
+      node.forEach(mockCallback, 3);
       expect(mockCallback).toHaveBeenCalledWith(
         { latest: { id: 'alienMessage', text: 'Take me to your leader' } },
         'test/chat1',

@@ -16,7 +16,7 @@ export function ViewingUsers({ file, authors }: ViewingUsersProps) {
   useEffect(() => {
     const node = publicState(authors).get(file).get('viewing');
 
-    return node.map((isViewing, nodePath, updatedAt) => {
+    return node.forEach((isViewing, nodePath, updatedAt) => {
       // TODO we need a way to reliably find out who wrote the value. return nostr event in the callback?
       if (typeof nodePath !== 'string' || !updatedAt) return;
       const user = nodePath.split('/').pop()!;
