@@ -1,10 +1,10 @@
 {
-  "name": "irisdb",
+  "name": "irisdb-hooks",
   "version": "1.0.0",
   "type": "module",
-  "description": "Treelike subscribable data structure that can be easily synced over different transports",
-  "main": "dist/irisdb.umd.js",
-  "module": "dist/irisdb.es.js",
+  "description": "React hooks for IrisDB",
+  "main": "dist/irisdb-hooks.umd.js",
+  "module": "dist/irisdb-hooks.es.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "vitest",
@@ -21,11 +21,15 @@
     "url": "https://github.com/irislib/iris/issues"
   },
   "homepage": "https://github.com/irislib/iris/iris-docs",
-  "devDependencies": {
-    "typedoc": "^0.25.12"
+  "dependencies": {
+    "irisdb": "*"
   },
   "files": [
     "src",
     "dist"
-  ]
+  ],
+  "peerDependencies": {
+    "react": "*",
+    "irisdb-nostr": "*"
+  }
 }

@@ -4,10 +4,11 @@
   "workspaces": [
     "iris-docs",
     "irisdb",
-    "irisdb-nostr"
+    "irisdb-nostr",
+    "irisdb-hooks"
   ],
   "scripts": {
-    "build": "npm run build --workspace=iris-docs && npm run build --workspace=irisdb && npm run build --workspace=irisdb-nostr",
+    "build": "npm run build --workspaces",
     "docs": "typedoc"
   },
   "devDependencies": {

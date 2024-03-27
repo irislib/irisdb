@@ -1,10 +1,14 @@
-import { JsonValue, useNodeState } from 'irisdb/src';
+import { JsonValue } from 'irisdb/src';
+import { publicState } from 'irisdb-nostr/src';
 import { useMemo } from 'react';
 
-import publicState from './publicState';
+import { useNodeState } from './useNodeState.ts';
 
 /**
  * React hook to get a public state node with the given authors. A bit similar to React's useState.
+ *
+ * irisdb-nostr peer dependency is required for this hook to work.
+ *
  * @param authors
  * @param path
  * @param initialValue

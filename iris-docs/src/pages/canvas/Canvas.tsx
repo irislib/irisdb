@@ -1,6 +1,6 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
-import { useLocalState } from 'irisdb/src';
-import { publicState, useAuthors } from 'irisdb-nostr/src';
+import { useAuthors, useLocalState } from 'irisdb-hooks/src';
+import { publicState } from 'irisdb-nostr/src';
 import { throttle } from 'lodash';
 import {
   DragEventHandler,

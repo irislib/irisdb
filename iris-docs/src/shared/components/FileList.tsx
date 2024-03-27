@@ -1,8 +1,7 @@
 import { FolderIcon } from '@heroicons/react/24/outline';
 import { FolderOpenIcon, PlusIcon, TrashIcon, UserPlusIcon } from '@heroicons/react/24/solid';
-import { useLocalState } from 'irisdb/src/useNodeState';
+import { useAuthors, useLocalState } from 'irisdb-hooks/src';
 import { PublicKey, publicState } from 'irisdb-nostr/src';
-import useAuthors from 'irisdb-nostr/src/useAuthors';
 import { nip19 } from 'nostr-tools';
 import { FormEvent, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';

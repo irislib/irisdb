@@ -10,6 +10,7 @@ export class PublicKey extends Hex {
 
   /**
    * @param str hex or npub encoded string
+   * @throws Error if the provided string is not a valid nostr public key
    */
   constructor(str: string) {
     const isNpub = str.startsWith('npub');

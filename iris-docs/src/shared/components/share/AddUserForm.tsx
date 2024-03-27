@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useLocalState } from 'irisdb/src';
+import { useLocalState } from 'irisdb-hooks/src';
 import { PublicKey, publicState } from 'irisdb-nostr/src';
 import { FormEvent, useMemo, useState } from 'react';
 

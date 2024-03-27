@@ -7,7 +7,10 @@ import { generateSecretKey, getPublicKey, nip19 } from 'nostr-tools';
 
 const dexieAdapter = new NDKCacheAdapterDexie({ dbName: 'irisdb-nostr' });
 
-const ndk = new NDK({
+/**
+ * Singleton "default" NDK instance to get started quickly
+ */
+export const ndk = new NDK({
   explicitRelayUrls: [
     'wss://strfry.iris.to',
     'wss://relay.damus.io',
@@ -76,5 +79,3 @@ export function privateKeyLogin(privateKey: string) {
     localState.get('user/publicKey').put(publicKey);
   }
 }
-
-export default ndk;

@@ -7,6 +7,9 @@ import { nip19 } from 'nostr-tools';
 export class Hex {
   value: string;
 
+  /**
+   * @throws Error if the provided string is not a valid hex value or does not match the expected length
+   */
   constructor(str: string, expectedLength?: number) {
     // maybe should accept bech32 input and convert to hex?
     this.validateHex(str, expectedLength);

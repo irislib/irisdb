@@ -1,6 +1,6 @@
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
-import { useLocalState } from 'irisdb/src';
-import { PublicKey, publicState, useAuthors } from 'irisdb-nostr/src';
+import { useAuthors, useLocalState } from 'irisdb-hooks/src';
+import { PublicKey, publicState } from 'irisdb-nostr/src';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';

@@ -1,4 +1,4 @@
-import { useLocalState } from 'irisdb/src';
+import { useLocalState } from 'irisdb-hooks/src';
 import { publicState } from 'irisdb-nostr/src';
 import { useEffect, useState } from 'react';
 

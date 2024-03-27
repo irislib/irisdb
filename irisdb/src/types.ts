@@ -26,4 +26,8 @@ export type Subscription = {
   callback: Callback;
   recursion: number;
 };
+
+/**
+ * Converts a JsonValue to a specific type
+ */
 export type TypeGuard<T> = (value: JsonValue) => T;
