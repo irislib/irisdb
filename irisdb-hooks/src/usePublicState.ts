@@ -1,5 +1,5 @@
-import { JsonValue } from 'irisdb/src';
-import { publicState } from 'irisdb-nostr/src';
+import { JsonValue } from 'irisdb';
+import { publicState } from 'irisdb-nostr';
 import { useMemo } from 'react';
 
 import { useNodeState } from './useNodeState.ts';

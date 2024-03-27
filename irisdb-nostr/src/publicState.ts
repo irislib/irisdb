@@ -1,4 +1,4 @@
-import { MemoryAdapter, Node } from 'irisdb/src';
+import { Adapters, Node } from 'irisdb/src';
 
 import { PublicKey } from './Hex/PublicKey.ts';
 import { ndk } from './ndk';
@@ -22,7 +22,7 @@ const publicState = (authors: string | Array<string | PublicKey>) => {
     });
   }
   return new Node({
-    adapters: [new MemoryAdapter(), new NDKAdapter(ndk, pks)],
+    adapters: [new Adapters.MemoryAdapter(), new NDKAdapter(ndk, pks)],
   });
 };
 

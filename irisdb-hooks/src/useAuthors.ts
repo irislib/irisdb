@@ -1,5 +1,5 @@
-import { NDKTag } from '@nostr-dev-kit/ndk';
-import { Hex, ndk, PublicKey, publicState } from 'irisdb-nostr/src';
+import { NDKEvent, NDKTag } from '@nostr-dev-kit/ndk';
+import { Hex, ndk, PublicKey, publicState } from 'irisdb-nostr';
 import { useEffect, useMemo, useState } from 'react';
 
 import { useLocalState } from './useLocalState';
@@ -25,7 +25,7 @@ export function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] 
   useEffect(() => {
     if (ownerOrGroup === 'follows') {
       const sub = ndk.subscribe({ kinds: [3], authors: [String(myPubKey)] });
-      sub.on('event', (event) => {
+      sub.on('event', (event: NDKEvent) => {
         if (event.kind === 3) {
           const newAuthors = new Set([String(myPubKey)]);
           let updated = false;
@@ -62,21 +62,25 @@ export function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] 
     if (groupPath) {
       return publicState(ownerOrGroup)
         .get(groupPath)
-        .forEach((value, path) => {
-          setAuthors((prev) => {
-            const key = path.split('/').pop()!;
-            const newAuthors = new Set(prev);
-            const hasKey = newAuthors.has(key);
-            if (!!value && !hasKey) {
-              newAuthors.add(key);
-              return newAuthors;
-            } else if (!value && hasKey) {
-              newAuthors.delete(key);
-              return newAuthors;
-            }
-            return prev;
-          });
-        });
+        .forEach(
+          (isInGroup: boolean | undefined, path: string) => {
+            setAuthors((prev) => {
+              const key = path.split('/').pop()!;
+              const newAuthors = new Set(prev);
+              const alreadyHave = newAuthors.has(key);
+              if (isInGroup && !alreadyHave) {
+                newAuthors.add(key);
+                return newAuthors;
+              } else if (!isInGroup && alreadyHave) {
+                newAuthors.delete(key);
+                return newAuthors;
+              }
+              return prev;
+            });
+          },
+          0,
+          Boolean,
+        );
     }
   }, [ownerOrGroup, groupPath, initialAuthors]);
 
