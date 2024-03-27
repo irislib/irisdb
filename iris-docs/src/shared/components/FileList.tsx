@@ -1,8 +1,7 @@
 import { FolderIcon } from '@heroicons/react/24/outline';
 import { FolderOpenIcon, PlusIcon, TrashIcon, UserPlusIcon } from '@heroicons/react/24/solid';
 import { useLocalState } from 'irisdb/src/useNodeState';
-import { PublicKey } from 'irisdb-nostr/src/Hex/PublicKey';
-import publicState from 'irisdb-nostr/src/PublicState';
+import { PublicKey, publicState } from 'irisdb-nostr/src';
 import useAuthors from 'irisdb-nostr/src/useAuthors';
 import { nip19 } from 'nostr-tools';
 import { FormEvent, MouseEvent, useEffect, useMemo, useState } from 'react';

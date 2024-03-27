@@ -4,6 +4,10 @@ import { PublicKey } from './Hex/PublicKey.ts';
 import ndk from './ndk';
 import NDKAdapter from './NDKAdapter';
 
+/**
+ * Create a public state node with the given authors
+ * @param authors
+ */
 const publicState = (authors: string | Array<string | PublicKey>) => {
   let pks;
   if (typeof authors === 'string') {

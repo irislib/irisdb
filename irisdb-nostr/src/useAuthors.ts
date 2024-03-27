@@ -5,8 +5,13 @@ import { useEffect, useMemo, useState } from 'react';
 import { Hex } from './Hex/Hex';
 import { PublicKey } from './Hex/PublicKey';
 import ndk from './ndk';
-import publicState from './PublicState';
+import publicState from './publicState';
 
+/**
+ * React hook to get an array of author public keys.
+ * @param ownerOrGroup public key of the owner or 'follows' to get the authors the user follows
+ * @param groupPath path to load the authors list from, e.g. 'apps/canvas/documents/myDoc1/authors'
+ */
 export default function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] {
   const [myPubKey] = useLocalState('user/publicKey', '');
   const initialAuthors = useMemo((): string[] => {

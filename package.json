@@ -7,7 +7,8 @@
     "irisdb-nostr"
   ],
   "scripts": {
-    "build": "npm run build --workspace=iris-docs && npm run build --workspace=irisdb && npm run build --workspace=irisdb-nostr"
+    "build": "npm run build --workspace=iris-docs && npm run build --workspace=irisdb && npm run build --workspace=irisdb-nostr",
+    "docs": "typedoc"
   },
   "devDependencies": {
     "eslint": "^8.57.0",

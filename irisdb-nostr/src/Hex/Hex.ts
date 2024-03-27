@@ -1,6 +1,9 @@
 import { hexToBytes } from '@noble/hashes/utils';
 import { nip19 } from 'nostr-tools';
 
+/**
+ * Hex encoded string.
+ */
 export class Hex {
   value: string;
 

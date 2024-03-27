@@ -1,0 +1,6 @@
+{
+  "entryPoints": ["irisdb", "irisdb-nostr"],
+  "name": "iris",
+  "entryPointStrategy": "packages",
+  "includeVersion": false
+}

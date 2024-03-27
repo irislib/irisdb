@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { useLocalState } from 'irisdb/src';
-import { PublicKey } from 'irisdb-nostr/src/Hex/PublicKey';
-import publicState from 'irisdb-nostr/src/PublicState';
+import { PublicKey, publicState } from 'irisdb-nostr/src';
 import { FormEvent, useMemo, useState } from 'react';
 
 import { UserRow } from '@/shared/components/user/UserRow';

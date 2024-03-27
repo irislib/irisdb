@@ -32,6 +32,9 @@
     "src",
     "dist"
   ],
+  "optionalDependencies": {
+    "react": "*"
+  },
   "devDependencies": {
     "fake-indexeddb": "^5.0.2"
   }

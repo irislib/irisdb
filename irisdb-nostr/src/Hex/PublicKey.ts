@@ -2,9 +2,15 @@ import { nip19 } from 'nostr-tools';
 
 import { Hex } from './Hex';
 
+/**
+ * Nostr public key hex encoded string.
+ */
 export class PublicKey extends Hex {
   npubValue: string | undefined;
 
+  /**
+   * @param str hex or npub encoded string
+   */
   constructor(str: string) {
     const isNpub = str.startsWith('npub');
     let hexValue = str;

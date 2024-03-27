@@ -11,6 +11,11 @@ import {
 } from './types.ts';
 
 export const DIRECTORY_VALUE = {};
+
+/**
+ * Check if the value is a directory (object with no keys {})
+ * @param value
+ */
 export const isDirectory = (value: JsonValue) =>
   typeof value === 'object' &&
   value !== null && // length 0
@@ -20,7 +25,7 @@ export const isDirectory = (value: JsonValue) =>
 /**
  * Nodes represent queries into the tree rather than the tree itself. The actual tree data is stored by Adapters.
  *
- * Node can be a branch node or a leaf node. Branch nodes have children, leaf nodes have a value (stored in an adapter).
+ * Node can be a branch node (directory) or a leaf node (value).
  */
 export class Node {
   id: string;

@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 
-import { EventID } from './EventID.ts';
 import { PublicKey } from './PublicKey.ts';
 
 describe('PublicKey', () => {
@@ -44,47 +43,5 @@ describe('PublicKey', () => {
     const bech32 = 'npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk';
     const publicKey = new PublicKey(bech32);
     expect(publicKey.equals(bech32)).toEqual(true);
-  });
-});
-
-describe('EventID', () => {
-  it('should convert note id bech32 to hex', () => {
-    const noteBech32 = 'note1wdyajan9c9d72wanqe2l34lxgdu3q5esglhquusfkg34fqq6462qh4cjd5';
-    const noteHex = '7349d97665c15be53bb30655f8d7e6437910533047ee0e7209b22354801aae94';
-    const eventId = new EventID(noteBech32);
-    expect(eventId.hex).toEqual(noteHex);
-    expect(eventId.note).toEqual(noteBech32);
-  });
-
-  it('should init from hex', () => {
-    const hex = '7349d97665c15be53bb30655f8d7e6437910533047ee0e7209b22354801aae94';
-    const eventId = new EventID(hex);
-    expect(eventId.hex).toEqual(hex);
-    expect(eventId.note).toEqual('note1wdyajan9c9d72wanqe2l34lxgdu3q5esglhquusfkg34fqq6462qh4cjd5');
-  });
-
-  it('should fail with too long hex', () => {
-    const hex =
-      '7349d97665c15be53bb30655f8d7e6437910533047ee0e7209b22354801aae947349d97665c15be53bb30655f8d7e6437910533047ee0e7209b22354801aae94';
-    expect(() => new EventID(hex)).toThrow();
-  });
-
-  it('equals(hexStr)', () => {
-    const hex = '7349d97665c15be53bb30655f8d7e6437910533047ee0e7209b22354801aae94';
-    const eventId = new EventID(hex);
-    expect(eventId.equals(hex)).toEqual(true);
-  });
-
-  it('equals(EventID)', () => {
-    const hex = '7349d97665c15be53bb30655f8d7e6437910533047ee0e7209b22354801aae94';
-    const eventId = new EventID(hex);
-    const eventId2 = new EventID(hex);
-    expect(eventId.equals(eventId2)).toEqual(true);
-  });
-
-  it('equals(bech32)', () => {
-    const bech32 = 'note1wdyajan9c9d72wanqe2l34lxgdu3q5esglhquusfkg34fqq6462qh4cjd5';
-    const eventId = new EventID(bech32);
-    expect(eventId.equals(bech32)).toEqual(true);
   });
 });
