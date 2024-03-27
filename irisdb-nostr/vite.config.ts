@@ -10,7 +10,7 @@ export default defineConfig({
     },
     rollupOptions: {
       // Externalize dependencies so they're not bundled into your library
-      external: [],
+      external: ['irisdb'],
       output: {
         // Provide globals here if necessary
         globals: {},

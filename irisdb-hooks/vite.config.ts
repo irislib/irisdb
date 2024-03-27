@@ -10,10 +10,11 @@ export default defineConfig({
     },
     rollupOptions: {
       // Externalize dependencies so they're not bundled into your library
-      external: [],
+      external: ['react', 'irisdb', 'irisdb-nostr'],
       output: {
-        // Provide globals here if necessary
-        globals: {},
+        globals: {
+          react: 'React',
+        },
       },
     },
     outDir: 'dist',
