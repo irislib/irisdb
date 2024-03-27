@@ -20,7 +20,8 @@
   "bugs": {
     "url": "https://github.com/irislib/iris/issues"
   },
-  "homepage": "https://github.com/irislib/iris/iris-docs",
+  "homepage": "https://github.com/irislib/iris",
+  "documentation": "https://docs.iris.to/irisdb/",
   "dependencies": {
     "irisdb": "*"
   },

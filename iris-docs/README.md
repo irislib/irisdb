@@ -11,7 +11,7 @@ Deployed on [docs.iris.to](https://docs.iris.to/).
 * React
 * [Tailwind](https://tailwindcss.com/docs/installation)
 * [DaisyUI](https://daisyui.com/)
-* [IrisDB](srcrisdb/README.md)
+* [IrisDB](../README.md)
 * [NDK](https://github.com/nostr-dev-kit/ndk) for syncing data over [Nostr](https://nostr.com)
 
 ## Development
