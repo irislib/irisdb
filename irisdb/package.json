@@ -8,7 +8,6 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "vitest",
-    "docs": "typedoc --out docs ./src/index.ts",
     "build": "vite build && tsc"
   },
   "repository": {
@@ -22,9 +21,6 @@
   },
   "homepage": "https://github.com/irislib/iris",
   "documentation": "https://docs.iris.to/irisdb/",
-  "devDependencies": {
-    "typedoc": "^0.25.12"
-  },
   "files": [
     "src",
     "dist"
