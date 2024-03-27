@@ -13,6 +13,7 @@ Deployed on [docs.iris.to](https://docs.iris.to/).
 * [DaisyUI](https://daisyui.com/)
 * [IrisDB](../README.md)
 * [NDK](https://github.com/nostr-dev-kit/ndk) for syncing data over [Nostr](https://nostr.com)
+* [yjs](https://github.com/yjs/yjs) for collaborative text documents
 
 ## Development
 ```sh
