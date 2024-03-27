@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "build": "npm run build --workspaces",
-    "docs": "typedoc"
+    "docs": "typedoc",
+    "lint": "eslint --ext .ts,.tsx --fix ."
   },
   "devDependencies": {
     "eslint": "^8.57.0",

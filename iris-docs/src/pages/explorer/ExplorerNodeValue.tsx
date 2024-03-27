@@ -1,17 +1,18 @@
+import { JsonValue } from 'irisdb';
 import { useEffect, useRef, useState } from 'react';
 
 const VALUE_TRUNCATE_LENGTH = 20;
 
 type ExplorerNodeValueProps = {
-  value: any;
+  value: string;
   displayName: string;
-  setValue: (value: any) => void;
+  setValue: (value: JsonValue) => void;
 };
 
 const ExplorerNodeValue: React.FC<ExplorerNodeValueProps> = ({ displayName, value, setValue }) => {
   const [showMore, setShowMore] = useState(false);
-  const [editableValue, setEditableValue] = useState<any>(JSON.stringify(value));
-  const inputRef = useRef<any>(null);
+  const [editableValue, setEditableValue] = useState<string>(JSON.stringify(value));
+  const inputRef = useRef<HTMLSpanElement>(null);
 
   const truncateValue = () => {
     if (displayName === 'priv' || displayName === 'key') {
@@ -23,7 +24,7 @@ const ExplorerNodeValue: React.FC<ExplorerNodeValueProps> = ({ displayName, valu
   };
 
   const handleBlur = () => {
-    let parsedValue;
+    let parsedValue: JsonValue;
     try {
       parsedValue = JSON.parse(editableValue);
     } catch (e) {
@@ -54,7 +55,7 @@ const ExplorerNodeValue: React.FC<ExplorerNodeValueProps> = ({ displayName, valu
           ref={inputRef}
           contentEditable
           onBlur={handleBlur}
-          onInput={(e) => setEditableValue(e.currentTarget.textContent)}
+          onInput={(e) => setEditableValue(e.currentTarget.textContent || '')}
         >
           {showMore ? value : truncateValue()}
         </span>
@@ -68,7 +69,7 @@ const ExplorerNodeValue: React.FC<ExplorerNodeValueProps> = ({ displayName, valu
         ref={inputRef}
         contentEditable
         onBlur={handleBlur}
-        onInput={(e) => setEditableValue(e.currentTarget.textContent)}
+        onInput={(e) => setEditableValue(e.currentTarget.textContent || '')}
       >
         {JSON.stringify(value)}
       </span>
