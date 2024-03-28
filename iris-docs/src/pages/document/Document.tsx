@@ -123,7 +123,7 @@ export default function Document() {
       disabled={!editable}
       onChange={onContentChange}
       html={htmlContent}
-      className="flex flex-1 flex-col p-4 outline-none whitespace-pre-wrap"
+      className="flex flex-1 flex-col p-4 md:p-8 outline-none whitespace-pre-wrap bg-base-100"
     />
   );
 }

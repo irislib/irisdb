@@ -24,7 +24,7 @@ export default function Header() {
   const link = file ? `/${appName}` : '/';
 
   return (
-    <header className="flex items-center justify-between bg-base-100 text-base-content p-2 z-30 select-none">
+    <header className="flex items-center justify-between bg-base-100 text-base-content p-2 z-30 select-none border-b border-base-300">
       <div className="flex items-center gap-4">
         <Link to={link} className="flex items-center gap-2">
           <h1 className="text-2xl text-base-content">Iris Docs</h1>

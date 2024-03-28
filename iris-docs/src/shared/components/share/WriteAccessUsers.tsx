@@ -2,9 +2,11 @@ import { TrashIcon } from '@heroicons/react/24/solid';
 import { useLocalState } from 'irisdb-hooks';
 import { useAuthors } from 'irisdb-hooks';
 import { PublicKey, publicState } from 'irisdb-nostr';
+import { nip19 } from 'nostr-tools';
 import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import CopyButton from '@/shared/components/CopyButton';
 import { FollowUserForm } from '@/shared/components/share/FollowUserForm';
 import Show from '@/shared/components/Show';
 import { UserRow } from '@/shared/components/user/UserRow';
@@ -50,6 +52,14 @@ export const WriteAccessUsers = ({ owner, isMine, file }: WriteAccessUsersProps)
       <Link to={`/${basePath}?user=${owner}`}>
         <UserRow pubKey={owner!} description="Owner" />
       </Link>
+      <Show when={!isMine}>
+        Request write access by giving your public key to the owner.
+        <CopyButton
+          copyStr={nip19.npubEncode(myPubKey)}
+          text="Copy public key"
+          className="btn btn-outline"
+        />
+      </Show>
       {authors
         .filter((pubKey) => pubKey !== userHex)
         .map((pubKey) => (
