@@ -63,6 +63,10 @@ function watchNdkSigner(instance: NDK) {
   });
 }
 
+/**
+ * Create a new account (keypair), login with it and publish a profile event with the given name
+ * @param name
+ */
 export function newUserLogin(name: string) {
   ndk();
   const sk = generateSecretKey(); // `sk` is a Uint8Array
@@ -78,6 +82,10 @@ export function newUserLogin(name: string) {
   profileEvent.publish();
 }
 
+/**
+ * Login with a private key
+ * @param privateKey - hex or nsec format
+ */
 export function privateKeyLogin(privateKey: string) {
   ndk();
   if (privateKey && typeof privateKey === 'string') {
