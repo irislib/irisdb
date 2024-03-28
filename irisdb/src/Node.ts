@@ -23,7 +23,7 @@ export const isDirectory = (value: JsonValue) =>
   !Array.isArray(value);
 
 /**
- * Nodes represent queries into the tree rather than the tree itself. The actual tree data is stored by Adapters.
+ * Nodes represent queries into the tree. The actual tree data is stored by Adapters.
  *
  * Node can be a branch node (directory) or a leaf node (value).
  */

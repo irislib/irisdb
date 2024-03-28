@@ -52,8 +52,10 @@ export const WriteAccessUsers = ({ owner, isMine, file }: WriteAccessUsersProps)
       <Link to={`/${basePath}?user=${owner}`}>
         <UserRow pubKey={owner!} description="Owner" />
       </Link>
-      <Show when={!isMine}>
-        Request write access by giving your public key to the owner.
+      <Show when={myPubKey && !isMine}>
+        <span className="text-sm">
+          Request write access by giving your public key to the owner:
+        </span>
         <CopyButton
           copyStr={nip19.npubEncode(myPubKey)}
           text="Copy public key"
