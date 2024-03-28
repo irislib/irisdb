@@ -8,7 +8,7 @@
     "irisdb-hooks"
   ],
   "scripts": {
-    "build": "npm run build --workspaces",
+    "build": "npm run build --workspace=irisdb && npm run build --workspace=irisdb-nostr && npm run build --workspace=irisdb-hooks && npm run build --workspace=iris-docs",
     "docs": "typedoc",
     "lint": "eslint --ext .ts,.tsx --fix ."
   },
