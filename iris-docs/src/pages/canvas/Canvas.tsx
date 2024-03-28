@@ -1,6 +1,6 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { useAuthors, useLocalState } from 'irisdb-hooks';
-import { publicState } from 'irisdb-nostr';
+import { PublicKey, publicState } from 'irisdb-nostr';
 import { throttle } from 'lodash';
 import {
   DragEventHandler,
@@ -37,13 +37,13 @@ export default function Canvas() {
     x: window.innerWidth / 2,
     y: window.innerHeight / 2,
   });
-  const user = useSearchParam('user', 'follows');
+  const owner = useSearchParam('owner', 'follows');
   const { file } = useParams();
   const [scale, setScale] = useState(1);
   const docName = useMemo(() => `apps/canvas/documents/${file || 'public'}`, [file]);
   const authors = useAuthors(
-    user || 'public',
-    user !== 'follows' ? `${docName}/writers` : undefined,
+    owner || 'public',
+    owner !== 'follows' ? `${docName}/writers` : undefined,
   );
   const editable = authors.includes(myPubKey);
 
@@ -120,7 +120,13 @@ export default function Canvas() {
         console.error(e);
       }
     });
-    myPubKey && publicState(authors).get(docName).get('owner').put(user);
+    let ownerHex = owner;
+    try {
+      ownerHex = new PublicKey(owner as string).toString();
+    } catch (e) {
+      // ignore
+    }
+    myPubKey && publicState(authors).get(docName).get('owner').put(ownerHex);
     return () => unsubscribe();
   }, [authors, docName]);
 

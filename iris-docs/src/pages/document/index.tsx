@@ -10,19 +10,19 @@ import useSearchParam from '@/shared/hooks/useSearchParam';
 export default function DocsPage() {
   const [pubKey] = useLocalState('user/publicKey', '');
   const { file } = useParams();
-  const user = useSearchParam('user', 'follows');
+  const owner = useSearchParam('owner', 'follows');
 
   return (
     <div className="flex flex-1 flex-col h-full">
-      <Show when={!pubKey && user === 'follows'}>
+      <Show when={!pubKey && owner === 'follows'}>
         <div className="flex flex-col items-center justify-center h-full my-4">
           <LoginDialog />
         </div>
       </Show>
-      <Show when={(!!pubKey || user !== 'follows') && !file}>
+      <Show when={(!!pubKey || owner !== 'follows') && !file}>
         <FileList directory="apps/docs/documents" baseUrl="/document" />
       </Show>
-      <Show when={(!!pubKey || user !== 'follows') && !!file}>
+      <Show when={(!!pubKey || owner !== 'follows') && !!file}>
         <Document />
       </Show>
     </div>

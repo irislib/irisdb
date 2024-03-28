@@ -17,13 +17,13 @@ export function ShareMenuModal({
   modalRef: RefObject<HTMLDialogElement>;
   filePath: string;
 }) {
-  const user = useSearchParam('user', 'follows');
+  const owner = useSearchParam('owner', 'follows');
   const [myPubKey] = useLocalState('user/publicKey', '', String);
   const myNpub = useMemo(() => nip19.npubEncode(myPubKey), [myPubKey]);
   const userPublicKey = useMemo(() => {
-    if (!user || user === 'follows') return;
-    return new PublicKey(user);
-  }, [user]);
+    if (!owner || owner === 'follows') return;
+    return new PublicKey(owner);
+  }, [owner]);
   const fileName = useMemo(() => filePath.split('/').pop(), [filePath]);
 
   const isMine = useMemo(() => myPubKey === userPublicKey?.toString(), [myPubKey, userPublicKey]);
@@ -40,7 +40,7 @@ export function ShareMenuModal({
           <AddUserForm file={filePath} />
         </Show>
         <h3 className="text-xl">People with write access</h3>
-        <WriteAccessUsers user={user || 'follows'} isMine={isMine} file={filePath} />
+        <WriteAccessUsers owner={owner || 'follows'} isMine={isMine} file={filePath} />
         <h3 className="text-xl">
           Read access: <span className="text-primary">public</span>
         </h3>
@@ -61,17 +61,17 @@ export function ShareMenuModal({
             <Show when={!isMine}>
               <li>
                 <Link
-                  to={`/${window.location.pathname.split('/')[1]}/${fileName}?user=${myNpub}`}
+                  to={`/${window.location.pathname.split('/')[1]}/${fileName}?owner=${myNpub}`}
                   className="link link-accent"
                 >
                   Owned by you
                 </Link>
               </li>
             </Show>
-            <Show when={user !== 'follows'}>
+            <Show when={owner !== 'follows'}>
               <li>
                 <Link
-                  to={`/${window.location.pathname.split('/')[1]}/${fileName}?user=follows`}
+                  to={`/${window.location.pathname.split('/')[1]}/${fileName}?owner=follows`}
                   className="link link-accent"
                 >
                   Editable by your followed users

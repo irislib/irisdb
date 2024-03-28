@@ -21,7 +21,7 @@ type FileListItem = {
 };
 
 export function FileList({ directory, baseUrl }: { directory: string; baseUrl: string }) {
-  const user = useSearchParam('user', 'follows');
+  const user = useSearchParam('user', '');
   const [files, setFiles] = useState(new Map<string, FileListItem>());
   const [sortBy] = useState<keyof FileListItem>('updatedAt');
   const [sortDesc] = useState(true);
@@ -49,6 +49,12 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
       return sortDesc ? (aVal > bVal ? -1 : 1) : aVal > bVal ? 1 : -1;
     });
   }, [files, sortBy]);
+
+  useEffect(() => {
+    if (myPubKey && !user) {
+      navigate(`./?user=${nip19.npubEncode(myPubKey)}`, { replace: true });
+    }
+  }, [myPubKey, user]);
 
   useEffect(() => {
     return publicState(authors)
@@ -172,7 +178,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
             }
             return (
               <Link
-                to={`${baseUrl}/${path.split('/').pop()}?user=${file.ownerNpub || file.owner || user}`}
+                to={`${baseUrl}/${path.split('/').pop()}?owner=${file.ownerNpub || file.owner || user}`}
                 key={path}
                 className="p-2 border-b border-base-content/10 hover:bg-base-content/10 hover:rounded-md hover:border-b-transparent justify-between flex items-center gap-4"
               >

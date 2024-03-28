@@ -10,9 +10,9 @@ import { ViewingUsers } from '@/shared/components/ViewingUsers';
 import useSearchParam from '@/shared/hooks/useSearchParam';
 
 export default function Header() {
-  const user = useSearchParam('user', 'follows');
+  const owner = useSearchParam('owner', 'follows');
   const { file } = useParams();
-  const authors = useAuthors(user || '', file ? `${file}/writers` : undefined);
+  const authors = useAuthors(owner || '', file ? `${file}/writers` : undefined);
   const followedUsers = useAuthors('follows');
   const all = useMemo(
     () => Array.from(new Set([...authors, ...followedUsers])),
@@ -22,8 +22,6 @@ export default function Header() {
   const appName = location.pathname.split('/')[1];
   const filePath = `apps/${appName === 'document' ? 'docs' : appName}/documents/${file}`;
   const link = file ? `/${appName}` : '/';
-
-  if (!user && file) return null;
 
   return (
     <header className="flex items-center justify-between bg-base-100 text-base-content p-2 z-30 select-none">

@@ -44,12 +44,12 @@ const sanitize = (html: string): string => {
 
 export default function Document() {
   const [myPubKey] = useLocalState('user/publicKey', '');
-  const user = useSearchParam('user', 'follows');
+  const owner = useSearchParam('owner', 'follows');
   const { file } = useParams();
   const docName = useMemo(() => `apps/docs/documents/${file}`, [file]);
   const authors = useAuthors(
-    user || 'follows',
-    user !== 'follows' ? `${docName}/writers` : undefined,
+    owner || 'follows',
+    owner !== 'follows' ? `${docName}/writers` : undefined,
   );
   const editable = authors.includes(myPubKey);
   const [htmlContent, setHtmlContent] = useState('');
@@ -77,16 +77,16 @@ export default function Document() {
       });
 
     // saving the file to our own recently opened list
-    let userHex = user;
+    let ownerHex = owner;
     try {
-      userHex = new PublicKey(user as string).toString();
+      ownerHex = new PublicKey(owner as string).toString();
     } catch (e) {
       // ignore
     }
-    myPubKey && publicState(authors).get(docName).get('owner').put(userHex);
+    myPubKey && publicState(authors).get(docName).get('owner').put(ownerHex);
 
     return () => unsubscribe();
-  }, [authors, docName, user, myPubKey]);
+  }, [authors, docName, owner, myPubKey]);
 
   const sendUpdate = useCallback(
     debounce(() => {

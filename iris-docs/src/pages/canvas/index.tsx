@@ -10,19 +10,19 @@ import useSearchParam from '@/shared/hooks/useSearchParam';
 export default function CanvasPage() {
   const [pubKey] = useLocalState('user/publicKey', '');
   const { file } = useParams();
-  const user = useSearchParam('user', 'follows');
+  const owner = useSearchParam('owner', 'follows');
 
   return (
     <div className="flex flex-col h-full">
-      <Show when={!pubKey && !user}>
+      <Show when={!pubKey && !owner}>
         <div className="flex flex-col items-center justify-center h-full my-4">
           <LoginDialog />
         </div>
       </Show>
-      <Show when={!!user && !file}>
+      <Show when={!!owner && !file}>
         <FileList directory="apps/canvas/documents" baseUrl="/canvas" />
       </Show>
-      <Show when={!!(user && file)}>
+      <Show when={!!(owner && file)}>
         <Canvas />
       </Show>
     </div>

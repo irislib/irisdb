@@ -33,7 +33,7 @@ export default function Home() {
             GitHub
           </a>
           <Link
-            to="/document/iris-docs-about?user=npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk"
+            to="/document/iris-docs-about?owner=npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk"
             className="link link-accent"
           >
             About

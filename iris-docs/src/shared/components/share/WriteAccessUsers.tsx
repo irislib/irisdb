@@ -10,22 +10,25 @@ import Show from '@/shared/components/Show';
 import { UserRow } from '@/shared/components/user/UserRow';
 
 type WriteAccessUsersProps = {
-  user: string;
+  owner: string;
   isMine: boolean;
   file: string;
 };
 
-export const WriteAccessUsers = ({ user, isMine, file }: WriteAccessUsersProps) => {
+export const WriteAccessUsers = ({ owner, isMine, file }: WriteAccessUsersProps) => {
   const [myPubKey] = useLocalState('user/publicKey', '');
-  const authors = useAuthors(user || 'public', user !== 'follows' ? `${file}/writers` : undefined);
+  const authors = useAuthors(
+    owner || 'public',
+    owner !== 'follows' ? `${file}/writers` : undefined,
+  );
   const userHex = useMemo(
-    () => (user === 'follows' ? '' : new PublicKey(user).toString()),
-    [user, myPubKey],
+    () => (owner === 'follows' ? '' : new PublicKey(owner).toString()),
+    [owner, myPubKey],
   );
   const location = useLocation();
   const basePath = location.pathname.split('/')[1];
 
-  if (user === 'follows') {
+  if (owner === 'follows') {
     // TODO people search & follow here
     return (
       <div>
@@ -44,8 +47,8 @@ export const WriteAccessUsers = ({ user, isMine, file }: WriteAccessUsersProps) 
 
   return (
     <>
-      <Link to={`/${basePath}?user=${user}`}>
-        <UserRow pubKey={user!} description="Owner" />
+      <Link to={`/${basePath}?user=${owner}`}>
+        <UserRow pubKey={owner!} description="Owner" />
       </Link>
       {authors
         .filter((pubKey) => pubKey !== userHex)
