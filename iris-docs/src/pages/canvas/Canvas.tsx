@@ -228,7 +228,7 @@ export default function Canvas() {
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onWheel={handleWheel}
-        className="absolute top-0 left-0 right-0 bottom-0 overflow-hidden"
+        className="absolute top-0 left-0 right-0 bottom-0 overflow-hidden bg-base-100"
       >
         <Show when={!!myPubKey}>
           <div className="fixed bottom-8 right-8 z-20">

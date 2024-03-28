@@ -52,7 +52,7 @@ export const WriteAccessUsers = ({ owner, isMine, file }: WriteAccessUsersProps)
       <Link to={`/${basePath}?user=${owner}`}>
         <UserRow pubKey={owner!} description="Owner" />
       </Link>
-      <Show when={myPubKey && !isMine}>
+      <Show when={!!myPubKey && !isMine}>
         <span className="text-sm">
           Request write access by giving your public key to the owner:
         </span>
