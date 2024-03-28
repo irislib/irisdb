@@ -64,26 +64,22 @@ function watchNdkSigner(instance: NDK) {
 }
 
 export function newUserLogin(name: string) {
-  if (!ndkInstance) {
-    throw new Error('NDK not initialized');
-  }
+  ndk();
   const sk = generateSecretKey(); // `sk` is a Uint8Array
   const pk = getPublicKey(sk); // `pk` is a hex string
   const privateKeyHex = bytesToHex(sk);
   localState.get('user/privateKey').put(privateKeyHex);
   localState.get('user/publicKey').put(pk);
   privateKeySigner = new NDKPrivateKeySigner(privateKeyHex);
-  ndkInstance.signer = privateKeySigner;
-  const profileEvent = new NDKEvent(ndkInstance);
+  ndkInstance!.signer = privateKeySigner;
+  const profileEvent = new NDKEvent(ndkInstance!);
   profileEvent.kind = 0;
   profileEvent.content = JSON.stringify({ name });
   profileEvent.publish();
 }
 
 export function privateKeyLogin(privateKey: string) {
-  if (!ndkInstance) {
-    throw new Error('NDK not initialized');
-  }
+  ndk();
   if (privateKey && typeof privateKey === 'string') {
     const bytes =
       privateKey.indexOf('nsec1') === 0
@@ -91,7 +87,7 @@ export function privateKeyLogin(privateKey: string) {
         : hexToBytes(privateKey);
     const hex = bytesToHex(bytes);
     privateKeySigner = new NDKPrivateKeySigner(hex);
-    ndkInstance.signer = privateKeySigner;
+    ndkInstance!.signer = privateKeySigner;
     const publicKey = getPublicKey(bytes);
     localState.get('user/privateKey').put(hex);
     localState.get('user/publicKey').put(publicKey);

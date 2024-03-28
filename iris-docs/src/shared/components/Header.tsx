@@ -26,7 +26,7 @@ export default function Header() {
 
   return (
     <header className="flex items-center justify-between bg-base-100 text-base-content p-2 z-30 select-none border-b border-base-300">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <Link to={link} className="flex items-center gap-2">
           <Show when={appName === 'document'}>
             <DocumentIcon className="w-8 h-8 m-2" />
