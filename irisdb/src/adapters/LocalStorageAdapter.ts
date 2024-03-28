@@ -2,7 +2,7 @@ import { Adapter, Callback, NodeValue } from '../types.ts';
 
 const unsub = () => {};
 
-export class LocalStorageAdapter extends Adapter {
+export class LocalStorageAdapter implements Adapter {
   get(path: string, callback: Callback) {
     try {
       const storedData = localStorage.getItem(path);

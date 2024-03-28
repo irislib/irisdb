@@ -11,13 +11,12 @@ const log = debug('nostree:ndk-adapter');
 /**
  * Stores and syncs data over [Nostr](https://nostr.com/) using the [Nostr Dev Kit](https://github.com/nostr-dev-kit/ndk).
  */
-export default class NDKAdapter extends Adapter {
+export default class NDKAdapter implements Adapter {
   seenValues = new Map<string, NodeValue>();
   ndk: NDK;
   authors: string[];
 
   constructor(ndk: NDK, authors: PublicKey[]) {
-    super();
     this.ndk = ndk;
     this.authors = authors.map((p) => p.toString());
   }

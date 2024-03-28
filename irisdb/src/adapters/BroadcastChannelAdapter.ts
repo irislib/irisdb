@@ -3,11 +3,10 @@ import { Adapter, Callback, NodeValue, Unsubscribe } from '../types';
 /**
  * Sync between browser tabs over a [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel).
  */
-export class BroadcastChannelAdapter extends Adapter {
+export class BroadcastChannelAdapter implements Adapter {
   channel: BroadcastChannel;
 
   constructor(channelName: string) {
-    super();
     this.channel = new BroadcastChannel(channelName);
   }
 

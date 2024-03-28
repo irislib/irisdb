@@ -3,14 +3,13 @@ import { Adapter, Callback, NodeValue, Unsubscribe } from '../types';
 /**
  * An adapter that stores data in the browser's local storage and memory.
  */
-export class LocalStorageMemoryAdapter extends Adapter {
+export class LocalStorageMemoryAdapter implements Adapter {
   private storage = new Map<string, NodeValue>();
   private isLoaded = false;
   private loadingPromise: Promise<void>;
   private resolveLoading: (() => void) | null = null;
 
   constructor() {
-    super();
     this.loadingPromise = new Promise((resolve) => {
       this.resolveLoading = resolve;
     });

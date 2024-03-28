@@ -3,7 +3,7 @@ import { Adapter, Callback, NodeValue, Unsubscribe } from '../types.ts';
 /**
  * Memory-only adapter
  */
-export class MemoryAdapter extends Adapter {
+export class MemoryAdapter implements Adapter {
   private storage = new Map<string, NodeValue>();
 
   get(path: string, callback: Callback): Unsubscribe {

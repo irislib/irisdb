@@ -16,10 +16,11 @@ export type Callback<T = JsonValue> = (
   updatedAt: number | undefined,
   unsubscribe: Unsubscribe,
 ) => void;
-export abstract class Adapter {
-  abstract get(path: string, callback: Callback): Unsubscribe;
-  abstract set(path: string, data: NodeValue): Promise<void>;
-  abstract list(path: string, callback: Callback): Unsubscribe;
+
+export interface Adapter {
+  get(path: string, callback: Callback): Unsubscribe;
+  set(path: string, data: NodeValue): Promise<void>;
+  list(path: string, callback: Callback): Unsubscribe;
 }
 
 export type Subscription = {
