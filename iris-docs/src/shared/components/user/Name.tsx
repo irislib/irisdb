@@ -24,7 +24,7 @@ export function Name({ pubKey }: { pubKey: string }) {
     if (!pubKeyHex) {
       setName(pubKey);
     }
-    const user = ndk.getUser({ pubkey: pubKeyHex });
+    const user = ndk().getUser({ pubkey: pubKeyHex });
     user.fetchProfile().then((profile) => {
       if (profile) {
         setName(profile.name || initialName);

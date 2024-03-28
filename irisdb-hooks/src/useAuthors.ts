@@ -24,7 +24,7 @@ export function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] 
 
   useEffect(() => {
     if (ownerOrGroup === 'follows') {
-      const sub = ndk.subscribe({ kinds: [3], authors: [String(myPubKey)] });
+      const sub = ndk().subscribe({ kinds: [3], authors: [String(myPubKey)] });
       sub.on('event', (event: NDKEvent) => {
         if (event.kind === 3) {
           const newAuthors = new Set([String(myPubKey)]);

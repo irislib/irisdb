@@ -21,8 +21,8 @@ export const FollowUserForm = () => {
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (userToAddValid) {
-      const me = ndk.getUser({ pubkey: String(myPubKey) });
-      const userToFollow = ndk.getUser({ pubkey: new PublicKey(userToAdd).toString() });
+      const me = ndk().getUser({ pubkey: String(myPubKey) });
+      const userToFollow = ndk().getUser({ pubkey: new PublicKey(userToAdd).toString() });
       me.follow(userToFollow);
       setUserToAdd('');
     }

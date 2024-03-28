@@ -22,7 +22,7 @@ const publicState = (authors: string | Array<string | PublicKey>) => {
     });
   }
   return new Node({
-    adapters: [new Adapters.MemoryAdapter(), new NDKAdapter(ndk, pks)],
+    adapters: [new Adapters.MemoryAdapter(), new NDKAdapter(ndk(), pks)],
   });
 };
 

@@ -16,7 +16,7 @@ export const Avatar = ({ pubKey, className }: { pubKey: string; className?: stri
   useEffect(() => {
     setImage('');
     const fetchImage = async () => {
-      const user = ndk.getUser({ pubkey: pubKeyHex });
+      const user = ndk().getUser({ pubkey: pubKeyHex });
       const profile = await user.fetchProfile();
       if (profile && profile.image) {
         setImage(profile.image);
