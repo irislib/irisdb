@@ -1,4 +1,4 @@
-import { JsonValue, Node, TypeGuard, Unsubscribe } from 'irisdb/src';
+import { JsonValue, Node, TypeGuard, Unsubscribe } from 'irisdb';
 import { useCallback, useEffect, useState } from 'react';
 
 /**

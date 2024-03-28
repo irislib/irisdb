@@ -1,4 +1,4 @@
-import { JsonValue } from 'irisdb/src';
+import { JsonValue } from 'irisdb';
 import { useEffect, useRef, useState } from 'react';
 
 const VALUE_TRUNCATE_LENGTH = 20;
@@ -18,9 +18,7 @@ const ExplorerNodeValue: React.FC<ExplorerNodeValueProps> = ({ displayName, valu
     if (displayName === 'priv' || displayName === 'key') {
       return `${v.substring(0, 2)}...`;
     }
-    return v.length > VALUE_TRUNCATE_LENGTH
-      ? `${v.substring(0, VALUE_TRUNCATE_LENGTH)}...`
-      : v;
+    return v.length > VALUE_TRUNCATE_LENGTH ? `${v.substring(0, VALUE_TRUNCATE_LENGTH)}...` : v;
   };
 
   const handleBlur = () => {

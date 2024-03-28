@@ -1,4 +1,4 @@
-import { Adapters, Node } from 'irisdb/src';
+import { Adapters, Node } from 'irisdb';
 
 import { PublicKey } from './Hex/PublicKey.ts';
 import { ndk } from './ndk';

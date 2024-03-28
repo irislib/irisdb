@@ -1,4 +1,4 @@
-import { useLocalState } from 'irisdb-hooks/src';
+import { useLocalState } from 'irisdb-hooks';
 import { useParams } from 'react-router-dom';
 
 import Canvas from '@/pages/canvas/Canvas';

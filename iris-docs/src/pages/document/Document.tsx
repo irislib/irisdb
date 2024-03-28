@@ -1,6 +1,6 @@
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
-import { useAuthors, useLocalState } from 'irisdb-hooks/src';
-import { PublicKey, publicState } from 'irisdb-nostr/src';
+import { useAuthors, useLocalState } from 'irisdb-hooks';
+import { PublicKey, publicState } from 'irisdb-nostr';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
@@ -90,13 +90,12 @@ export default function Document() {
 
   const sendUpdate = useCallback(
     debounce(() => {
-      console.log('sending update');
       const update = Y.encodeStateAsUpdate(docRef.current);
       const hexUpdate = bytesToHex(update);
       publicState(authors).get(`${docName}/edits`).get(uuidv4()).put(hexUpdate);
     }, 1000),
     [docRef.current, authors, docName],
-  ); // Adjust debounce time (500ms) as needed
+  );
 
   const onContentChange = useCallback(
     (evt: ContentEditableEvent) => {
@@ -114,7 +113,6 @@ export default function Document() {
         yText.insert(0, newContent);
       });
 
-      // Call the debounced sendUpdate function instead of directly sending the update
       sendUpdate();
     },
     [htmlContent, sendUpdate],

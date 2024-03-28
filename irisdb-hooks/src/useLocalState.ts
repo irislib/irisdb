@@ -1,4 +1,4 @@
-import { JsonValue, localState, TypeGuard } from 'irisdb/src';
+import { JsonValue, localState, TypeGuard } from 'irisdb';
 
 import { useNodeState } from './useNodeState.ts';
 

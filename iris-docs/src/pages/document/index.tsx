@@ -1,4 +1,4 @@
-import { useLocalState } from 'irisdb-hooks/src';
+import { useLocalState } from 'irisdb-hooks';
 import { useParams } from 'react-router-dom';
 
 import Document from '@/pages/document/Document';

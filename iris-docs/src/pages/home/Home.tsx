@@ -26,7 +26,10 @@ export default function Home() {
           </div>
         </Link>
         <div className="flex flex-row gap-2">
-          <a className="link link-accent" href="https://github.com/irislib/iris/tree/main/iris-docs">
+          <a
+            className="link link-accent"
+            href="https://github.com/irislib/iris/tree/main/iris-docs"
+          >
             GitHub
           </a>
           <Link

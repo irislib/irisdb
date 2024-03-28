@@ -1,6 +1,6 @@
-import { localState } from 'irisdb/src';
-import { useLocalState } from 'irisdb-hooks/src';
-import { publicState } from 'irisdb-nostr/src';
+import { localState } from 'irisdb';
+import { useLocalState } from 'irisdb-hooks';
+import { publicState } from 'irisdb-nostr';
 import { useParams } from 'react-router-dom';
 
 import ExplorerNode from './ExplorerNode';

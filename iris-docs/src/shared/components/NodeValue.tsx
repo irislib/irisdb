@@ -1,4 +1,4 @@
-import { usePublicState } from 'irisdb-hooks/src';
+import { usePublicState } from 'irisdb-hooks';
 import { useState } from 'react';
 
 import Show from '@/shared/components/Show';

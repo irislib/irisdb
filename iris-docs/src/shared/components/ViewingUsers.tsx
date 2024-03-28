@@ -1,5 +1,5 @@
-import { useLocalState } from 'irisdb-hooks/src';
-import { publicState } from 'irisdb-nostr/src';
+import { useLocalState } from 'irisdb-hooks';
+import { publicState } from 'irisdb-nostr';
 import { useEffect, useState } from 'react';
 
 import { Avatar } from '@/shared/components/user/Avatar';

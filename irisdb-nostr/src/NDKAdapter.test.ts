@@ -3,7 +3,7 @@ import 'fake-indexeddb/auto';
 import { bytesToHex } from '@noble/hashes/utils';
 import NDK, { NDKPrivateKeySigner } from '@nostr-dev-kit/ndk';
 import NDKCacheAdapterDexie from '@nostr-dev-kit/ndk-cache-dexie';
-import { Callback, Unsubscribe } from 'irisdb/src';
+import { Callback, Unsubscribe } from 'irisdb';
 import { generateSecretKey, getPublicKey } from 'nostr-tools';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 

@@ -1,5 +1,5 @@
-import { PublicKey } from 'irisdb-nostr/src';
-import { ndk } from 'irisdb-nostr/src';
+import { PublicKey } from 'irisdb-nostr';
+import { ndk } from 'irisdb-nostr';
 import { useEffect, useMemo, useState } from 'react';
 
 import MinidenticonImg from '@/shared/components/user/MinidenticonImg';

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import { useLocalState } from 'irisdb-hooks/src';
-import { PublicKey, publicState } from 'irisdb-nostr/src';
+import { useLocalState } from 'irisdb-hooks';
+import { PublicKey, publicState } from 'irisdb-nostr';
 import { FormEvent, useMemo, useState } from 'react';
 
 import { UserRow } from '@/shared/components/user/UserRow';

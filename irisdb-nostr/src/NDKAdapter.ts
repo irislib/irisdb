@@ -1,6 +1,6 @@
 import NDK, { NDKEvent, NostrEvent } from '@nostr-dev-kit/ndk';
 import debug from 'debug';
-import { Adapter, Callback, NodeValue, Unsubscribe } from 'irisdb/src';
+import { Adapter, Callback, NodeValue, Unsubscribe } from 'irisdb';
 
 import { PublicKey } from './Hex/PublicKey';
 
@@ -72,7 +72,6 @@ export default class NDKAdapter extends Adapter {
       e.tags.push(['expiration', Math.floor(value.expiresAt / 1000).toString()]);
     }
     try {
-      console.log('publishing event', e);
       await e.publish();
       log('published state event', e);
     } catch (error) {

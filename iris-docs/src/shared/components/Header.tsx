@@ -1,4 +1,4 @@
-import { useAuthors } from 'irisdb-hooks/src';
+import { useAuthors } from 'irisdb-hooks';
 import { useMemo } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
