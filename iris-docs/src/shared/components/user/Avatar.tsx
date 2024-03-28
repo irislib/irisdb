@@ -34,16 +34,18 @@ export const Avatar = ({ pubKey, className }: { pubKey: string; className?: stri
     <div
       className={`${className || 'w-12 h-12'} rounded-full bg-base-100 flex items-center justify-center overflow-hidden border-base-content border-2`}
     >
-      {image ? (
-        <img
-          src={image}
-          alt="User Avatar"
-          className="w-full h-full object-cover"
-          onError={handleImageError}
-        />
-      ) : (
-        <MinidenticonImg username={pubKeyHex} alt="User Avatar" />
-      )}
+      <div className="w-full">
+        {image ? (
+          <img
+            src={image}
+            alt="User Avatar"
+            className="w-full h-full object-cover"
+            onError={handleImageError}
+          />
+        ) : (
+          <MinidenticonImg username={pubKeyHex} alt="User Avatar" />
+        )}
+      </div>
     </div>
   );
 };
