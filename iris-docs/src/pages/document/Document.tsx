@@ -119,7 +119,7 @@ export default function Document() {
   );
 
   return (
-    <div className="flex flex-1 flex-col items-center">
+    <div className="flex flex-1 flex-col items-center bg-base-100">
       <ContentEditable
         disabled={!editable}
         onChange={onContentChange}
