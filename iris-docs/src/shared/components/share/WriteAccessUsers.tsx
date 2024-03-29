@@ -1,4 +1,4 @@
-import { TrashIcon } from '@heroicons/react/24/solid';
+import { RiDeleteBinLine } from '@remixicon/react';
 import { useLocalState } from 'irisdb-hooks';
 import { useAuthors } from 'irisdb-hooks';
 import { PublicKey, publicState } from 'irisdb-nostr';
@@ -79,7 +79,7 @@ export const WriteAccessUsers = ({ owner, isMine, file }: WriteAccessUsersProps)
                   publicState(myPubKey).get(`${file}/writers/${pubKey}`).put(false);
                 }}
               >
-                <TrashIcon className="w-4 h-4" />
+                <RiDeleteBinLine className="w-4 h-4" />
               </button>
             </Show>
           </div>

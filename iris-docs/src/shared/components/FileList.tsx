@@ -1,5 +1,10 @@
-import { FolderIcon } from '@heroicons/react/24/outline';
-import { FolderOpenIcon, PlusIcon, TrashIcon, UserPlusIcon } from '@heroicons/react/24/solid';
+import {
+  RiAddLine,
+  RiDeleteBinLine,
+  RiFolderLine,
+  RiFolderOpenFill,
+  RiUserAddLine,
+} from '@remixicon/react';
 import { useAuthors, useLocalState } from 'irisdb-hooks';
 import { PublicKey, publicState } from 'irisdb-nostr';
 import { nip19 } from 'nostr-tools';
@@ -122,7 +127,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
                 <UserRow pubKey={myPubKey} />
               </div>
               <span className="text-base-content">
-                <FolderIcon className="w-6 h-6" />
+                <RiFolderLine className="w-6 h-6" />
               </span>
             </div>
           </div>
@@ -136,11 +141,11 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
           <div className="card-body">
             <div className="flex flex-row items-center gap-2 justify-between">
               <div className="flex items-center gap-2 flex-row">
-                <UserPlusIcon className="w-6 h-6" />
+                <RiUserAddLine className="w-6 h-6" />
                 <h2 className="text-xl text-base-content">Files by followed users</h2>
               </div>
               <span className="text-base-content">
-                <FolderIcon className="w-6 h-6" />
+                <RiFolderLine className="w-6 h-6" />
               </span>
             </div>
           </div>
@@ -152,7 +157,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
             <div className="flex items-center gap-2 flex-row">
               {user === 'follows' ? (
                 <>
-                  <UserPlusIcon className="w-6 h-6" />
+                  <RiUserAddLine className="w-6 h-6" />
                   <h2 className="text-xl text-base-content">Files by followed users</h2>
                 </>
               ) : (
@@ -160,13 +165,13 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
               )}
             </div>
             <span className="text-base-content">
-              <FolderOpenIcon className="w-6 h-6" />
+              <RiFolderOpenFill className="w-6 h-6" />
             </span>
           </div>
           <Show when={isMine || user === 'follows'}>
             <div>
               <button className="btn btn-outline" onClick={createNew}>
-                <PlusIcon className="w-6 h-6" />
+                <RiAddLine className="w-6 h-6" />
                 Create new
               </button>
             </div>
@@ -204,7 +209,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
                     className="btn btn-circle btn-ghost btn-sm"
                     onClick={(event) => deleteFile(path, file.name || 'Untitled', event)}
                   >
-                    <TrashIcon className="w-4 h-4" />
+                    <RiDeleteBinLine className="w-4 h-4" />
                   </button>
                 </Show>
               </Link>

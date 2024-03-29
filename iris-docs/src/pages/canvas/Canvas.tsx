@@ -1,4 +1,4 @@
-import { PlusIcon } from '@heroicons/react/24/solid';
+import { RiAddLine } from '@remixicon/react';
 import { useAuthors, useLocalState } from 'irisdb-hooks';
 import { PublicKey, publicState } from 'irisdb-nostr';
 import { throttle } from 'lodash';
@@ -245,7 +245,7 @@ export default function Canvas() {
                 className="btn btn-primary btn-circle bg-primary"
                 onClick={() => setShowNewItemDialog(true)}
               >
-                <PlusIcon className="w-6 h-6" />
+                <RiAddLine className="w-6 h-6" />
               </button>
             </Show>
           </div>

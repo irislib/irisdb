@@ -1,4 +1,4 @@
-import { UserPlusIcon } from '@heroicons/react/24/outline';
+import { RiUserAddLine } from '@remixicon/react';
 import { useRef } from 'react';
 
 import { ShareMenuModal } from '@/shared/components/share/ShareMenuModal';
@@ -13,7 +13,7 @@ export default function ShareButton({ file }: { file: string }) {
         type="button"
         onClick={() => modalRef.current?.showModal()}
       >
-        <UserPlusIcon className="w-6 h-6" />
+        <RiUserAddLine className="w-6 h-6" />
         Share
       </button>
       <ShareMenuModal modalRef={modalRef} filePath={file} />

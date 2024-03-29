@@ -1,14 +1,17 @@
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
+import { Collaboration } from '@tiptap/extension-collaboration';
+import { EditorContent, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 import { useAuthors, useLocalState } from 'irisdb-hooks';
 import { PublicKey, publicState } from 'irisdb-nostr';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import { useParams } from 'react-router-dom';
 import sanitizeHtml from 'sanitize-html';
 import { v4 as uuidv4 } from 'uuid';
 import * as Y from 'yjs';
 
+import MenuBar from '@/pages/document/MenuBar.tsx';
 import useSearchParam from '@/shared/hooks/useSearchParam';
 
 const sanitize = (html: string): string => {
@@ -56,14 +59,27 @@ export default function Document() {
 
   const docRef = useRef(new Y.Doc());
 
-  useEffect(() => {
-    const yText = docRef.current.getText('content');
-    const updateContent = () => {
-      setHtmlContent(sanitize(yText.toString()));
-    };
-    yText.observe(updateContent);
-    return () => yText.unobserve(updateContent);
-  }, []);
+  const editor = useEditor(
+    {
+      extensions: [
+        StarterKit,
+        Collaboration.configure({
+          document: docRef.current,
+        }),
+      ],
+      content: htmlContent,
+      onUpdate: () => {
+        sendUpdate();
+      },
+      editorProps: {
+        attributes: {
+          class: 'outline-none prose prose-sm md:prose-base',
+        },
+      },
+      editable,
+    },
+    [editable],
+  );
 
   useEffect(() => {
     const unsubscribe = publicState(authors)
@@ -92,40 +108,16 @@ export default function Document() {
     debounce(() => {
       const update = Y.encodeStateAsUpdate(docRef.current);
       const hexUpdate = bytesToHex(update);
+      console.log('sending update size', hexUpdate.length);
       publicState(authors).get(`${docName}/edits`).get(uuidv4()).put(hexUpdate);
     }, 1000),
     [docRef.current, authors, docName],
   );
 
-  const onContentChange = useCallback(
-    (evt: ContentEditableEvent) => {
-      const newContent = sanitize(evt.currentTarget.innerHTML);
-
-      if (newContent === htmlContent) {
-        return;
-      }
-
-      setHtmlContent(newContent);
-
-      const yText = docRef.current.getText('content');
-      docRef.current.transact(() => {
-        yText.delete(0, yText.length);
-        yText.insert(0, newContent);
-      });
-
-      sendUpdate();
-    },
-    [htmlContent, sendUpdate],
-  );
-
   return (
     <div className="flex flex-1 flex-col items-center bg-base-100">
-      <ContentEditable
-        disabled={!editable}
-        onChange={onContentChange}
-        html={htmlContent}
-        className="flex flex-1 max-w-[768px] flex-col p-4 outline-none whitespace-pre-wrap"
-      />
+      {editable && editor && <MenuBar editor={editor} />}
+      <EditorContent editor={editor} className="flex flex-1 w-full max-w-[768px] flex-col p-4" />
     </div>
   );
 }

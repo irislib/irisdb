@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from '@heroicons/react/20/solid';
+import { RiArrowRightSLine } from '@remixicon/react';
 import { DIRECTORY_VALUE, isDirectory, JsonValue, Node } from 'irisdb';
 import { useEffect, useState } from 'react';
 
@@ -61,7 +61,7 @@ export default function ExplorerNode({
         style={{ paddingLeft }}
       >
         <Show when={isDir}>
-          <ChevronRightIcon
+          <RiArrowRightSLine
             className={`w-4 h-4 transition ${isOpen ? 'transform rotate-90' : ''}`}
           />
         </Show>

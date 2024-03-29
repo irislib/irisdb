@@ -1,4 +1,4 @@
-import { DocumentIcon, PaintBrushIcon } from '@heroicons/react/24/outline';
+import { RiBrushLine, RiFileLine } from '@remixicon/react';
 import { useAuthors } from 'irisdb-hooks';
 import { useMemo } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
@@ -29,10 +29,10 @@ export default function Header() {
       <div className="flex items-center gap-2">
         <Link to={link} className="flex items-center gap-2">
           <Show when={appName === 'document'}>
-            <DocumentIcon className="w-8 h-8 m-2" />
+            <RiFileLine className="w-8 h-8 m-2" />
           </Show>
           <Show when={appName === 'canvas'}>
-            <PaintBrushIcon className="w-8 h-8 m-2" />
+            <RiBrushLine className="w-8 h-8 m-2" />
           </Show>
           <Show when={!file}>
             <h1 className="text-2xl text-base-content">Iris Docs</h1>
