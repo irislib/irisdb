@@ -1,5 +1,10 @@
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
-import NDK, { NDKConstructorParams, NDKNip07Signer, NDKPrivateKeySigner } from '@nostr-dev-kit/ndk';
+import NDK, {
+  NDKConstructorParams,
+  NDKNip07Signer,
+  NDKPrivateKeySigner,
+  NDKRelayAuthPolicies,
+} from '@nostr-dev-kit/ndk';
 import { NDKEvent } from '@nostr-dev-kit/ndk';
 import NDKCacheAdapterDexie from '@nostr-dev-kit/ndk-cache-dexie';
 import { localState } from 'irisdb';
@@ -26,6 +31,7 @@ export const ndk = (opts?: NDKConstructorParams): NDK => {
     };
     ndkInstance = new NDK(options);
     watchNdkSigner(ndkInstance);
+    ndkInstance.relayAuthDefaultPolicy = NDKRelayAuthPolicies.signIn({ ndk: ndkInstance });
     ndkInstance.connect();
   } else if (opts) {
     throw new Error('NDK instance already initialized, cannot pass options');
