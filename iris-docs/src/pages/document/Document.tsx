@@ -127,7 +127,7 @@ export default function Document() {
   return (
     <div className="flex flex-1 flex-col items-center bg-base-100">
       {editable && editor && <MenuBar editor={editor} />}
-      <EditorContent editor={editor} className="flex flex-1 w-full max-w-[768px] flex-col p-4" />
+      <EditorContent editor={editor} className="flex flex-1 w-full max-w-[768px] flex-col p-4 md:p-8" />
     </div>
   );
 }
