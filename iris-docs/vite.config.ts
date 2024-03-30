@@ -13,7 +13,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-stuff': ['react', 'react-dom', 'react-router-dom', 'react-contenteditable'],
+          'react-stuff': ['react', 'react-dom', 'react-router-dom'],
         },
       },
     },

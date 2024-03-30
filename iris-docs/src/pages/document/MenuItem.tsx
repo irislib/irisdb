@@ -1,7 +1,9 @@
+import { RemixiconComponentType } from '@remixicon/react';
+
 type MenuItemProps = {
-  IconComponent: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  title: string;
-  action: () => void;
+  IconComponent?: RemixiconComponentType;
+  title?: string;
+  action?: () => void;
   isActive?: () => boolean;
 };
 

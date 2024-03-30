@@ -3,6 +3,7 @@ import { Collaboration } from '@tiptap/extension-collaboration';
 import Highlight from '@tiptap/extension-highlight';
 import TaskItem from '@tiptap/extension-task-item';
 import TaskList from '@tiptap/extension-task-list';
+import LinkExtension from '@tiptap/extension-link';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import debug from 'debug';
@@ -47,6 +48,11 @@ export default function Document() {
         Highlight,
         TaskList,
         TaskItem,
+        LinkExtension.configure({
+          HTMLAttributes: {
+            class: 'link link-primary',
+          },
+        }),
       ],
       onUpdate: () => {
         sendUpdate();
