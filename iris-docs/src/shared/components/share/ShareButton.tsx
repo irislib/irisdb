@@ -14,7 +14,7 @@ export default function ShareButton({ file }: { file: string }) {
         onClick={() => modalRef.current?.showModal()}
       >
         <RiUserAddLine className="w-6 h-6" />
-        Share
+        <span className="hidden sm:inline-block">Share</span>
       </button>
       <ShareMenuModal modalRef={modalRef} filePath={file} />
     </>

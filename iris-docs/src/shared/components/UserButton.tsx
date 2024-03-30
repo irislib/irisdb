@@ -1,5 +1,6 @@
 import { useLocalState } from 'irisdb-hooks';
 import { useCallback, useEffect, useRef } from 'react';
+import { RiLoginBoxLine } from '@remixicon/react';
 
 import LoginDialog from '@/shared/components/LoginDialog';
 import Show from '@/shared/components/Show';
@@ -20,14 +21,15 @@ export default function UserButton() {
   return (
     <>
       <Show when={!!pubKey}>
-        <div className="ml-2 rounded-full cursor-pointer" onClick={showModal}>
+        <div className="rounded-full cursor-pointer" onClick={showModal}>
           <Avatar pubKey={pubKey} />
         </div>
       </Show>
       <Show when={!pubKey}>
-        <div className="ml-2">
+        <div>
           <button className="btn btn-primary" onClick={showModal}>
-            Sign in
+            <RiLoginBoxLine className="w-6 h-6" />
+            <span className="hidden sm:inline-block">Sign in</span>
           </button>
         </div>
       </Show>
