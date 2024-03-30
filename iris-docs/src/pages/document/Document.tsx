@@ -1,5 +1,8 @@
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 import { Collaboration } from '@tiptap/extension-collaboration';
+import Highlight from '@tiptap/extension-highlight';
+import TaskItem from '@tiptap/extension-task-item';
+import TaskList from '@tiptap/extension-task-list';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import debug from 'debug';
@@ -34,10 +37,16 @@ export default function Document() {
   const editor = useEditor(
     {
       extensions: [
-        StarterKit,
+        StarterKit.configure({
+          // Collaboration has its own history management
+          history: false,
+        }),
         Collaboration.configure({
           document: docRef.current,
         }),
+        Highlight,
+        TaskList,
+        TaskItem,
       ],
       onUpdate: () => {
         sendUpdate();

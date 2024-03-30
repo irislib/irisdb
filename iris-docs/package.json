@@ -14,6 +14,9 @@
   "dependencies": {
     "@remixicon/react": "^4.2.0",
     "@tiptap/extension-collaboration": "^2.2.4",
+    "@tiptap/extension-highlight": "^2.2.4",
+    "@tiptap/extension-task-item": "^2.2.4",
+    "@tiptap/extension-task-list": "^2.2.4",
     "@tiptap/pm": "^2.2.4",
     "@tiptap/react": "^2.2.4",
     "@tiptap/starter-kit": "^2.2.4",

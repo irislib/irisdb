@@ -13,7 +13,6 @@ import {
   RiListOrdered,
   RiListUnordered,
   RiMarkPenLine,
-  RiParagraph,
   RiSeparator,
   RiStrikethrough,
   RiTextWrap,
@@ -69,12 +68,6 @@ export default ({ editor }: { editor: Editor }) => {
       title: 'Heading 2',
       action: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
       isActive: () => editor.isActive('heading', { level: 2 }),
-    },
-    {
-      IconComponent: RiParagraph,
-      title: 'Paragraph',
-      action: () => editor.chain().focus().setParagraph().run(),
-      isActive: () => editor.isActive('paragraph'),
     },
     {
       IconComponent: RiListUnordered,
