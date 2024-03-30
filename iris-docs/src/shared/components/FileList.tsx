@@ -66,7 +66,6 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
       .get(directory)
       .forEach((value, path, updatedAt) => {
         // Type guard to ensure 'value' is an object with a 'name' property
-        console.log('path', path, 'value', value);
         if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
           setFiles((files) => {
             let owner = value.owner as string;
@@ -99,7 +98,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
   const createNew = (e: FormEvent) => {
     e.preventDefault();
     const uid = uuidv4();
-    navigate(`${baseUrl}/${uid}?user=${user}`);
+    navigate(`${baseUrl}/${uid}?owner=${user}`);
   };
 
   const isMine = myPubKey === pubKeyHex;

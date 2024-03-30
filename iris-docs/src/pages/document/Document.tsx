@@ -1,14 +1,14 @@
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 import { Collaboration } from '@tiptap/extension-collaboration';
 import Highlight from '@tiptap/extension-highlight';
+import LinkExtension from '@tiptap/extension-link';
 import TaskItem from '@tiptap/extension-task-item';
 import TaskList from '@tiptap/extension-task-list';
-import LinkExtension from '@tiptap/extension-link';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import debug from 'debug';
 import { useAuthors, useLocalState } from 'irisdb-hooks';
-import { publicState } from 'irisdb-nostr';
+import {PublicKey, publicState} from 'irisdb-nostr';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
@@ -66,6 +66,16 @@ export default function Document() {
     },
     [editable],
   );
+
+  useEffect(() => {
+    let val = owner;
+    try {
+      val = new PublicKey(owner).toString();
+    } catch (e) {
+      // ignore
+    }
+    publicState(authors).get(docName).get('owner').put(val);
+  }, [docName, owner]);
 
   useEffect(() => {
     const unsubscribe = publicState(authors)
