@@ -28,7 +28,7 @@ export default function Header() {
     <header className="flex sticky top-0 items-center justify-between bg-base-100 text-base-content p-2 z-30 select-none border-b border-base-300">
       <div className="flex items-center gap-2">
         <Link to={link} className="flex items-center gap-2">
-          <Show when={appName === 'document'}>
+          <Show when={['', 'document'].includes(appName)}>
             <RiFileLine className="w-8 h-8 m-2" />
           </Show>
           <Show when={appName === 'canvas'}>
