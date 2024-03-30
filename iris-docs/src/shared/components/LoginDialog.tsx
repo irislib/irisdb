@@ -73,7 +73,7 @@ export default function LoginDialog() {
     <div className="flex flex-row items-center gap-2 justify-between card card-compact bg-base-100">
       <div className="card-body">
         <Show when={!publicKey}>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4">
             <form className="flex flex-row items-center gap-2" onSubmit={(e) => onNewUserLogin(e)}>
               <input
                 autoComplete="name"

@@ -2,48 +2,19 @@ import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 import { Collaboration } from '@tiptap/extension-collaboration';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import debug from 'debug';
 import { useAuthors, useLocalState } from 'irisdb-hooks';
-import { PublicKey, publicState } from 'irisdb-nostr';
+import { publicState } from 'irisdb-nostr';
 import { debounce } from 'lodash';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import sanitizeHtml from 'sanitize-html';
 import { v4 as uuidv4 } from 'uuid';
 import * as Y from 'yjs';
 
 import MenuBar from '@/pages/document/MenuBar.tsx';
 import useSearchParam from '@/shared/hooks/useSearchParam';
 
-const sanitize = (html: string): string => {
-  return sanitizeHtml(html, {
-    allowedTags: [
-      'b',
-      'i',
-      'em',
-      'strong',
-      'a',
-      'p',
-      'h1',
-      'h2',
-      'h3',
-      'h4',
-      'h5',
-      'h6',
-      'ul',
-      'ol',
-      'li',
-      'blockquote',
-      'code',
-      'pre',
-      'br',
-      'div',
-      'span',
-    ],
-    allowedAttributes: {
-      a: ['href'],
-    },
-  });
-};
+const log = debug('iris-docs:Document');
 
 export default function Document() {
   const [myPubKey] = useLocalState('user/publicKey', '');
@@ -55,9 +26,10 @@ export default function Document() {
     owner !== 'follows' ? `${docName}/writers` : undefined,
   );
   const editable = authors.includes(myPubKey);
-  const [htmlContent, setHtmlContent] = useState('');
 
   const docRef = useRef(new Y.Doc());
+  const lastStateVectorRef = useRef<Uint8Array | null>(null);
+  const firstUpdated = useRef(false);
 
   const editor = useEditor(
     {
@@ -67,16 +39,15 @@ export default function Document() {
           document: docRef.current,
         }),
       ],
-      content: htmlContent,
       onUpdate: () => {
         sendUpdate();
       },
+      editable,
       editorProps: {
         attributes: {
           class: 'outline-none prose prose-sm md:prose-base',
         },
       },
-      editable,
     },
     [editable],
   );
@@ -88,28 +59,42 @@ export default function Document() {
       .forEach((update) => {
         if (typeof update === 'string') {
           const decodedUpdate = hexToBytes(update);
+          // Apply the update without creating a Snapshot.
           Y.applyUpdate(docRef.current, decodedUpdate);
+          // After applying the update, we update the state vector.
+          lastStateVectorRef.current = Y.encodeStateVector(docRef.current);
         }
       });
 
-    // saving the file to our own recently opened list
-    let ownerHex = owner;
-    try {
-      ownerHex = new PublicKey(owner as string).toString();
-    } catch (e) {
-      // ignore
-    }
-    myPubKey && publicState(authors).get(docName).get('owner').put(ownerHex);
-
     return () => unsubscribe();
-  }, [authors, docName, owner, myPubKey]);
+  }, [authors, docName]);
 
   const sendUpdate = useCallback(
     debounce(() => {
-      const update = Y.encodeStateAsUpdate(docRef.current);
-      const hexUpdate = bytesToHex(update);
-      console.log('sending update size', hexUpdate.length);
-      publicState(authors).get(`${docName}/edits`).get(uuidv4()).put(hexUpdate);
+      if (!firstUpdated.current) {
+        // onUpdate is called on the first render? so we skip the first update
+        firstUpdated.current = true;
+        return;
+      }
+
+      if (lastStateVectorRef.current) {
+        const currentStateVector = Y.encodeStateVector(docRef.current);
+        const update = Y.encodeStateAsUpdate(docRef.current, lastStateVectorRef.current);
+        lastStateVectorRef.current = currentStateVector;
+
+        const hexUpdate = bytesToHex(update);
+        log('sending delta update size', hexUpdate.length);
+        publicState(authors).get(docName).get('edits').get(uuidv4()).put(hexUpdate);
+      } else {
+        // This is for the initial update, where there's no last state vector
+        const initialStateVector = Y.encodeStateVector(docRef.current);
+        const initialUpdate = Y.encodeStateAsUpdate(docRef.current);
+        lastStateVectorRef.current = initialStateVector;
+
+        const hexInitialUpdate = bytesToHex(initialUpdate);
+        log('sending initial full update size', hexInitialUpdate.length);
+        publicState(authors).get(docName).get('edits').get(uuidv4()).put(hexInitialUpdate);
+      }
     }, 1000),
     [docRef.current, authors, docName],
   );
