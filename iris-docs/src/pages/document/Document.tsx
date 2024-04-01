@@ -8,7 +8,7 @@ import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import debug from 'debug';
 import { useAuthors, useLocalState } from 'irisdb-hooks';
-import {PublicKey, publicState} from 'irisdb-nostr';
+import { PublicKey, publicState } from 'irisdb-nostr';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
@@ -127,7 +127,10 @@ export default function Document() {
   return (
     <div className="flex flex-1 flex-col items-center bg-base-100">
       {editable && editor && <MenuBar editor={editor} />}
-      <EditorContent editor={editor} className="flex flex-1 w-full max-w-[768px] flex-col p-4 md:p-8" />
+      <EditorContent
+        editor={editor}
+        className="flex flex-1 w-full max-w-[768px] flex-col p-4 md:p-8"
+      />
     </div>
   );
 }
