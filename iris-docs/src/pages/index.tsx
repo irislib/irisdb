@@ -3,6 +3,7 @@ import { createBrowserRouter, createRoutesFromElements, Route } from 'react-rout
 import CanvasPage from '@/pages/canvas';
 import DocsPage from '@/pages/document';
 import Explorer from '@/pages/explorer/Explorer';
+import SettingsPage from '@/pages/settings';
 import Layout from '@/shared/components/Layout';
 
 export const router = createBrowserRouter(
@@ -12,6 +13,7 @@ export const router = createBrowserRouter(
       <Route path="/explorer/:file?" element={<Explorer />} />
       <Route path="/canvas/:file?" element={<CanvasPage />} />
       <Route path="/document/:file?" element={<DocsPage />} />
+      <Route path="/settings" element={<SettingsPage />} />
     </Route>,
   ]),
 );

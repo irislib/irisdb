@@ -15,17 +15,17 @@ const Explorer = ({ p }: Props) => {
   const [name] = useLocalState('user/name', '');
   const { user } = useParams();
 
-  const publicStateText = name ? `User public state (${name})` : 'User public state';
+  const publicStateText = name ? `User public state (${name})` : 'User public data';
 
   return (
     <div className="flex flex-col gap-2">
       <div>{p}</div>
       <div className="mb-4">
-        <ExplorerNode expanded={true} name="Local state" node={localState} />
+        <ExplorerNode expanded={true} name="Local data" node={localState} />
       </div>
       {user && (
         <div className="mb-4">
-          <ExplorerNode expanded={true} name="User public state" node={publicState(user)} />
+          <ExplorerNode expanded={true} name="User public data" node={publicState(user)} />
         </div>
       )}
       {!user && pubKey && (

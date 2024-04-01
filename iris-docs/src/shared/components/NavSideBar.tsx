@@ -1,4 +1,4 @@
-import { RiBrushLine, RiFileLine, RiFolderOpenLine } from '@remixicon/react';
+import { RiBrushLine, RiFileLine, RiFolderOpenLine, RiSettings3Line, RiInformationLine } from '@remixicon/react';
 import { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -42,43 +42,52 @@ export const NavSideBar = ({
   return (
     <div
       ref={ref}
-      className={`fixed py-4 select-none shadow-lg top-0 left-0 w-64 h-full bg-base-200 z-40 transform ${
+      className={`fixed select-none shadow-lg top-0 left-0 w-64 h-full bg-base-100 z-40 transform ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } transition-transform duration-200 ease-in-out flex flex-col`}
     >
-      <div className="flex-grow overflow-auto">
-        <Link className="m-6 text-2xl bg-base-200" to="/">
-          Iris Docs
-        </Link>
-        <ul className="menu bg-base-200 w-full rounded-box">
-          <li>
-            <Link to="/">
-              <RiFileLine className="w-5 h-5" />
-              Docs
-            </Link>
-          </li>
-          <li>
-            <Link to="/canvas">
-              <RiBrushLine className="w-5 h-5" />
-              Canvas
-            </Link>
-          </li>
-          <li>
-            <Link to="/explorer">
-              <RiFolderOpenLine className="w-5 h-5" />
-              Explorer
-            </Link>
-          </li>
-        </ul>
-      </div>
-      <div className="mt-auto">
-        <Link
-          className="mx-4 hover:underline"
-          to="/document/iris-docs-about?owner=npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk"
-        >
-          About
-        </Link>
-      </div>
+      <Link className="mx-6 m-4 text-2xl" to="/">
+        Iris Docs
+      </Link>
+      <hr className="border-base-300" />
+      <ul className="menu w-full rounded-box">
+        <li>
+          <Link to="/">
+            <RiFileLine className="w-5 h-5" />
+            Docs
+          </Link>
+        </li>
+        <li>
+          <Link to="/canvas">
+            <RiBrushLine className="w-5 h-5" />
+            Canvas
+          </Link>
+        </li>
+      </ul>
+      <hr className="border-base-300" />
+      <ul className="menu w-full rounded-box">
+        <li>
+          <Link to="/settings">
+            <RiSettings3Line className="w-5 h-5" />
+            Settings
+          </Link>
+        </li>
+        <li>
+          <Link to="/explorer">
+            <RiFolderOpenLine className="w-5 h-5" />
+            Explorer
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/document/iris-docs-about?owner=npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk"
+          >
+            <RiInformationLine className="w-5 h-5" />
+            About
+          </Link>
+        </li>
+      </ul>
+      <hr className="border-base-300" />
     </div>
   );
 };
