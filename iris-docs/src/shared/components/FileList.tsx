@@ -114,7 +114,7 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
   };
 
   return (
-    <div className="flex flex-col gap-2 p-4">
+    <div className="flex flex-col gap-2 p-4 container max-w-4xl mx-auto">
       <Show when={!isMine && !!myPubKey}>
         <Link
           className="card card-compact bg-base-100 shadow-xl cursor-pointer hover:opacity-90"
