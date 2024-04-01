@@ -1,4 +1,10 @@
-import { RiBrushLine, RiFileLine, RiFolderOpenLine, RiSettings3Line, RiInformationLine } from '@remixicon/react';
+import {
+  RiBrushLine,
+  RiFileLine,
+  RiFolderOpenLine,
+  RiInformationLine,
+  RiSettings3Line,
+} from '@remixicon/react';
 import { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -79,9 +85,7 @@ export const NavSideBar = ({
           </Link>
         </li>
         <li>
-          <Link
-            to="/document/iris-docs-about?owner=npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk"
-          >
+          <Link to="/document/iris-docs-about?owner=npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk">
             <RiInformationLine className="w-5 h-5" />
             About
           </Link>
