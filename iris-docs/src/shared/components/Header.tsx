@@ -41,6 +41,9 @@ export default function Header() {
               <RiMenuLine className="w-6 h-6" />
             </button>
           </Show>
+          <Show when={!!file}>
+            <div className="mr-2"></div>
+          </Show>
           <Link to={`/${appName}`} className="flex items-center gap-2">
             <Show when={['', 'document'].includes(appName)}>
               <RiFileLine className="w-8 h-8 mr-2" />
@@ -61,7 +64,7 @@ export default function Header() {
             </span>
           </Show>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 mr-2">
           {file && <ViewingUsers file={filePath} authors={all} />}
           {file && <ShareButton file={filePath} />}
           <UserButton />
