@@ -10,7 +10,7 @@ See it in action on [docs.iris.to](https://docs.iris.to/).
 
 It's inspired by [GunDB](https://github.com/amark/gun) and has a similar API.
 
-[Documentation](https://docs.iris.to/irisdb/)
+[Documentation](https://irisdb.iris.to/)
 
 ## Examples
 
