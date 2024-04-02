@@ -58,7 +58,8 @@ export const NavSideBar = ({
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } transition-transform duration-200 ease-in-out flex flex-col`}
     >
-      <Link className="mx-6 m-4 text-2xl" to="/">
+      <Link className="mx-6 m-4 text-2xl flex items-center gap-2" to="/">
+        <img src="/android-chrome-192x192.png" alt="Iris Docs" className="w-8 h-8" />
         Iris Docs
       </Link>
       <hr className="border-base-300" />
