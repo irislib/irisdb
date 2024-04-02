@@ -2,13 +2,12 @@
   "name": "iris",
   "private": true,
   "workspaces": [
-    "iris-docs",
     "irisdb",
     "irisdb-nostr",
     "irisdb-hooks"
   ],
   "scripts": {
-    "build": "npm run build --workspace=irisdb && npm run build --workspace=irisdb-nostr && npm run build --workspace=irisdb-hooks && npm run build --workspace=iris-docs",
+    "build": "npm run build --workspace=irisdb && npm run build --workspace=irisdb-nostr && npm run build --workspace=irisdb-hooks && npm run build",
     "docs": "typedoc",
     "lint": "eslint --ext .ts,.tsx --fix ."
   },
