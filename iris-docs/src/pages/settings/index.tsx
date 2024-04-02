@@ -20,7 +20,7 @@ export default function Settings() {
 
   return (
     <div className="flex flex-1 flex-col h-full items-center">
-      <div className="container max-w-2xl p-4 md:p-8 my-5 bg-base-100 rounded-lg shadow">
+      <div className="container max-w-3xl p-4 md:p-8 my-5 bg-base-100 rounded-lg shadow">
         <h1 className="text-3xl font-semibold mb-6">Settings</h1>
         <div className="mb-4">
           <h2 className="text-2xl mb-4">Network</h2>
