@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 
 import { Invoice } from '@/pages/subscription/Invoice.tsx';
+import { SatsToUsd } from '@/pages/subscription/SatsToUsd.tsx';
 import SnortApi, { Subscription, SubscriptionError } from '@/pages/subscription/SnortApi.ts';
 import { mapPlanName, mapSubscriptionErrorCode, Plans } from '@/pages/subscription/utils.ts';
 
@@ -59,7 +60,10 @@ export function RenewSub({ sub }: { sub: Subscription }) {
 
       {plan && (
         <div>
-          Price: <strong>{formatAmount(plan.price * months)} sats</strong>
+          Price: <strong>{formatAmount(plan.price * months)} sats</strong>{' '}
+          <span className="text-sm">
+            <SatsToUsd sats={plan.price * months} />
+          </span>
         </div>
       )}
 

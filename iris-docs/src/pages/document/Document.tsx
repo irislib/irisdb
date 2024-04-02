@@ -89,15 +89,6 @@ export default function Document() {
       }
     });
 
-    if (owner !== myPubKey) {
-      const nameNode = doc.get('name');
-      nameNode.once((name) => {
-        // just save it into our own file listing
-        // TODO get it from the file owner in listing
-        nameNode.put(name);
-      });
-    }
-
     return () => unsubscribe();
   }, [authors, docName]);
 

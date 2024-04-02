@@ -1,3 +1,4 @@
+import { SatsToUsd } from '@/pages/subscription/SatsToUsd.tsx';
 import { Plans, SubscriptionType } from '@/pages/subscription/utils.ts';
 
 const SubscriptionCards = ({ subscribe }: { subscribe: (type: number) => void }) => (
@@ -7,7 +8,12 @@ const SubscriptionCards = ({ subscribe }: { subscribe: (type: number) => void })
         <div className="card-body">
           <h2 className="card-title">{plan.name} Subscription</h2>
           <PlanFeatures planId={plan.id} />
-          <div className="font-bold">{plan.price.toLocaleString()} sats / mo</div>
+          <div className="font-bold">
+            {plan.price.toLocaleString()} sats / mo{' '}
+            <span className="text-sm">
+              <SatsToUsd sats={plan.price} />
+            </span>
+          </div>
           <div className="card-actions justify-end">
             <button className="btn btn-primary w-full" onClick={() => subscribe(plan.id)}>
               Subscribe
