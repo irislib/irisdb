@@ -12,15 +12,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/irislib/iris.git"
+    "url": "git+https://github.com/irislib/irisdb.git"
   },
   "author": "Martti Malmi",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/irislib/iris/issues"
+    "url": "https://github.com/irislib/irisdb/issues"
   },
-  "homepage": "https://github.com/irislib/iris",
-  "documentation": "https://docs.iris.to/irisdb/",
+  "homepage": "https://github.com/irislib/irisdb",
+  "documentation": "https://irisdb.iris.to",
   "dependencies": {
     "irisdb": "*"
   },
