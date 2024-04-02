@@ -12,6 +12,8 @@
     "lint": "eslint --ext .ts,.tsx --fix ."
   },
   "devDependencies": {
+    "@types/debug": "^4.1.12",
+    "@types/react": "^18.2.74",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "@vitejs/plugin-react": "^4.2.1",

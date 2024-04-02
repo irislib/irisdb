@@ -22,11 +22,12 @@
   "homepage": "https://github.com/irislib/irisdb",
   "documentation": "https://irisdb.iris.to",
   "dependencies": {
+    "@noble/hashes": "^1.4.0",
     "@nostr-dev-kit/ndk": "^2.5.0",
     "@nostr-dev-kit/ndk-cache-dexie": "^2.2.7",
     "debug": "^4.3.4",
     "irisdb": "^1.0.1",
-    "nostr-tools": "^2.3.1"
+    "nostr-tools": "^2.3.2"
   },
   "files": [
     "src",
