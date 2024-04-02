@@ -1,23 +1,10 @@
 import { NDKEvent } from '@nostr-dev-kit/ndk';
 import { ndk } from 'irisdb-nostr';
 
+import { throwIfOffline, unwrap } from '@/pages/settings/subscription/utils.ts';
+
 export class OfflineError extends Error {}
 
-export function throwIfOffline() {
-  if (isOffline()) {
-    throw new OfflineError('Offline');
-  }
-}
-
-export function isOffline() {
-  return !('navigator' in globalThis && globalThis.navigator.onLine);
-}
-export function unwrap<T>(v: T | undefined | null): T {
-  if (v === undefined || v === null) {
-    throw new Error('missing value');
-  }
-  return v;
-}
 export const ApiHost = 'https://api.snort.social';
 
 export enum SubscriptionType {

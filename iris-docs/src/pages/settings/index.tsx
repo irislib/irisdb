@@ -2,7 +2,7 @@ import { NDKRelay } from '@nostr-dev-kit/ndk';
 import { ndk as getNdk } from 'irisdb-nostr';
 import { useEffect, useState } from 'react';
 
-import { SubscriptionTab } from '@/pages/settings/SubscriptionTab.tsx';
+import { SubscriptionTab } from '@/pages/settings/subscription/SubscriptionTab.tsx';
 
 export default function Settings() {
   const ndk = getNdk();
@@ -19,7 +19,7 @@ export default function Settings() {
   }, []);
 
   return (
-    <div className="flex justify-center items-start min-h-screen bg-base-300">
+    <div className="flex flex-1 flex-col h-full items-center">
       <div className="container max-w-2xl p-4 md:p-8 my-5 bg-base-100 rounded-lg shadow">
         <h1 className="text-3xl font-semibold mb-6">Settings</h1>
         <div className="mb-4">
