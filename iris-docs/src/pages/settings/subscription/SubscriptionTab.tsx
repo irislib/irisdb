@@ -43,8 +43,12 @@ export function SubscriptionTab() {
 
   return (
     <Show when={isLoggedIn && !!subscriptions}>
-      <div className="mb-4">
+      <div className="mb-4 gap-2 flex flex-col">
         <h2 className="text-2xl mb-4">Subscription</h2>
+        <span className="text-sm">
+          Bitcoin lightning payment only! Get started with{' '}
+          <a href="https://www.walletofsatoshi.com/" className="link link-accent">Wallet of Satoshi</a>.
+        </span>
         <Show when={subscriptions?.length === 0}>
           <div className="flex justify-center items-center gap-4 h-32">
             <button className="btn btn-primary" onClick={() => subscribe(0)}>

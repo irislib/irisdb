@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 
 import { Invoice } from '@/pages/settings/subscription/Invoice';
 import SnortApi, { Subscription, SubscriptionError } from '@/pages/settings/subscription/SnortApi';
-import { mapPlanName, mapSubscriptionErrorCode } from '@/pages/settings/subscription/utils';
+import { mapPlanName, mapSubscriptionErrorCode, Plans } from '@/pages/settings/subscription/utils';
 
 export function RenewSub({ sub }: { sub: Subscription }) {
   const [invoice, setInvoice] = useState('');
@@ -28,12 +28,18 @@ export function RenewSub({ sub }: { sub: Subscription }) {
     renew(sub.id, months);
   };
 
+  const formatAmount = (amount: number) => {
+    return amount.toLocaleString();
+  };
+
   const buttonClass = `btn ${sub.state === 'expired' ? 'btn-secondary' : 'btn-primary'}`;
   const buttonText = sub.state === 'expired' ? `Renew ${mapPlanName(sub.type)}` : 'Pay Now';
 
+  const plan = Plans.find((p) => p.id === sub.type);
+
   if (!sub) return;
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-4">
       <div className="flex gap-4 items-center">
         <small className="text-xs">Months</small>
         <form onSubmit={handleRenewSubmit} className="flex gap-2">
@@ -50,6 +56,12 @@ export function RenewSub({ sub }: { sub: Subscription }) {
           </button>
         </form>
       </div>
+
+      {plan && (
+        <div>
+          Price: <strong>{formatAmount(plan.price * months)} sats</strong>
+        </div>
+      )}
 
       <div>
         {invoice && <Invoice invoice={invoice} />}
