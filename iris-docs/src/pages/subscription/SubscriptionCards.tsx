@@ -1,9 +1,9 @@
-import { Plans, SubscriptionType } from '@/pages/settings/subscription/utils.ts';
+import { Plans, SubscriptionType } from '@/pages/subscription/utils.ts';
 
 const SubscriptionCards = ({ subscribe }: { subscribe: (type: number) => void }) => (
   <div className="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
     {Plans.map((plan) => (
-      <div key={plan.id} className="card w-full shadow-xl">
+      <div key={plan.id} className="card bg-primary bg-primary-content w-full shadow-xl">
         <div className="card-body">
           <h2 className="card-title">{plan.name} Subscription</h2>
           <PlanFeatures planId={plan.id} />

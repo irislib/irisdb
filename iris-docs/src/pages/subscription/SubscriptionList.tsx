@@ -1,5 +1,5 @@
-import { RenewSub } from '@/pages/settings/subscription/RenewSub.tsx';
-import { Subscription } from '@/pages/settings/subscription/SnortApi.ts';
+import { RenewSub } from '@/pages/subscription/RenewSub.tsx';
+import { Subscription } from '@/pages/subscription/SnortApi.ts';
 
 const SubscriptionList = ({ subscriptions }: { subscriptions: Subscription[] }) => (
   <div className="divide-y divide-base-300">

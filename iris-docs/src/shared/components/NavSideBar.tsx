@@ -4,9 +4,13 @@ import {
   RiFolderOpenLine,
   RiInformationLine,
   RiSettings3Line,
+  RiVipCrownLine,
 } from '@remixicon/react';
+import { useLocalState } from 'irisdb-hooks';
 import { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
+import Show from '@/shared/components/Show.tsx';
 
 export const NavSideBar = ({
   isSidebarOpen,
@@ -17,6 +21,7 @@ export const NavSideBar = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const [isLoggedIn] = useLocalState('user/publicKey', false, Boolean);
 
   useEffect(() => {
     setSidebarOpen(false);
@@ -33,6 +38,7 @@ export const NavSideBar = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setSidebarOpen(false);
+        (document.activeElement as HTMLElement | undefined)?.blur();
       }
     };
 
@@ -92,6 +98,17 @@ export const NavSideBar = ({
         </li>
       </ul>
       <hr className="border-base-300" />
+      <Show when={isLoggedIn}>
+        <ul className="menu w-full rounded-box">
+          <li>
+            <Link to="/subscribe">
+              <RiVipCrownLine className="w-5 h-5" />
+              Buy storage
+            </Link>
+          </li>
+        </ul>
+        <hr className="border-base-300" />
+      </Show>
     </div>
   );
 };

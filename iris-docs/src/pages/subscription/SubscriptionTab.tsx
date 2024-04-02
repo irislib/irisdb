@@ -1,10 +1,7 @@
 import { useLocalState } from 'irisdb-hooks';
 import { useEffect, useState } from 'react';
 
-import SnortApi, {
-  Subscription,
-  SubscriptionError,
-} from '@/pages/settings/subscription/SnortApi.ts';
+import SnortApi, { Subscription, SubscriptionError } from '@/pages/subscription/SnortApi.ts';
 import Show from '@/shared/components/Show.tsx';
 
 import SubscriptionCards from './SubscriptionCards.tsx';

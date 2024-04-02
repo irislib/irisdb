@@ -2,7 +2,7 @@ import { NDKRelay } from '@nostr-dev-kit/ndk';
 import { ndk as getNdk } from 'irisdb-nostr';
 import { useEffect, useState } from 'react';
 
-import { SubscriptionTab } from '@/pages/settings/subscription/SubscriptionTab.tsx';
+import { SubscriptionTab } from '@/pages/subscription/SubscriptionTab.tsx';
 
 export default function Settings() {
   const ndk = getNdk();

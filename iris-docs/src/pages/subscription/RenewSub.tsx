@@ -1,8 +1,8 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 
-import { Invoice } from '@/pages/settings/subscription/Invoice';
-import SnortApi, { Subscription, SubscriptionError } from '@/pages/settings/subscription/SnortApi';
-import { mapPlanName, mapSubscriptionErrorCode, Plans } from '@/pages/settings/subscription/utils';
+import { Invoice } from '@/pages/subscription/Invoice.tsx';
+import SnortApi, { Subscription, SubscriptionError } from '@/pages/subscription/SnortApi.ts';
+import { mapPlanName, mapSubscriptionErrorCode, Plans } from '@/pages/subscription/utils.ts';
 
 export function RenewSub({ sub }: { sub: Subscription }) {
   const [invoice, setInvoice] = useState('');

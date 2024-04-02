@@ -1,5 +1,5 @@
+import { RiFlashlightLine, RiSaveLine, RiVipCrownLine } from '@remixicon/react';
 import { ReactNode } from 'react';
-import { RiVipCrownLine, RiSaveLine, RiFlashlightLine } from '@remixicon/react';
 
 const SubscriptionFeatures = () => (
   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -23,7 +23,7 @@ const SubscriptionFeatures = () => (
       description={
         <>
           Bitcoin lightning payment only! Get started easily with{' '}
-          <a href="https://www.walletofsatoshi.com/" className="link link-accent" target="_blank">
+          <a href="https://www.walletofsatoshi.com/" className="link link-primary" target="_blank">
             Wallet of Satoshi
           </a>
         </>
@@ -40,11 +40,9 @@ const FeatureCard = ({
   description: string | ReactNode;
   icon: ReactNode;
 }) => (
-  <div className="card w-full shadow-xl p-4 flex flex-col items-center gap-2">
+  <div className="card bg-base-300 text-base-content w-full shadow-xl p-4 flex flex-col items-center gap-2">
     {icon}
-    <div className="text-center">
-      {description}
-    </div>
+    <div className="text-center">{description}</div>
   </div>
 );
 

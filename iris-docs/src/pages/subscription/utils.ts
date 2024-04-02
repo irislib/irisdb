@@ -2,7 +2,7 @@ import {
   OfflineError,
   SubscriptionError,
   SubscriptionErrorCode,
-} from '@/pages/settings/subscription/SnortApi.ts';
+} from '@/pages/subscription/SnortApi.ts';
 
 export function mapPlanName(id: number) {
   switch (id) {

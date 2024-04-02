@@ -1,7 +1,7 @@
 import { NDKEvent } from '@nostr-dev-kit/ndk';
 import { ndk } from 'irisdb-nostr';
 
-import { throwIfOffline, unwrap } from '@/pages/settings/subscription/utils.ts';
+import { throwIfOffline, unwrap } from '@/pages/subscription/utils.ts';
 
 export class OfflineError extends Error {}
 
