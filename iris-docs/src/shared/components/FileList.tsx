@@ -65,7 +65,6 @@ export function FileList({ directory, baseUrl }: { directory: string; baseUrl: s
     return publicState(authors)
       .get(directory)
       .forEach((value, path, updatedAt) => {
-        // Type guard to ensure 'value' is an object with a 'name' property
         if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
           setFiles((files) => {
             let owner = value.owner as string;

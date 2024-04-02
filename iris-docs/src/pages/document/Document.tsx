@@ -78,18 +78,25 @@ export default function Document() {
   }, [docName, owner]);
 
   useEffect(() => {
-    const unsubscribe = publicState(authors)
-      .get(docName)
-      .get('edits')
-      .forEach((update) => {
-        if (typeof update === 'string') {
-          const decodedUpdate = hexToBytes(update);
-          // Apply the update without creating a Snapshot.
-          Y.applyUpdate(docRef.current, decodedUpdate);
-          // After applying the update, we update the state vector.
-          lastStateVectorRef.current = Y.encodeStateVector(docRef.current);
-        }
+    const doc = publicState(authors).get(docName);
+    const unsubscribe = doc.get('edits').forEach((update) => {
+      if (typeof update === 'string') {
+        const decodedUpdate = hexToBytes(update);
+        // Apply the update without creating a Snapshot.
+        Y.applyUpdate(docRef.current, decodedUpdate);
+        // After applying the update, we update the state vector.
+        lastStateVectorRef.current = Y.encodeStateVector(docRef.current);
+      }
+    });
+
+    if (owner !== myPubKey) {
+      const nameNode = doc.get('name');
+      nameNode.once((name) => {
+        // just save it into our own file listing
+        // TODO get it from the file owner in listing
+        nameNode.put(name);
       });
+    }
 
     return () => unsubscribe();
   }, [authors, docName]);
