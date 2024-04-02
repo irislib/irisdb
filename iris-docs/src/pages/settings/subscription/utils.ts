@@ -69,6 +69,7 @@ export enum LockedFeatures {
 export const Plans = [
   {
     id: SubscriptionType.Supporter,
+    name: 'Fan',
     price: 5_000,
     disabled: false,
     unlocks: [
@@ -80,6 +81,7 @@ export const Plans = [
   },
   {
     id: SubscriptionType.Premium,
+    name: 'Pro',
     price: 20_000,
     disabled: false,
     unlocks: [
