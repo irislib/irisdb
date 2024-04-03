@@ -1,6 +1,6 @@
 {
   "entryPoints": ["irisdb", "irisdb-nostr", "irisdb-hooks"],
-  "name": "iris",
+  "name": "irisdb",
   "entryPointStrategy": "packages",
-  "includeVersion": false
+  "includeVersion": true 
 }
