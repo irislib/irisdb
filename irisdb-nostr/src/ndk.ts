@@ -2,7 +2,7 @@ import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 import NDK, {
   NDKConstructorParams,
   NDKNip07Signer,
-  NDKPrivateKeySigner,
+  NDKPrivateKeySigner, NDKRelay,
   NDKRelayAuthPolicies,
 } from '@nostr-dev-kit/ndk';
 import { NDKEvent } from '@nostr-dev-kit/ndk';
@@ -15,22 +15,27 @@ let privateKeySigner: NDKPrivateKeySigner | undefined;
 let nip07Signer: NDKNip07Signer | undefined;
 
 /**
+ * Default relays to use when initializing NDK
+ */
+export const DEFAULT_RELAYS = [
+  'wss://strfry.iris.to',
+  'wss://relay.damus.io',
+  'wss://relay.nostr.band',
+  'wss://relay.snort.social',
+];
+
+/**
  * Get a singleton "default" NDK instance to get started quickly. If you want to init NDK with e.g. your own relays, pass them on the first call.
  * @throws Error if NDK init options are passed after the first call
  */
 export const ndk = (opts?: NDKConstructorParams): NDK => {
   if (!ndkInstance) {
     const options = opts || {
-      explicitRelayUrls: [
-        'wss://strfry.iris.to',
-        'wss://relay.damus.io',
-        'wss://relay.nostr.band',
-        'wss://relay.snort.social',
-      ],
+      explicitRelayUrls: DEFAULT_RELAYS,
       cacheAdapter: new NDKCacheAdapterDexie({ dbName: 'irisdb-nostr' }),
     };
     ndkInstance = new NDK(options);
-    watchNdkSigner(ndkInstance);
+    watchLocalSettings(ndkInstance);
     ndkInstance.relayAuthDefaultPolicy = NDKRelayAuthPolicies.signIn({ ndk: ndkInstance });
     ndkInstance.connect();
   } else if (opts) {
@@ -39,7 +44,7 @@ export const ndk = (opts?: NDKConstructorParams): NDK => {
   return ndkInstance;
 };
 
-function watchNdkSigner(instance: NDK) {
+function watchLocalSettings(instance: NDK) {
   localState.get('user/privateKey').on((privateKey?: string) => {
     const havePrivateKey = privateKey && typeof privateKey === 'string';
     if (!privateKeySigner && havePrivateKey) {
@@ -65,6 +70,21 @@ function watchNdkSigner(instance: NDK) {
     } else if (nip07Signer) {
       nip07Signer = undefined;
       instance.signer = undefined;
+    }
+  });
+
+  localState.get('user/relays').on((relays?: string[]) => {
+    if (Array.isArray(relays)) {
+      relays.forEach((url) => {
+        if (!instance.pool.relays.has(url)) {
+          instance.pool.addRelay(new NDKRelay(url));
+        }
+      });
+      for (const url of instance.pool.relays.keys()) {
+        if (!relays.includes(url)) {
+          instance.pool.removeRelay(url);
+        }
+      }
     }
   });
 }
