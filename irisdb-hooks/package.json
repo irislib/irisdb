@@ -1,6 +1,6 @@
 {
   "name": "irisdb-hooks",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "description": "React hooks for IrisDB",
   "main": "dist/irisdb-hooks.umd.js",
@@ -21,14 +21,12 @@
   },
   "homepage": "https://github.com/irislib/irisdb",
   "documentation": "https://irisdb.iris.to",
-  "dependencies": {
-    "irisdb": "^1.0.2"
-  },
   "files": [
     "src",
     "dist"
   ],
   "peerDependencies": {
+    "irisdb": "^1.0.2",
     "react": "*",
     "irisdb-nostr": "*"
   }

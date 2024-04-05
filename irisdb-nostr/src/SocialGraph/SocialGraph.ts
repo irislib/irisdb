@@ -293,5 +293,3 @@ export class SocialGraph {
     return set;
   }
 }
-
-export const socialGraphInstance = new SocialGraph('');

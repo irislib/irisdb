@@ -23,11 +23,13 @@
   "documentation": "https://irisdb.iris.to",
   "dependencies": {
     "@noble/hashes": "^1.4.0",
-    "@nostr-dev-kit/ndk": "^2.5.0",
-    "@nostr-dev-kit/ndk-cache-dexie": "^2.2.7",
-    "debug": "^4.3.4",
-    "irisdb": "^1.0.2",
-    "nostr-tools": "^2.3.2"
+    "debug": "^4.3.4"
+  },
+  "peerDependencies": {
+    "@nostr-dev-kit/ndk": "^2.7.1",
+    "@nostr-dev-kit/ndk-cache-dexie": "^2.3.1",
+    "nostr-tools": "^2.3.2",
+    "irisdb": "^1.0.2"
   },
   "files": [
     "src",
