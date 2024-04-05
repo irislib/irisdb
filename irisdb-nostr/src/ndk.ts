@@ -2,7 +2,8 @@ import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 import NDK, {
   NDKConstructorParams,
   NDKNip07Signer,
-  NDKPrivateKeySigner, NDKRelay,
+  NDKPrivateKeySigner,
+  NDKRelay,
   NDKRelayAuthPolicies,
 } from '@nostr-dev-kit/ndk';
 import { NDKEvent } from '@nostr-dev-kit/ndk';
