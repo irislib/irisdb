@@ -113,6 +113,7 @@ export class Node {
       }
       for (const [id, { callback, recursion }] of this.parent.forEachSubscriptions) {
         if (!isDirectory(value) || recursion === 0) {
+          // TODO callback with the npub path instead of this.id?
           callback(value, this.id, updatedAt, () => {
             this.parent?.forEachSubscriptions.delete(id);
           });
@@ -140,7 +141,7 @@ export class Node {
       }
       const childName = path.split('/').pop()!;
       aggregated[childName] = childValue;
-      callback(typeGuard(aggregated), this.id, latestTime, () => {});
+      callback(typeGuard(aggregated), path.split('/').slice(0, -1).join('/'), latestTime, () => {});
     }, recursion);
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "irisdb-nostr",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "description": "Nostr adapter for IrisDB",
   "main": "dist/irisdb-nostr.umd.js",
@@ -28,8 +28,8 @@
   "peerDependencies": {
     "@nostr-dev-kit/ndk": "^2.7.1",
     "@nostr-dev-kit/ndk-cache-dexie": "^2.3.1",
-    "nostr-tools": "^2.3.2",
-    "irisdb": "^1.0.2"
+    "irisdb": "^1.0.2",
+    "nostr-tools": "^2.3.2"
   },
   "files": [
     "src",
@@ -39,6 +39,7 @@
     "react": "*"
   },
   "devDependencies": {
-    "fake-indexeddb": "^5.0.2"
+    "fake-indexeddb": "^5.0.2",
+    "jsdom": "^24.0.0"
   }
 }

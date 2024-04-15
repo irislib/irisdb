@@ -1,6 +1,6 @@
 {
   "name": "irisdb-hooks",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "description": "React hooks for IrisDB",
   "main": "dist/irisdb-hooks.umd.js",

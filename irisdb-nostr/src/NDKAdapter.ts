@@ -1,6 +1,7 @@
 import NDK, { NDKEvent, NostrEvent } from '@nostr-dev-kit/ndk';
 import debug from 'debug';
 import { Adapter, Callback, NodeValue, Unsubscribe } from 'irisdb';
+import { nip19 } from 'nostr-tools';
 
 import { PublicKey } from './Hex/PublicKey';
 
@@ -31,7 +32,10 @@ export default class NDKAdapter implements Adapter {
     });
     unsubObj.fn = () => sub.stop();
     sub.on('event', (event) => {
-      callback(JSON.parse(event.content), path, event.created_at * 1000, () => unsubObj.fn?.());
+      const npub = nip19.npubEncode(event.pubkey);
+      callback(JSON.parse(event.content), npub + path, event.created_at * 1000, () =>
+        unsubObj.fn?.(),
+      );
     });
     sub.start();
     return () => unsubObj.fn?.();
@@ -98,7 +102,8 @@ export default class NDKAdapter implements Adapter {
       })?.[1];
 
       if (childPath) {
-        callback(JSON.parse(event.content), childPath, event.created_at * 1000, () =>
+        const npub = nip19.npubEncode(event.pubkey);
+        callback(JSON.parse(event.content), npub + childPath, event.created_at * 1000, () =>
           unsubObj.fn?.(),
         );
       }
