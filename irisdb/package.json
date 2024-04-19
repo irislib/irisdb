@@ -1,6 +1,6 @@
 {
   "name": "irisdb",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "description": "Treelike subscribable data structure that can be easily synced over different transports",
   "main": "dist/irisdb.umd.js",

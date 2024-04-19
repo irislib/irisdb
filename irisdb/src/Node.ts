@@ -153,8 +153,10 @@ export class Node {
     returnIfUndefined: boolean = false,
     recursion = 1,
     typeGuard: TypeGuard<T> = (value: JsonValue) => value as T,
+    latestOnly = true,
   ): Unsubscribe {
     let latestValue: NodeValue | null = null;
+    const latestByPath = new Map<string, NodeValue>();
     let openUnsubscribe: Unsubscribe | undefined;
     const uniqueId = this.counter++;
 
@@ -162,8 +164,20 @@ export class Node {
       const olderThanLatest =
         latestValue !== null && updatedAt !== undefined && latestValue.updatedAt >= updatedAt;
       const noReturnUndefined = !returnIfUndefined && value === undefined;
-      if (olderThanLatest || noReturnUndefined) {
+      if (noReturnUndefined) {
         return;
+      }
+
+      if (latestOnly && olderThanLatest) {
+        return;
+      }
+
+      if (!latestOnly && updatedAt !== undefined) {
+        const existing = latestByPath.get(path);
+        if (existing && existing.updatedAt >= updatedAt) {
+          return;
+        }
+        latestByPath.set(path, { value, updatedAt });
       }
 
       const returnUndefined = !latestValue && returnIfUndefined && value === undefined;
