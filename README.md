@@ -12,6 +12,25 @@ It's inspired by [GunDB](https://github.com/amark/gun) and has a similar API.
 
 [Documentation](https://irisdb.iris.to/)
 
+## Installation
+
+Just IrisDB, e.g. local use: 
+```
+npm install irisdb
+```
+
+With Nostr: 
+```
+npm install @nostr-dev-kit/ndk @nostr-dev-kit/ndk-cache-dexie nostr-tools irisdb irisdb-nostr
+```
+
+React hooks:
+```
+npm install @nostr-dev-kit/ndk @nostr-dev-kit/ndk-cache-dexie nostr-tools irisdb irisdb-nostr irisdb-hooks
+```
+
+(non-irisdb libs are peer dependencies)
+
 ## Examples
 
 ### Persist React app local state in localStorage and sync between tabs
