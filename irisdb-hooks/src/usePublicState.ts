@@ -24,6 +24,13 @@ export function usePublicState<T = JsonValue>(
   return useNodeState<T>(node, path, initialValue, typeGuard, false, recursion);
 }
 
+/**
+ * Get the value of a node separately from each author. Returns a Map of authors to values.
+ * @param authors
+ * @param path
+ * @param typeGuard
+ * @param recursion
+ */
 export function usePublicGroupState<T = JsonValue>(
   authors: string[],
   path: string,

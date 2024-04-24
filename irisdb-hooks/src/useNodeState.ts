@@ -30,7 +30,15 @@ function useNodeStateBase<T = JsonValue>(
         _updatedAt: number | undefined,
         unsubscribe: Unsubscribe,
       ) => {
-        setValue(typeGuard(new_value));
+        if (latestOnly) {
+          setValue(typeGuard(new_value));
+        } else {
+          setValue((prev) => {
+            const newMap = new Map<string, T>(prev as Map<string, T>);
+            newMap.set(_key, typeGuard(new_value));
+            return newMap;
+          });
+        }
         if (once) {
           unsubscribe();
         }
@@ -38,6 +46,7 @@ function useNodeStateBase<T = JsonValue>(
       undefined,
       recursion,
       undefined,
+      latestOnly,
     );
     return unsub;
   }, [node, key, once]);
