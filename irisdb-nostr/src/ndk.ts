@@ -27,6 +27,8 @@ export const DEFAULT_RELAYS = [
 
 /**
  * Get a singleton "default" NDK instance to get started quickly. If you want to init NDK with e.g. your own relays, pass them on the first call.
+ *
+ * This needs to be called to make nip07 login features work.
  * @throws Error if NDK init options are passed after the first call
  */
 export const ndk = (opts?: NDKConstructorParams): NDK => {

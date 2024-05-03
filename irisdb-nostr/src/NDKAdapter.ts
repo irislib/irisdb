@@ -85,7 +85,11 @@ export default class NDKAdapter implements Adapter {
   list(path: string, callback: Callback): Unsubscribe {
     const unsubObj = { fn: null as Unsubscribe | null };
 
-    const sub = this.ndk.subscribe({ authors: this.authors, kinds: [EVENT_KIND] });
+    const sub = this.ndk.subscribe({
+      authors: this.authors,
+      kinds: [EVENT_KIND],
+      // '#f': [path] // TODO we need support for this in strfry. otherwise won't scale to larger datasets
+    });
     unsubObj.fn = () => sub.stop();
     sub.on('event', (event: NostrEvent) => {
       const childPath = event.tags.find((tag: string[]) => {
