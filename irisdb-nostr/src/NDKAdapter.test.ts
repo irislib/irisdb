@@ -3,6 +3,7 @@ import 'fake-indexeddb/auto';
 import { bytesToHex } from '@noble/hashes/utils';
 import NDK, { NDKPrivateKeySigner } from '@nostr-dev-kit/ndk';
 import NDKCacheAdapterDexie from '@nostr-dev-kit/ndk-cache-dexie';
+import { waitFor } from '@testing-library/dom';
 import { Callback, Unsubscribe } from 'irisdb';
 import { generateSecretKey, getPublicKey } from 'nostr-tools';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -25,6 +26,7 @@ describe('NDKAdapter', () => {
     const sk = generateSecretKey(); // `sk` is a Uint8Array
     const pk = getPublicKey(sk); // `pk` is a hex string
     const privateKeyHex = bytesToHex(sk);
+    console.log('privateKeyHex:', privateKeyHex);
     const privateKeySigner = new NDKPrivateKeySigner(privateKeyHex);
     ndk.signer = privateKeySigner;
     adapter = new NDKAdapter(ndk, [new PublicKey(pk)]);
@@ -36,12 +38,14 @@ describe('NDKAdapter', () => {
       await adapter.set('somePath', { value: 'someValue', updatedAt: Date.now() });
       const unsubscribe: Unsubscribe = adapter.get('somePath', mockCallback);
 
-      expect(mockCallback).toHaveBeenCalledWith(
-        'someValue',
-        'somePath',
-        expect.any(Number),
-        expect.any(Function),
-      );
+      await waitFor(() => {
+        expect(mockCallback).toHaveBeenCalledWith(
+          'someValue',
+          'somePath',
+          expect.any(Number),
+          expect.any(Function),
+        );
+      });
       unsubscribe();
     });
   });
@@ -52,12 +56,14 @@ describe('NDKAdapter', () => {
       const mockCallback: Callback = vi.fn();
       adapter.get('anotherPath', mockCallback);
 
-      expect(mockCallback).toHaveBeenCalledWith(
-        'newValue',
-        'anotherPath',
-        expect.any(Number),
-        expect.any(Function),
-      );
+      await waitFor(() => {
+        expect(mockCallback).toHaveBeenCalledWith(
+          'newValue',
+          'anotherPath',
+          expect.any(Number),
+          expect.any(Function),
+        );
+      });
     });
   });
 
@@ -69,19 +75,21 @@ describe('NDKAdapter', () => {
 
       const unsubscribe: Unsubscribe = adapter.list('parent', mockCallback);
 
-      expect(mockCallback).toHaveBeenCalledWith(
-        'childValue1',
-        'parent/child1',
-        expect.any(Number),
-        expect.any(Function),
-      );
+      await waitFor(() => {
+        expect(mockCallback).toHaveBeenCalledWith(
+          'childValue1',
+          'parent/child1',
+          expect.any(Number),
+          expect.any(Function),
+        );
 
-      expect(mockCallback).toHaveBeenCalledWith(
-        'childValue2',
-        'parent/child2',
-        expect.any(Number),
-        expect.any(Function),
-      );
+        expect(mockCallback).toHaveBeenCalledWith(
+          'childValue2',
+          'parent/child2',
+          expect.any(Number),
+          expect.any(Function),
+        );
+      });
 
       unsubscribe();
     });

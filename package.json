@@ -12,6 +12,7 @@
     "lint": "eslint --ext .ts,.tsx --fix ."
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.1.0",
     "@types/debug": "^4.1.12",
     "@types/node": "^20.12.8",
     "@types/react": "^18.2.74",
