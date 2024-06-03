@@ -71,7 +71,6 @@ function LoginDialog() {
 Uses the `irisdb-nostr` adapter to sync over [Nostr](https://nostr.com).
 
 ```tsx
-import { publicState } from 'irisdb-nostr';
 import { usePublicState, useAuthors } from 'irisdb-hooks';
 
 function DocumentTitle() {
