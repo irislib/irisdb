@@ -1,4 +1,4 @@
-import NDK, { NDKEvent, NostrEvent } from '@nostr-dev-kit/ndk';
+import NDK, { NDKEvent } from '@nostr-dev-kit/ndk';
 import debug from 'debug';
 import { Adapter, Callback, NodeValue, Unsubscribe } from 'irisdb';
 import { nip19 } from 'nostr-tools';
@@ -32,6 +32,9 @@ export default class NDKAdapter implements Adapter {
     });
     unsubObj.fn = () => sub.stop();
     sub.on('event', (event) => {
+      if (!event.created_at) {
+        return;
+      }
       const npub = nip19.npubEncode(event.pubkey);
       callback(JSON.parse(event.content), npub + path, event.created_at * 1000, () =>
         unsubObj.fn?.(),
@@ -91,7 +94,10 @@ export default class NDKAdapter implements Adapter {
       // '#f': [path] // TODO we need support for this in strfry. otherwise won't scale to larger datasets
     });
     unsubObj.fn = () => sub.stop();
-    sub.on('event', (event: NostrEvent) => {
+    sub.on('event', (event) => {
+      if (!event.created_at) {
+        return;
+      }
       const childPath = event.tags.find((tag: string[]) => {
         if (tag[0] === 'd') {
           const remainingPath = tag[1].replace(`${path}/`, '');
