@@ -92,6 +92,7 @@ export class SocialGraph {
           const followedInEvent = new Set<UID>();
           for (const tag of event.tags) {
             if (tag[0] === 'p') {
+              // should we validate tag[1] hex public key format here?
               const followedUser = ID(tag[1]);
               if (followedUser !== author) {
                 followedInEvent.add(followedUser);
@@ -248,6 +249,10 @@ export class SocialGraph {
     return count;
   }
 
+  size() {
+    return this.followDistanceByUser.size;
+  }
+
   /**
    * Get the users you follow that are following a given user.
    * @param address
@@ -291,5 +296,38 @@ export class SocialGraph {
       set.add(STR(id));
     }
     return set;
+  }
+
+  serialize(maxSize?: number): string {
+    const pairs: [number, number][] = [];
+    for (let distance = 0; distance <= Math.max(...this.usersByFollowDistance.keys()); distance++) {
+      const users = this.usersByFollowDistance.get(distance) || new Set<UID>();
+      for (const user of users) {
+        const followers = this.followersByUser.get(user) || new Set<UID>();
+        for (const follower of followers) {
+          pairs.push([follower, user]);
+          if (maxSize && pairs.length >= maxSize) {
+            return JSON.stringify(pairs);
+          }
+        }
+      }
+    }
+    return JSON.stringify(pairs);
+  }
+
+  deserialize(serialized: string): void {
+    this.followDistanceByUser.clear();
+    this.usersByFollowDistance.clear();
+    this.followedByUser.clear();
+    this.followersByUser.clear();
+    this.latestFollowEventTimestamps.clear();
+
+    this.followDistanceByUser.set(this.root, 0);
+    this.usersByFollowDistance.set(0, new Set([this.root]));
+
+    const pairs: [number, number][] = JSON.parse(serialized);
+    for (const [follower, followedUser] of pairs) {
+      this.addFollower(followedUser, follower);
+    }
   }
 }

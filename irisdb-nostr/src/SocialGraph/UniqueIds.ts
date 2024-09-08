@@ -34,6 +34,21 @@ export class UniqueIds {
   static has(str: string): boolean {
     return UniqueIds.strToUniqueId.has(str);
   }
+
+  static serialize(): string {
+    return JSON.stringify(Array.from(UniqueIds.strToUniqueId.entries()));
+  }
+
+  static deserialize(serialized: string): void {
+    UniqueIds.strToUniqueId.clear();
+    UniqueIds.uniqueIdToStr.clear();
+    const entries = JSON.parse(serialized);
+    for (const [str, id] of entries) {
+      UniqueIds.strToUniqueId.set(str, id);
+      UniqueIds.uniqueIdToStr.set(id, str);
+      UniqueIds.currentUniqueId = Math.max(UniqueIds.currentUniqueId, id + 1);
+    }
+  }
 }
 
 export const STR = UniqueIds.str;
