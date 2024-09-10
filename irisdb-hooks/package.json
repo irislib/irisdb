@@ -28,6 +28,7 @@
   "peerDependencies": {
     "irisdb": "*",
     "react": "*",
-    "irisdb-nostr": "*"
+    "irisdb-nostr": "*",
+    "@nostr-dev-kit/ndk": "*"
   }
 }

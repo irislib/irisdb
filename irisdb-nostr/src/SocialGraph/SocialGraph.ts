@@ -250,7 +250,22 @@ export class SocialGraph {
   }
 
   size() {
-    return this.followDistanceByUser.size;
+    let follows = 0;
+    const sizeByDistance: { [distance: number]: number } = {};
+
+    for (const followedSet of this.followedByUser.values()) {
+      follows += followedSet.size;
+    }
+
+    for (const [distance, users] of this.usersByFollowDistance.entries()) {
+      sizeByDistance[distance] = users.size;
+    }
+
+    return {
+      users: this.followDistanceByUser.size,
+      follows,
+      sizeByDistance,
+    };
   }
 
   /**
@@ -298,6 +313,11 @@ export class SocialGraph {
     return set;
   }
 
+  /**
+   * Serialize the social graph to a JSON string.
+   * @param maxSize Optional maximum number of follow relationships to include in the serialized output.
+   * @returns A JSON string representing the serialized social graph.
+   */
   serialize(maxSize?: number): string {
     const pairs: [number, number][] = [];
     for (let distance = 0; distance <= Math.max(...this.usersByFollowDistance.keys()); distance++) {
@@ -315,6 +335,10 @@ export class SocialGraph {
     return JSON.stringify(pairs);
   }
 
+  /**
+   * Deserialize a JSON string to reconstruct the social graph.
+   * @param serialized A JSON string representing the serialized social graph.
+   */
   deserialize(serialized: string): void {
     this.followDistanceByUser.clear();
     this.usersByFollowDistance.clear();
@@ -329,5 +353,18 @@ export class SocialGraph {
     for (const [follower, followedUser] of pairs) {
       this.addFollower(followedUser, follower);
     }
+  }
+
+  /**
+   * Get the users at a specified follow distance.
+   * @param distance
+   */
+  getUsersByFollowDistance(distance: number): Set<string> {
+    const users = this.usersByFollowDistance.get(distance) || new Set<UID>();
+    const result = new Set<string>();
+    for (const user of users) {
+      result.add(STR(user));
+    }
+    return result;
   }
 }
