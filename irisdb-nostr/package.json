@@ -1,6 +1,6 @@
 {
   "name": "irisdb-nostr",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "type": "module",
   "description": "Nostr adapter for IrisDB",
   "main": "dist/irisdb-nostr.umd.js",
