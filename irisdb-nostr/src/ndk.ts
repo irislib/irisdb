@@ -80,7 +80,7 @@ function watchLocalSettings(instance: NDK) {
     if (Array.isArray(relays)) {
       relays.forEach((url) => {
         if (!instance.pool.relays.has(url)) {
-          instance.pool.addRelay(new NDKRelay(url));
+          instance.pool.addRelay(new NDKRelay(url, undefined, instance));
         }
       });
       for (const url of instance.pool.relays.keys()) {
