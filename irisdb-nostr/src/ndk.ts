@@ -35,6 +35,7 @@ export const ndk = (opts?: NDKConstructorParams): NDK => {
   if (!ndkInstance) {
     const options = opts || {
       explicitRelayUrls: DEFAULT_RELAYS,
+      enableOutboxModel: true,
       cacheAdapter: new NDKCacheAdapterDexie({ dbName: 'irisdb-nostr' }),
     };
     ndkInstance = new NDK(options);
