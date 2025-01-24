@@ -5,6 +5,7 @@ import NDK, {
   NDKPrivateKeySigner,
   NDKRelay,
   NDKRelayAuthPolicies,
+  NDKUser,
 } from '@nostr-dev-kit/ndk';
 import { NDKEvent } from '@nostr-dev-kit/ndk';
 import NDKCacheAdapterDexie from '@nostr-dev-kit/ndk-cache-dexie';
@@ -91,6 +92,13 @@ function watchLocalSettings(instance: NDK) {
       }
     }
   });
+
+  localState
+    .get('user/publicKey')
+    .on(
+      (k) =>
+        (instance.activeUser = typeof k === 'string' ? new NDKUser({ hexpubkey: k }) : undefined),
+    );
 }
 
 /**
