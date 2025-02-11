@@ -1,6 +1,8 @@
 {
   "name": "iris",
   "private": true,
+  "homepage": "https://nostr-double-ratchet.iris.to/",
+  "documentation": "https://nostr-double-ratchet.iris.to/",
   "workspaces": [
     "irisdb",
     "irisdb-nostr",

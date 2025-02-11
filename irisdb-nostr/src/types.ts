@@ -76,15 +76,6 @@ export type NostrSubscribe = (filter: NostrFilter, onEvent: (e: NostrEvent) => v
 
 export type NostrPublish = (event: Partial<NostrEvent>) => void;
 
-/**
- * Callback function for handling decrypted messages
- * @param message - The decrypted message object
- */
-export type MessageCallback = (message: Message) => void;
-
-export const EVENT_KIND = 4;
-export const MAX_SKIP = 100;
-
 export type NostrEvent = {
   id: string;
   pubkey: string;
@@ -94,11 +85,3 @@ export type NostrEvent = {
   content: string;
   sig: string;
 };
-
-export enum Sender {
-  Us,
-  Them,
-}
-
-export type EncryptFunction = (plaintext: string, pubkey: string) => Promise<string>;
-export type DecryptFunction = (ciphertext: string, pubkey: string) => Promise<string>;
