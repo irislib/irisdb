@@ -1,5 +1,6 @@
 import { JsonValue } from 'irisdb';
 import { publicState } from 'irisdb-nostr';
+import { NostrPublish, NostrSubscribe } from 'irisdb-nostr/dist/types';
 import { useMemo } from 'react';
 
 import { useGroupNodeState, useNodeState } from './useNodeState.ts';
@@ -14,13 +15,15 @@ import { useGroupNodeState, useNodeState } from './useNodeState.ts';
  * @param initialValue
  */
 export function usePublicState<T = JsonValue>(
+  publish: NostrPublish,
+  subscribe: NostrSubscribe,
   authors: string[],
   path: string,
   initialValue: T,
   typeGuard?: (value: JsonValue) => T,
   recursion = 1,
 ) {
-  const node = useMemo(() => publicState(authors), [authors]);
+  const node = useMemo(() => publicState(publish, subscribe, authors), [authors]);
   return useNodeState<T>(node, path, initialValue, typeGuard, false, recursion);
 }
 
@@ -32,11 +35,13 @@ export function usePublicState<T = JsonValue>(
  * @param recursion
  */
 export function usePublicGroupState<T = JsonValue>(
+  publish: NostrPublish,
+  subscribe: NostrSubscribe,
   authors: string[],
   path: string,
   typeGuard?: (value: JsonValue) => T,
   recursion = 1,
 ) {
-  const node = useMemo(() => publicState(authors), [authors]);
+  const node = useMemo(() => publicState(publish, subscribe, authors), [authors]);
   return useGroupNodeState<T>(node, path, typeGuard, false, recursion);
 }

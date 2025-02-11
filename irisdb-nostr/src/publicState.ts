@@ -1,14 +1,18 @@
 import { Adapters, Node } from 'irisdb';
 
 import { PublicKey } from './Hex/PublicKey.ts';
-import { ndk } from './ndk';
 import NDKAdapter from './NDKAdapter';
+import { NostrPublish, NostrSubscribe } from './types.ts';
 
 /**
  * Create a public state node with the given authors
  * @param authors
  */
-const publicState = (authors: string | Array<string | PublicKey>) => {
+const publicState = (
+  publish: NostrPublish,
+  subscribe: NostrSubscribe,
+  authors: string | Array<string | PublicKey>,
+) => {
   let pks;
   if (typeof authors === 'string') {
     pks = [new PublicKey(authors)];
@@ -22,7 +26,7 @@ const publicState = (authors: string | Array<string | PublicKey>) => {
     });
   }
   return new Node({
-    adapters: [new Adapters.MemoryAdapter(), new NDKAdapter(ndk(), pks)],
+    adapters: [new Adapters.MemoryAdapter(), new NDKAdapter(publish, subscribe, pks)],
   });
 };
 

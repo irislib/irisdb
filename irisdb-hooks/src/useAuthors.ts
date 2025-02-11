@@ -1,5 +1,5 @@
-import { NDKEvent, NDKTag } from '@nostr-dev-kit/ndk';
-import { Hex, ndk, PublicKey, publicState } from 'irisdb-nostr';
+import { Hex, PublicKey, publicState } from 'irisdb-nostr';
+import { NostrEvent, NostrPublish, NostrSubscribe } from 'irisdb-nostr/dist/types';
 import { useEffect, useMemo, useState } from 'react';
 
 import { useLocalState } from './useLocalState';
@@ -9,7 +9,12 @@ import { useLocalState } from './useLocalState';
  * @param ownerOrGroup public key of the owner or 'follows' to get the authors the user follows
  * @param groupPath path to load the authors list from, e.g. 'apps/canvas/documents/myDoc1/authors'
  */
-export function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] {
+export function useAuthors(
+  publish: NostrPublish,
+  subscribe: NostrSubscribe,
+  ownerOrGroup?: string,
+  groupPath?: string,
+): string[] {
   const [myPubKey] = useLocalState('user/publicKey', '');
   const initialAuthors = useMemo((): string[] => {
     if (!ownerOrGroup) return [];
@@ -24,12 +29,11 @@ export function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] 
 
   useEffect(() => {
     if (myPubKey && ownerOrGroup === 'follows') {
-      const sub = ndk().subscribe({ kinds: [3], authors: [String(myPubKey)] });
-      sub.on('event', (event: NDKEvent) => {
+      const unsub = subscribe({ kinds: [3], authors: [String(myPubKey)] }, (event: NostrEvent) => {
         if (event.kind === 3) {
           const newAuthors = new Set([String(myPubKey)]);
           let updated = false;
-          event.tags.forEach((tag: NDKTag) => {
+          event.tags.forEach((tag: string[]) => {
             if (tag[0] === 'p') {
               try {
                 new Hex(tag[1], 64);
@@ -45,7 +49,7 @@ export function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] 
           if (updated) setAuthors(newAuthors);
         }
       });
-      return () => sub.stop();
+      return () => unsub();
     }
   }, [ownerOrGroup, myPubKey]);
 
@@ -60,7 +64,7 @@ export function useAuthors(ownerOrGroup?: string, groupPath?: string): string[] 
 
     if (!ownerOrGroup || ownerOrGroup === 'follows') return;
     if (groupPath) {
-      return publicState(ownerOrGroup)
+      return publicState(publish, subscribe, ownerOrGroup)
         .get(groupPath)
         .forEach(
           (isInGroup: boolean | undefined, path: string) => {

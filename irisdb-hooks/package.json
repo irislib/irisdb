@@ -1,6 +1,6 @@
 {
   "name": "irisdb-hooks",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "type": "module",
   "description": "React hooks for IrisDB",
   "main": "dist/irisdb-hooks.umd.js",
@@ -28,7 +28,6 @@
   "peerDependencies": {
     "irisdb": "*",
     "react": "*",
-    "irisdb-nostr": "*",
-    "@nostr-dev-kit/ndk": "*"
+    "irisdb-nostr": "*"
   }
 }

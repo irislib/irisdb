@@ -1,7 +1,7 @@
 import 'fake-indexeddb/auto';
 
 import { bytesToHex } from '@noble/hashes/utils';
-import NDK, { NDKPrivateKeySigner } from '@nostr-dev-kit/ndk';
+import NDK, { NDKEvent, NDKPrivateKeySigner } from '@nostr-dev-kit/ndk';
 import NDKCacheAdapterDexie from '@nostr-dev-kit/ndk-cache-dexie';
 import { waitFor } from '@testing-library/dom';
 import { Callback, Unsubscribe } from 'irisdb';
@@ -9,6 +9,7 @@ import { generateSecretKey, getPublicKey } from 'nostr-tools';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { NDKAdapter, PublicKey } from '.';
+import { NostrEvent, NostrFilter } from './types';
 
 describe('NDKAdapter', () => {
   let adapter: NDKAdapter;
@@ -29,7 +30,18 @@ describe('NDKAdapter', () => {
     console.log('privateKeyHex:', privateKeyHex);
     const privateKeySigner = new NDKPrivateKeySigner(privateKeyHex);
     ndk.signer = privateKeySigner;
-    adapter = new NDKAdapter(ndk, [new PublicKey(pk)]);
+    const publish = (e: Partial<NostrEvent>) => {
+      new NDKEvent(ndk, e as NostrEvent).publish();
+      return;
+    };
+    const subscribe = (filter: NostrFilter, onEvent: (e: NostrEvent) => void) => {
+      const sub = ndk.subscribe(filter);
+      sub.on('event', (event) => {
+        onEvent(event.rawEvent() as NostrEvent);
+      });
+      return () => sub.stop();
+    };
+    adapter = new NDKAdapter(publish, subscribe, [new PublicKey(pk)]);
   });
 
   describe('get()', () => {
